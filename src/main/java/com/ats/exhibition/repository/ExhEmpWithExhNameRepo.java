@@ -11,5 +11,5 @@ import com.ats.exhibition.model.ExhEmpWithExhName;
 public interface ExhEmpWithExhNameRepo extends JpaRepository<ExhEmpWithExhName, Integer> {
 
 	@Query(value = "SELECT e.*, x.exh_name FROM m_exh_employee e,m_exhibitor x WHERE e.emp_id=:empId AND x.exh_id=e.exh_id AND e.is_used=1", nativeQuery = true)
-	List<ExhEmpWithExhName> getAllEmployeeByEmpId(@Param("empId") int empId);
+	ExhEmpWithExhName getAllEmployeeByEmpId(@Param("empId") int empId);
 }

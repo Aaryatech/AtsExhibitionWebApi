@@ -29,10 +29,10 @@ public class Events {
 	private String eventName;
 
 	@Column(name = "event_from_date")
-	private Date eventFromDate;
+	private String eventFromDate;
 
 	@Column(name = "event_to_date")
-	private Date eventToDate;
+	private String eventToDate;
 
 	@Column(name = "from_time")
 	private String fromTime;
@@ -100,21 +100,19 @@ public class Events {
 		this.eventName = eventName;
 	}
 
-	@JsonFormat(locale = "hi", timezone = "Asia/Kolkata", pattern = "dd-MM-yyyy")
-	public Date getEventFromDate() {
+	public String getEventFromDate() {
 		return eventFromDate;
 	}
 
-	public void setEventFromDate(Date eventFromDate) {
+	public void setEventFromDate(String eventFromDate) {
 		this.eventFromDate = eventFromDate;
 	}
 
-	@JsonFormat(locale = "hi", timezone = "Asia/Kolkata", pattern = "dd-MM-yyyy")
-	public Date getEventToDate() {
+	public String getEventToDate() {
 		return eventToDate;
 	}
 
-	public void setEventToDate(Date eventToDate) {
+	public void setEventToDate(String eventToDate) {
 		this.eventToDate = eventToDate;
 	}
 
@@ -241,4 +239,5 @@ public class Events {
 				+ person2EmailId + ", isUsed=" + isUsed + "]";
 	}
 
+	
 }

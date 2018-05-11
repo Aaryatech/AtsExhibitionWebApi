@@ -112,9 +112,9 @@ public class TestController {
 	}
 
 	@RequestMapping(value = { "/getAllEmployeeByEmpIdAndIsUsed" }, method = RequestMethod.POST)
-	public @ResponseBody List<ExhEmpWithExhName> getAllEmployeeByEmpIdAndIsUsed(@RequestParam("empId") int empId) {
+	public @ResponseBody ExhEmpWithExhName getAllEmployeeByEmpIdAndIsUsed(@RequestParam("empId") int empId) {
 
-		List<ExhEmpWithExhName> empList = new ArrayList<ExhEmpWithExhName>();
+		ExhEmpWithExhName empList = new ExhEmpWithExhName();
 
 		try {
 
@@ -178,10 +178,10 @@ public class TestController {
 		}
 
 
-	/*	@RequestMapping(value = { "/getAllMatByTrIdAndIsUsed" }, method = RequestMethod.POST)
-		public @ResponseBody List<ExhEmpWithExhName> getAllMatByTrIdAndIsUsed(@RequestParam("trId") int trId) {
+		/*@RequestMapping(value = { "/getAllMatByTrIdAndIsUsed" }, method = RequestMethod.POST)
+		public @ResponseBody List<ExhMatWithExhName> getAllMatByTrIdAndIsUsed(@RequestParam("trId") int trId) {
 
-			List<ExhEmpWithExhName> empList = new ArrayList<ExhEmpWithExhName>();
+			List<ExhMatWithExhName> empList = new ArrayList<ExhMatWithExhName>();
 
 			try {
 

@@ -5,11 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "m_exh_material")
-public class ExhMaterial {
+public class ExhMatWithExhName {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,6 +17,9 @@ public class ExhMaterial {
 	@Column(name = "exh_id")
 	private int exhId;
 
+	@Column(name = "exh_name")
+	private int exhName;
+	
 	@Column(name = "mat_name")
 	private String matName;
 
@@ -42,6 +43,14 @@ public class ExhMaterial {
 
 	public void setExhId(int exhId) {
 		this.exhId = exhId;
+	}
+
+	public int getExhName() {
+		return exhName;
+	}
+
+	public void setExhName(int exhName) {
+		this.exhName = exhName;
 	}
 
 	public String getMatName() {
@@ -70,8 +79,10 @@ public class ExhMaterial {
 
 	@Override
 	public String toString() {
-		return "ExhMaterial [trId=" + trId + ", exhId=" + exhId + ", matName=" + matName + ", matLink=" + matLink
-				+ ", isUsed=" + isUsed + "]";
+		return "ExhMatWithExhId [trId=" + trId + ", exhId=" + exhId + ", exhName=" + exhName + ", matName=" + matName
+				+ ", matLink=" + matLink + ", isUsed=" + isUsed + "]";
 	}
+	
+	
 
 }

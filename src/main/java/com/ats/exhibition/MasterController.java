@@ -378,9 +378,9 @@ public class MasterController {
 	}
 
 	@RequestMapping(value = { "/getAllEventsByEventId" }, method = RequestMethod.POST)
-	public @ResponseBody List<EventWithOrgName> getAllEventsByEventId(@RequestParam("eventId") int eventId) {
+	public @ResponseBody EventWithOrgName getAllEventsByEventId(@RequestParam("eventId") int eventId) {
 
-		List<EventWithOrgName> eventList = new ArrayList<EventWithOrgName>();
+		EventWithOrgName eventList = new EventWithOrgName();
 
 		try {
 

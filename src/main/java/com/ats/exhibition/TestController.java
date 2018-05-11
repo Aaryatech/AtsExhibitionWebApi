@@ -17,11 +17,13 @@ import com.ats.exhibition.model.EventExhMapping;
 import com.ats.exhibition.model.Events;
 import com.ats.exhibition.model.ExhEmpWithExhName;
 import com.ats.exhibition.model.ExhEmployee;
+import com.ats.exhibition.model.ExhMaterial;
 import com.ats.exhibition.model.LoginResponse;
 import com.ats.exhibition.model.Organiser;
 import com.ats.exhibition.repository.EventExhMappingRepository;
 import com.ats.exhibition.repository.ExhEmpWithExhNameRepo;
 import com.ats.exhibition.repository.ExhEmployeeRepository;
+import com.ats.exhibition.repository.ExhMaterialRepository;
 import com.ats.exhibition.repository.OrganiserRepository;
 
 @RestController
@@ -39,6 +41,8 @@ public class TestController {
 	@Autowired
 	ExhEmpWithExhNameRepo exhEmpWithExhNameRepo;
 
+	@Autowired
+	ExhMaterialRepository exhMaterialRepository;
 	// ------------------------------------------------------------------------
 	@RequestMapping(value = { "/loginResponse" }, method = RequestMethod.POST)
 	public @ResponseBody LoginResponse loginResponse(@RequestParam("userMob") String userMob,
@@ -151,5 +155,45 @@ public class TestController {
 		return errorMessage;
 
 	}
+	
+	
+	// ------------ Exh Material-----------------
 
+		@RequestMapping(value = { "/saveExhMaterial" }, method = RequestMethod.POST)
+		public @ResponseBody ExhMaterial saveExhMaterial(@RequestBody ExhMaterial ExhMaterial) {
+
+			ExhMaterial exhMaterial = new ExhMaterial();
+
+			try {
+
+				exhMaterial = exhMaterialRepository.saveAndFlush(ExhMaterial);
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+			return exhMaterial;
+
+		}
+
+
+	/*	@RequestMapping(value = { "/getAllMatByTrIdAndIsUsed" }, method = RequestMethod.POST)
+		public @ResponseBody List<ExhEmpWithExhName> getAllMatByTrIdAndIsUsed(@RequestParam("trId") int trId) {
+
+			List<ExhEmpWithExhName> empList = new ArrayList<ExhEmpWithExhName>();
+
+			try {
+
+				empList = exhEmpWithExhNameRepo.getAllEmployeeByEmpId(trId);
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+			return empList;
+
+		}
+*/
 }

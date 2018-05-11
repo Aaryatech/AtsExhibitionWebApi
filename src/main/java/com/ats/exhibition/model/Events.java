@@ -1,12 +1,16 @@
 
 package com.ats.exhibition.model;
 
+import java.sql.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "m_events")
@@ -25,10 +29,10 @@ public class Events {
 	private String eventName;
 
 	@Column(name = "event_from_date")
-	private String eventFromDate;
+	private Date eventFromDate;
 
 	@Column(name = "event_to_date")
-	private String eventToDate;
+	private Date eventToDate;
 
 	@Column(name = "from_time")
 	private String fromTime;
@@ -71,8 +75,6 @@ public class Events {
 
 	@Column(name = "is_used")
 	private int isUsed;
-	
-	
 
 	public int getEventId() {
 		return eventId;
@@ -98,19 +100,21 @@ public class Events {
 		this.eventName = eventName;
 	}
 
-	public String getEventFromDate() {
+	@JsonFormat(locale = "hi", timezone = "Asia/Kolkata", pattern = "dd-MM-yyyy")
+	public Date getEventFromDate() {
 		return eventFromDate;
 	}
 
-	public void setEventFromDate(String eventFromDate) {
+	public void setEventFromDate(Date eventFromDate) {
 		this.eventFromDate = eventFromDate;
 	}
 
-	public String getEventToDate() {
+	@JsonFormat(locale = "hi", timezone = "Asia/Kolkata", pattern = "dd-MM-yyyy")
+	public Date getEventToDate() {
 		return eventToDate;
 	}
 
-	public void setEventToDate(String eventToDate) {
+	public void setEventToDate(Date eventToDate) {
 		this.eventToDate = eventToDate;
 	}
 
@@ -236,7 +240,5 @@ public class Events {
 				+ ", person2Mob=" + person2Mob + ", person1EmailId=" + person1EmailId + ", person2EmailId="
 				+ person2EmailId + ", isUsed=" + isUsed + "]";
 	}
-	
-	
 
 }

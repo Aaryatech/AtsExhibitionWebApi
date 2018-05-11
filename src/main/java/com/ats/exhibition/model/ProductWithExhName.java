@@ -8,9 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "t_products")
+
 public class ProductWithExhName {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "prod_id")
@@ -18,7 +18,7 @@ public class ProductWithExhName {
 
 	@Column(name = "exh_id")
 	private int exhId;
-	
+
 	@Column(name = "exh_name")
 	private String exhName;
 
@@ -141,8 +141,5 @@ public class ProductWithExhName {
 				+ prodExperty + ", prodImage1=" + prodImage1 + ", prodImage2=" + prodImage2 + ", prodImage3="
 				+ prodImage3 + ", isUsed=" + isUsed + "]";
 	}
-	
-	
-
 
 }

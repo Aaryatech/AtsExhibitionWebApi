@@ -41,11 +41,13 @@ public class OrgSubscription {
 
 	@Column(name = "rem_amt")
 	private float remAmt;
-	
+
+	@Column(name = "status")
+	private int status;
+
 	@Column(name = "is_used")
 	private int isUsed;
 
-	private int status;
 	public int getStatus() {
 		return status;
 	}
@@ -140,7 +142,5 @@ public class OrgSubscription {
 				+ ", transDatetime=" + transDatetime + ", pkgId=" + pkgId + ", pkgAmt=" + pkgAmt + ", paidAmt="
 				+ paidAmt + ", remAmt=" + remAmt + ", isUsed=" + isUsed + ", status=" + status + "]";
 	}
-
-	
 
 }

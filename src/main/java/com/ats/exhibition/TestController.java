@@ -1,14 +1,18 @@
 package com.ats.exhibition;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ats.exhibition.model.EventExhMapping;
+import com.ats.exhibition.model.Events;
 import com.ats.exhibition.model.LoginResponse;
 import com.ats.exhibition.model.Organiser;
+import com.ats.exhibition.repository.EventExhMappingRepository;
 import com.ats.exhibition.repository.OrganiserRepository;
 
 @RestController
@@ -16,6 +20,9 @@ public class TestController {
 
 	@Autowired
 	OrganiserRepository organiserRepository;
+	
+	@Autowired
+	EventExhMappingRepository eventExhMappingRepository;
 
 	// ------------------------------------------------------------------------
 	@RequestMapping(value = { "/loginResponse" }, method = RequestMethod.POST)
@@ -44,5 +51,28 @@ public class TestController {
 
 		return loginResponse;
 	}
+	
+	
+	
+	// ------------Event Exh Mapping------------------
+
+		@RequestMapping(value = { "/saveEventExhMapping" }, method = RequestMethod.POST)
+		public @ResponseBody EventExhMapping saveEventExhMapping(@RequestBody EventExhMapping EventExhMapping) {
+
+			EventExhMapping eventExhMapping = new EventExhMapping();
+
+			try {
+
+				eventExhMapping = eventExhMappingRepository.saveAndFlush(EventExhMapping);
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+			return eventExhMapping;
+
+		}
+
 
 }

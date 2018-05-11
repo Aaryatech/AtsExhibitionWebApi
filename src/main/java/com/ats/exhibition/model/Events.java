@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "t_events")
+@Table(name = "m_events")
 
 public class Events {
 
@@ -71,6 +71,8 @@ public class Events {
 
 	@Column(name = "is_used")
 	private int isUsed;
+	
+	
 
 	public int getEventId() {
 		return eventId;

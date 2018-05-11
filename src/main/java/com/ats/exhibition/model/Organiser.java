@@ -41,6 +41,21 @@ public class Organiser {
 	@Column(name = "work_area_keywords")
 	private String workAreaKeywords;
 
+	@Column(name = "org_image")
+	private String orgImage;
+
+	@Column(name = "color1")
+	private String color1;
+
+	@Column(name = "color2")
+	private String color2;
+
+	@Column(name = "color3")
+	private String color3;
+
+	@Column(name = "color4")
+	private String color4;
+
 	@Column(name = "user_mob")
 	private String userMob;
 
@@ -52,6 +67,21 @@ public class Organiser {
 
 	@Column(name = "is_used")
 	private int isUsed;
+
+	@Column(name = "int11")
+	private int int11;
+
+	@Column(name = "varchar1")
+	private String varchar1;
+
+	@Column(name = "varchar2")
+	private String varchar2;
+
+	@Column(name = "varchar3")
+	private String varchar3;
+
+	@Column(name = "bool1")
+	private int bool1;
 
 	public int getOrgId() {
 		return orgId;
@@ -156,13 +186,98 @@ public class Organiser {
 	public void setIsUsed(int isUsed) {
 		this.isUsed = isUsed;
 	}
+	
+	
+
+	public String getOrgImage() {
+		return orgImage;
+	}
+
+	public void setOrgImage(String orgImage) {
+		this.orgImage = orgImage;
+	}
+
+	public String getColor1() {
+		return color1;
+	}
+
+	public void setColor1(String color1) {
+		this.color1 = color1;
+	}
+
+	public String getColor2() {
+		return color2;
+	}
+
+	public void setColor2(String color2) {
+		this.color2 = color2;
+	}
+
+	public String getColor3() {
+		return color3;
+	}
+
+	public void setColor3(String color3) {
+		this.color3 = color3;
+	}
+
+	public String getColor4() {
+		return color4;
+	}
+
+	public void setColor4(String color4) {
+		this.color4 = color4;
+	}
+
+	public int getInt11() {
+		return int11;
+	}
+
+	public void setInt11(int int11) {
+		this.int11 = int11;
+	}
+
+	public String getVarchar1() {
+		return varchar1;
+	}
+
+	public void setVarchar1(String varchar1) {
+		this.varchar1 = varchar1;
+	}
+
+	public String getVarchar2() {
+		return varchar2;
+	}
+
+	public void setVarchar2(String varchar2) {
+		this.varchar2 = varchar2;
+	}
+
+	public String getVarchar3() {
+		return varchar3;
+	}
+
+	public void setVarchar3(String varchar3) {
+		this.varchar3 = varchar3;
+	}
+
+	public int getBool1() {
+		return bool1;
+	}
+
+	public void setBool1(int bool1) {
+		this.bool1 = bool1;
+	}
 
 	@Override
 	public String toString() {
 		return "Organiser [orgId=" + orgId + ", orgName=" + orgName + ", orgAddress=" + orgAddress + ", orgContactNo="
 				+ orgContactNo + ", orgEmailId=" + orgEmailId + ", websiteLink=" + websiteLink + ", orgType=" + orgType
-				+ ", aboutOrg=" + aboutOrg + ", workAreaKeywords=" + workAreaKeywords + ", userMob=" + userMob
-				+ ", userPassword=" + userPassword + ", isActive=" + isActive + ", isUsed=" + isUsed + "]";
+				+ ", aboutOrg=" + aboutOrg + ", workAreaKeywords=" + workAreaKeywords + ", orgImage=" + orgImage
+				+ ", color1=" + color1 + ", color2=" + color2 + ", color3=" + color3 + ", color4=" + color4
+				+ ", userMob=" + userMob + ", userPassword=" + userPassword + ", isActive=" + isActive + ", isUsed="
+				+ isUsed + ", int11=" + int11 + ", varchar1=" + varchar1 + ", varchar2=" + varchar2 + ", varchar3="
+				+ varchar3 + ", bool1=" + bool1 + "]";
 	}
 
 }

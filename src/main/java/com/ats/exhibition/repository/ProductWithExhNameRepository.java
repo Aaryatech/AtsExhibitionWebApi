@@ -13,7 +13,7 @@ public interface ProductWithExhNameRepository extends JpaRepository<ProductWithE
 
 	
 	@Query(value = "SELECT p.*, e.exh_name FROM t_products p,t_exhibitor e WHERE p.prod_id=:prodId AND e.exh_id=p.exh_id", nativeQuery = true)
-	List<ProductWithExhName> getAllProductsByProdId(@Param("prodId") int prodId);
+	ProductWithExhName getAllProductsByProdId(@Param("prodId") int prodId);
 	
 	@Query(value = "SELECT p.*, e.exh_name FROM t_products p,t_exhibitor e WHERE p.is_used=1 AND e.exh_id=p.exh_id", nativeQuery = true)
 	List<ProductWithExhName> findByIsUsed( int isUsed);

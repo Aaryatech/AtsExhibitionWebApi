@@ -14,7 +14,7 @@ public interface ComMemWithOrgNameRepo extends JpaRepository<ComMemWithOrgName, 
 	List<ComMemWithOrgName> getAllCommitteeMembersByOrgId(@Param("orgId") int orgId);
 	
 	@Query(value = "SELECT c.*, o.org_name FROM m_org_committee_members c,m_organiser o WHERE c.mem_id=:memId AND o.org_id=c.org_id", nativeQuery = true)
-	List<ComMemWithOrgName> getAllCommitteeMembersByMemId(@Param("memId") int memId);
+	ComMemWithOrgName getAllCommitteeMembersByMemId(@Param("memId") int memId);
 
 	@Query(value = "SELECT c.*, o.org_name FROM m_org_committee_members c,m_organiser o WHERE c.is_used=1 AND o.org_id=c.org_id", nativeQuery = true)
 	List<ComMemWithOrgName> findByIsUsed();

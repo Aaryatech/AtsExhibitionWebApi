@@ -111,9 +111,9 @@ public class MasterController {
 	}
 
 	@RequestMapping(value = { "/getAllCommitteeMembersByMemId" }, method = RequestMethod.POST)
-	public @ResponseBody List<ComMemWithOrgName> getAllCommitteeMembersByMemId(@RequestParam("memId") int memId) {
+	public @ResponseBody ComMemWithOrgName getAllCommitteeMembersByMemId(@RequestParam("memId") int memId) {
 
-		List<ComMemWithOrgName> committeeMembersList = new ArrayList<ComMemWithOrgName>();
+		ComMemWithOrgName committeeMembersList = new ComMemWithOrgName();
 
 		try {
 
@@ -587,9 +587,9 @@ public class MasterController {
 	}
 
 	@RequestMapping(value = { "/getExhibitorByExhId" }, method = RequestMethod.POST)
-	public @ResponseBody List<ExhibitorWithOrgName> getExhibitorByExhId(@RequestParam("exhId") int exhId) {
+	public @ResponseBody ExhibitorWithOrgName getExhibitorByExhId(@RequestParam("exhId") int exhId) {
 
-		List<ExhibitorWithOrgName> exhibitorList = new ArrayList<ExhibitorWithOrgName>();
+		ExhibitorWithOrgName exhibitorList = new ExhibitorWithOrgName();
 
 		try {
 
@@ -725,9 +725,9 @@ public class MasterController {
 	}
 
 	@RequestMapping(value = { "/getProductByProdId" }, method = RequestMethod.POST)
-	public @ResponseBody List<ProductWithExhName> getProductByProdId(@RequestParam("prodId") int prodId) {
+	public @ResponseBody ProductWithExhName getProductByProdId(@RequestParam("prodId") int prodId) {
 
-		List<ProductWithExhName> productList = new ArrayList<ProductWithExhName>();
+		ProductWithExhName productList = new ProductWithExhName();
 
 		try {
 

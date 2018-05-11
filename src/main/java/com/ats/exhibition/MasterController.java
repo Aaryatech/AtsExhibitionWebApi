@@ -18,6 +18,7 @@ import com.ats.exhibition.model.ErrorMessage;
 import com.ats.exhibition.model.EventWithOrgName;
 import com.ats.exhibition.model.Events;
 import com.ats.exhibition.model.Exhibitor;
+import com.ats.exhibition.model.ExhibitorWithOrgName;
 import com.ats.exhibition.model.OrgSubscription;
 import com.ats.exhibition.model.Organiser;
 import com.ats.exhibition.model.Package1;
@@ -28,6 +29,7 @@ import com.ats.exhibition.repository.CommitteeMemRepository;
 import com.ats.exhibition.repository.EventWithOrgNameRepository;
 import com.ats.exhibition.repository.EventsRepository;
 import com.ats.exhibition.repository.ExhibitorRepository;
+import com.ats.exhibition.repository.ExhibitorWithOrgNameRepo;
 import com.ats.exhibition.repository.OrgSubscriptionRepository;
 import com.ats.exhibition.repository.OrganiserRepository;
 import com.ats.exhibition.repository.Package1Repository;
@@ -67,6 +69,9 @@ public class MasterController {
 	
 	@Autowired
 	EventWithOrgNameRepository eventWithOrgNameRepository;
+	
+	@Autowired
+	ExhibitorWithOrgNameRepo exhibitorWithOrgNameRepo;
 
 	// ------------Committee Member--------------------
 
@@ -88,8 +93,8 @@ public class MasterController {
 
 	}
 
-	@RequestMapping(value = { "/getAllCommitteeMembers" }, method = RequestMethod.POST)
-	public @ResponseBody List<ComMemWithOrgName> getAllCommitteeMembers(@RequestParam("orgId") int orgId) {
+	@RequestMapping(value = { "/getAllCommitteeMembersByOrgId" }, method = RequestMethod.POST)
+	public @ResponseBody List<ComMemWithOrgName> getAllCommitteeMembersByOrgId(@RequestParam("orgId") int orgId) {
 
 		List<ComMemWithOrgName> committeeMembersList = new ArrayList<ComMemWithOrgName>();
 
@@ -106,14 +111,15 @@ public class MasterController {
 
 	}
 
-	@RequestMapping(value = { "/test" }, method = RequestMethod.GET)
-	public @ResponseBody List<CommitteeMembers> test() {
+	
+	@RequestMapping(value = { "/getAllCommitteeMembersByMemId" }, method = RequestMethod.POST)
+	public @ResponseBody List<ComMemWithOrgName> getAllCommitteeMembersByMemId(@RequestParam("memId") int memId) {
 
-		List<CommitteeMembers> committeeMembersList = new ArrayList<CommitteeMembers>();
+		List<ComMemWithOrgName> committeeMembersList = new ArrayList<ComMemWithOrgName>();
 
 		try {
 
-			committeeMembersList = committeeMemRepository.findCommitteeMembers();
+			committeeMembersList = comMemWithOrgNameRepo.getAllCommitteeMembersByMemId(memId);
 
 		} catch (Exception e) {
 
@@ -123,6 +129,54 @@ public class MasterController {
 		return committeeMembersList;
 
 	}
+
+	
+	@RequestMapping(value = { "/getCommitteeMemByIsUsed" }, method = RequestMethod.GET)
+	public @ResponseBody List<ComMemWithOrgName> getCommitteeMemByIsUsed() {
+
+		List<ComMemWithOrgName> comMemWithOrgNameList = new ArrayList<ComMemWithOrgName>();
+
+		try {
+
+			comMemWithOrgNameList = comMemWithOrgNameRepo.findByIsUsed(1);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return comMemWithOrgNameList;
+
+	}
+	
+	
+	@RequestMapping(value = { "/deleteCommitteeMembers" }, method = RequestMethod.POST)
+	public @ResponseBody ErrorMessage deleteCommitteeMembers(@RequestParam("memId") int memId) {
+
+		ErrorMessage errorMessage = new ErrorMessage();
+
+		try {
+			int delete = committeeMemRepository.deleteCommitteeMember(memId);
+
+			if (delete == 1) {
+				errorMessage.setError(false);
+				errorMessage.setMessage("successfully Deleted");
+			} else {
+				errorMessage.setError(true);
+				errorMessage.setMessage(" Deleted to Delete");
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			errorMessage.setError(true);
+			errorMessage.setMessage(" Deleted to Delete");
+
+		}
+		return errorMessage;
+
+	}
+
 
 	// ------------Organiser-------------------
 
@@ -211,8 +265,225 @@ public class MasterController {
 		return errorMessage;
 
 	}
+	
+	
+	
+	// ------------ Package 1------------------------------
 
-	// ------------Subscription-------------------
+		@RequestMapping(value = { "/savePackage" }, method = RequestMethod.POST)
+		public @ResponseBody Package1 savePackage(@RequestBody Package1 Package1) {
+
+			Package1 pack = new Package1();
+
+			try {
+
+				pack = package1Repository.saveAndFlush(Package1);
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+			return pack;
+
+		}
+
+		@RequestMapping(value = { "/getAllPackages" }, method = RequestMethod.GET)
+		public @ResponseBody List<Package1> getAllPackages() {
+
+			List<Package1> packageList = new ArrayList<Package1>();
+
+			try {
+
+				packageList = package1Repository.findAll();
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+			return packageList;
+
+		}
+		
+		@RequestMapping(value = { "/getAllPackagesByIsUsed" }, method = RequestMethod.GET)
+		public @ResponseBody List<Package1> getAllPackagesByIsUsed() {
+
+			List<Package1> packageList = new ArrayList<Package1>();
+
+			try {
+
+				packageList = package1Repository.findByIsUsed(1);
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+			return packageList;
+
+		}
+		
+		
+		@RequestMapping(value = { "/deletePackage" }, method = RequestMethod.POST)
+		public @ResponseBody ErrorMessage deletePackage(@RequestParam("pkgId") int pkgId) {
+
+			ErrorMessage errorMessage = new ErrorMessage();
+
+			try {
+				int delete = package1Repository.deletePackage(pkgId);
+
+				if (delete == 1) {
+					errorMessage.setError(false);
+					errorMessage.setMessage("successfully Deleted");
+				} else {
+					errorMessage.setError(true);
+					errorMessage.setMessage(" Deleted to Delete");
+				}
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+				errorMessage.setError(true);
+				errorMessage.setMessage(" Deleted to Delete");
+
+			}
+			return errorMessage;
+
+		}
+		
+		
+		
+		// ------------Events------------------
+
+		@RequestMapping(value = { "/saveEvents" }, method = RequestMethod.POST)
+		public @ResponseBody Events saveEvents(@RequestBody Events Events) {
+
+			Events event = new Events();
+
+			try {
+
+				event = eventsRepository.saveAndFlush(Events);
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+			return event;
+
+		}
+
+		@RequestMapping(value = { "/getAllEvents" }, method = RequestMethod.GET)
+		public @ResponseBody List<Events> getAllEvents() {
+
+			List<Events> eventList = new ArrayList<Events>();
+
+			try {
+
+				eventList = eventsRepository.findAll();
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+			return eventList;
+
+		}
+		
+		
+		@RequestMapping(value = { "/getAllEventsByEventId" }, method = RequestMethod.POST)
+		public @ResponseBody List<EventWithOrgName> getAllEventsByEventId(@RequestParam("eventId") int eventId) {
+
+			List<EventWithOrgName> eventList = new ArrayList<EventWithOrgName>();
+
+			try {
+
+				eventList = eventWithOrgNameRepository.getAllEventsByEventId(eventId);
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+			return eventList;
+
+		}
+		
+		
+		
+		
+		@RequestMapping(value = { "/getAllEventsByorgIdAndIsUsed" }, method = RequestMethod.POST)
+		public @ResponseBody List<EventWithOrgName> getAllEventsByorgIdAndIsUsed(@RequestParam("orgId") int orgId) {
+
+			List<EventWithOrgName> eventList = new ArrayList<EventWithOrgName>();
+
+			try {
+
+				eventList = eventWithOrgNameRepository.getAllEventsByOrgIdAndIsUsed(orgId,1);
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+			return eventList;
+
+		}
+		
+		
+		
+		@RequestMapping(value = { "/getAllEventsByIsUsed" }, method = RequestMethod.GET)
+		public @ResponseBody List<EventWithOrgName> getAllEventsByIsUsed() {
+
+			List<EventWithOrgName> eventList = new ArrayList<EventWithOrgName>();
+
+			try {
+
+				eventList = eventWithOrgNameRepository.getAllEventsByIsUsed();
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+			return eventList;
+
+		}
+		
+		@RequestMapping(value = { "/deleteEvent" }, method = RequestMethod.POST)
+		public @ResponseBody ErrorMessage deleteEvent(@RequestParam("eventId") int eventId) {
+
+			ErrorMessage errorMessage = new ErrorMessage();
+
+			try {
+				int delete = eventsRepository.deleteEvent(eventId);
+
+				if (delete == 1) {
+					errorMessage.setError(false);
+					errorMessage.setMessage("successfully Deleted");
+				} else {
+					errorMessage.setError(true);
+					errorMessage.setMessage(" Deleted to Delete");
+				}
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+				errorMessage.setError(true);
+				errorMessage.setMessage(" Deleted to Delete");
+
+			}
+			return errorMessage;
+
+		}
+
+
+		
+		
+
+	// -----------Org-Subscription-------------------
 
 	@RequestMapping(value = { "/saveOrgSubscription" }, method = RequestMethod.POST)
 	public @ResponseBody OrgSubscription saveOrgSubscription(@RequestBody OrgSubscription OrgSubscription) {
@@ -272,71 +543,16 @@ public class MasterController {
 		return orgSubscription;
 
 	}
-
-	// ------------Events------------------
-
-	@RequestMapping(value = { "/saveEvents" }, method = RequestMethod.POST)
-	public @ResponseBody Events saveEvents(@RequestBody Events Events) {
-
-		Events event = new Events();
-
-		try {
-
-			event = eventsRepository.saveAndFlush(Events);
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		}
-		return event;
-
-	}
-
-	@RequestMapping(value = { "/getAllEvents" }, method = RequestMethod.GET)
-	public @ResponseBody List<Events> getAllEvents() {
-
-		List<Events> eventList = new ArrayList<Events>();
-
-		try {
-
-			eventList = eventsRepository.findAll();
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		}
-		return eventList;
-
-	}
 	
 	
-	@RequestMapping(value = { "/getAllEventsByEventId" }, method = RequestMethod.POST)
-	public @ResponseBody List<EventWithOrgName> getAllEventsByEventId(@RequestParam("eventId") int eventId) {
-
-		List<EventWithOrgName> eventList = new ArrayList<EventWithOrgName>();
-
-		try {
-
-			eventList = eventWithOrgNameRepository.getAllEventsByEventId(eventId);
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		}
-		return eventList;
-
-	}
 	
-	@RequestMapping(value = { "/deleteEvent" }, method = RequestMethod.POST)
-	public @ResponseBody ErrorMessage deleteEvent(@RequestParam("pkgId") int pkgId) {
+	@RequestMapping(value = { "/deleteOrgSubscription" }, method = RequestMethod.POST)
+	public @ResponseBody ErrorMessage deleteOrgSubscription(@RequestParam("subId") int subId) {
 
 		ErrorMessage errorMessage = new ErrorMessage();
 
 		try {
-			int delete = eventsRepository.deleteEvent(pkgId);
+			int delete = orgSubscriptionRepository.deleteOrgSubscription(subId);
 
 			if (delete == 1) {
 				errorMessage.setError(false);
@@ -357,71 +573,6 @@ public class MasterController {
 
 	}
 
-
-	// ------------ Package 1------------------------------
-
-	@RequestMapping(value = { "/savePackage" }, method = RequestMethod.POST)
-	public @ResponseBody Package1 savePackage(@RequestBody Package1 Package1) {
-
-		Package1 pack = new Package1();
-
-		try {
-
-			pack = package1Repository.saveAndFlush(Package1);
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		}
-		return pack;
-
-	}
-
-	@RequestMapping(value = { "/getAllPackages" }, method = RequestMethod.GET)
-	public @ResponseBody List<Package1> getAllPackages() {
-
-		List<Package1> packageList = new ArrayList<Package1>();
-
-		try {
-
-			packageList = package1Repository.findAll();
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		}
-		return packageList;
-
-	}
-	
-	@RequestMapping(value = { "/deletePackage" }, method = RequestMethod.POST)
-	public @ResponseBody ErrorMessage deletePackage(@RequestParam("pkgId") int pkgId) {
-
-		ErrorMessage errorMessage = new ErrorMessage();
-
-		try {
-			int delete = package1Repository.deletePackage(pkgId);
-
-			if (delete == 1) {
-				errorMessage.setError(false);
-				errorMessage.setMessage("successfully Deleted");
-			} else {
-				errorMessage.setError(true);
-				errorMessage.setMessage(" Deleted to Delete");
-			}
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-			errorMessage.setError(true);
-			errorMessage.setMessage(" Deleted to Delete");
-
-		}
-		return errorMessage;
-
-	}
 	
 	
 	//--------------------Exhibitor-----------------------
@@ -445,15 +596,34 @@ public class MasterController {
 		return exhibitor;
 
 	}
+	
+	
+	@RequestMapping(value = { "/getExhibitorByExhId" }, method = RequestMethod.POST)
+	public @ResponseBody List<ExhibitorWithOrgName> getExhibitorByExhId(@RequestParam("exhId") int exhId) {
 
-	@RequestMapping(value = { "/getExhibitorsByIsUsed" }, method = RequestMethod.POST)
-	public @ResponseBody List<Exhibitor> getExhibitorsByIsUsed(@RequestParam("isUsed") int isUsed) {
-
-		List<Exhibitor> exhibitorList = new ArrayList<Exhibitor>();
+		List<ExhibitorWithOrgName> exhibitorList = new ArrayList<ExhibitorWithOrgName>();
 
 		try {
 
-			exhibitorList = exhibitorRepository.findByIsUsed(isUsed);
+			exhibitorList = exhibitorWithOrgNameRepo.getAllExhibitorsByExhId(exhId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return exhibitorList;
+
+	}
+
+	@RequestMapping(value = { "/getAllExhibitorsByIsUsed" }, method = RequestMethod.GET)
+	public @ResponseBody List<ExhibitorWithOrgName> getAllExhibitorsByIsUsed() {
+
+		List<ExhibitorWithOrgName> exhibitorList = new ArrayList<ExhibitorWithOrgName>();
+
+		try {
+
+			exhibitorList = exhibitorWithOrgNameRepo.findByIsUsed(1);
 
 		} catch (Exception e) {
 
@@ -535,14 +705,33 @@ public class MasterController {
 
 	}
 
-	@RequestMapping(value = { "/getAllProductsByProdId" }, method = RequestMethod.POST)
-	public @ResponseBody List<ProductWithExhName> getAllProductsByProdId(@RequestParam("prodId") int prodId) {
+	@RequestMapping(value = { "/getProductByProdId" }, method = RequestMethod.POST)
+	public @ResponseBody List<ProductWithExhName> getProductByProdId(@RequestParam("prodId") int prodId) {
 
 		List<ProductWithExhName> productList = new ArrayList<ProductWithExhName>();
 
 		try {
 
 			productList = productWithExhNameRepository.getAllProductsByProdId(prodId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return productList;
+
+	}
+	
+	
+	@RequestMapping(value = { "/getAllProductsByIsUsed" }, method = RequestMethod.GET)
+	public @ResponseBody List<ProductWithExhName> getAllProductsByIsUsed() {
+
+		List<ProductWithExhName> productList = new ArrayList<ProductWithExhName>();
+
+		try {
+
+			productList = productWithExhNameRepository.findByIsUsed(1);
 
 		} catch (Exception e) {
 

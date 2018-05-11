@@ -18,7 +18,7 @@ public class ComMemWithOrgName {
 	@Column(name = "org_id")
 	private int orgId;
 	
-	
+	@Column(name = "org_name")
 	private String orgName;
 
 

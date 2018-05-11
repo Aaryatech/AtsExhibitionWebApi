@@ -92,8 +92,8 @@ public class MasterController {
 
 	}
 
-	@RequestMapping(value = { "/getAllCommitteeMembersByOrgId" }, method = RequestMethod.POST)
-	public @ResponseBody List<ComMemWithOrgName> getAllCommitteeMembersByOrgId(@RequestParam("orgId") int orgId) {
+	@RequestMapping(value = { "/getAllCommitteeMembersByOrgIdAndIsUsed" }, method = RequestMethod.POST)
+	public @ResponseBody List<ComMemWithOrgName> getAllCommitteeMembersByOrgIdAndIsUsed(@RequestParam("orgId") int orgId) {
 
 		List<ComMemWithOrgName> committeeMembersList = new ArrayList<ComMemWithOrgName>();
 

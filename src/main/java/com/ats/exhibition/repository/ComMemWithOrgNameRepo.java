@@ -10,7 +10,7 @@ import com.ats.exhibition.model.ComMemWithOrgName;
 
 public interface ComMemWithOrgNameRepo extends JpaRepository<ComMemWithOrgName, Integer> {
 
-	@Query(value = "SELECT c.*, o.org_name FROM m_org_committee_members c,m_organiser o WHERE c.org_id=:orgId AND o.org_id=c.org_id", nativeQuery = true)
+	@Query(value = "SELECT c.*, o.org_name FROM m_org_committee_members c,m_organiser o WHERE c.org_id=:orgId AND o.org_id=c.org_id AND c.is_used=1", nativeQuery = true)
 	List<ComMemWithOrgName> getAllCommitteeMembersByOrgId(@Param("orgId") int orgId);
 	
 	@Query(value = "SELECT c.*, o.org_name FROM m_org_committee_members c,m_organiser o WHERE c.mem_id=:memId AND o.org_id=c.org_id", nativeQuery = true)

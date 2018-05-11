@@ -17,14 +17,20 @@ import com.ats.exhibition.model.EventExhMapping;
 import com.ats.exhibition.model.Events;
 import com.ats.exhibition.model.ExhEmpWithExhName;
 import com.ats.exhibition.model.ExhEmployee;
+import com.ats.exhibition.model.ExhMatWithExhName;
 import com.ats.exhibition.model.ExhMaterial;
 import com.ats.exhibition.model.LoginResponse;
 import com.ats.exhibition.model.Organiser;
+import com.ats.exhibition.model.Visitor;
+import com.ats.exhibition.model.VisitorWithOrgEventName;
 import com.ats.exhibition.repository.EventExhMappingRepository;
 import com.ats.exhibition.repository.ExhEmpWithExhNameRepo;
 import com.ats.exhibition.repository.ExhEmployeeRepository;
+import com.ats.exhibition.repository.ExhMatWithExhNameRepo;
 import com.ats.exhibition.repository.ExhMaterialRepository;
 import com.ats.exhibition.repository.OrganiserRepository;
+import com.ats.exhibition.repository.VisitorRepository;
+import com.ats.exhibition.repository.VisitorWithOrgEventNameRepo;
 
 @RestController
 public class TestController {
@@ -43,6 +49,16 @@ public class TestController {
 
 	@Autowired
 	ExhMaterialRepository exhMaterialRepository;
+
+	@Autowired
+	ExhMatWithExhNameRepo exhMatWithExhNameRepo;
+
+	@Autowired
+	VisitorRepository visitorRepository;
+
+	@Autowired
+	VisitorWithOrgEventNameRepo visitorWithOrgEventNameRepo;
+
 	// ------------------------------------------------------------------------
 	@RequestMapping(value = { "/loginResponse" }, method = RequestMethod.POST)
 	public @ResponseBody LoginResponse loginResponse(@RequestParam("userMob") String userMob,
@@ -155,45 +171,135 @@ public class TestController {
 		return errorMessage;
 
 	}
-	
-	
+
 	// ------------ Exh Material-----------------
 
-		@RequestMapping(value = { "/saveExhMaterial" }, method = RequestMethod.POST)
-		public @ResponseBody ExhMaterial saveExhMaterial(@RequestBody ExhMaterial ExhMaterial) {
+	@RequestMapping(value = { "/saveExhMaterial" }, method = RequestMethod.POST)
+	public @ResponseBody ExhMaterial saveExhMaterial(@RequestBody ExhMaterial ExhMaterial) {
 
-			ExhMaterial exhMaterial = new ExhMaterial();
+		ExhMaterial exhMaterial = new ExhMaterial();
 
-			try {
+		try {
 
-				exhMaterial = exhMaterialRepository.saveAndFlush(ExhMaterial);
+			exhMaterial = exhMaterialRepository.saveAndFlush(ExhMaterial);
 
-			} catch (Exception e) {
+		} catch (Exception e) {
 
-				e.printStackTrace();
-
-			}
-			return exhMaterial;
+			e.printStackTrace();
 
 		}
+		return exhMaterial;
 
+	}
 
-		/*@RequestMapping(value = { "/getAllMatByTrIdAndIsUsed" }, method = RequestMethod.POST)
-		public @ResponseBody List<ExhMatWithExhName> getAllMatByTrIdAndIsUsed(@RequestParam("trId") int trId) {
+	@RequestMapping(value = { "/getAllMatByTrIdAndIsUsed" }, method = RequestMethod.POST)
+	public @ResponseBody ExhMatWithExhName getAllMatByTrIdAndIsUsed(@RequestParam("trId") int trId) {
 
-			List<ExhMatWithExhName> empList = new ArrayList<ExhMatWithExhName>();
+		ExhMatWithExhName materialList = new ExhMatWithExhName();
 
-			try {
+		try {
 
-				empList = exhEmpWithExhNameRepo.getAllEmployeeByEmpId(trId);
+			materialList = exhMatWithExhNameRepo.getAllMaterialByTrId(trId);
 
-			} catch (Exception e) {
+		} catch (Exception e) {
 
-				e.printStackTrace();
-
-			}
-			return empList;
+			e.printStackTrace();
 
 		}
-*/
+		return materialList;
+
+	}
+
+	@RequestMapping(value = { "/deleteExhMaterial" }, method = RequestMethod.POST)
+	public @ResponseBody ErrorMessage deleteExhMaterial(@RequestParam("trId") int trId) {
+
+		ErrorMessage errorMessage = new ErrorMessage();
+
+		try {
+			int delete = exhMaterialRepository.deleteMaterial(trId);
+
+			if (delete == 1) {
+				errorMessage.setError(false);
+				errorMessage.setMessage("successfully Deleted");
+			} else {
+				errorMessage.setError(true);
+				errorMessage.setMessage(" Deleted to Delete");
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			errorMessage.setError(true);
+			errorMessage.setMessage(" Deleted to Delete");
+
+		}
+		return errorMessage;
+
+	}
+
+	// ------------ --------------------Visitor---------------
+
+	@RequestMapping(value = { "/saveVisitor" }, method = RequestMethod.POST)
+	public @ResponseBody Visitor saveVisitor(@RequestBody Visitor Visitor) {
+
+		Visitor visitor = new Visitor();
+
+		try {
+
+			visitor = visitorRepository.saveAndFlush(Visitor);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return visitor;
+
+	}
+
+	@RequestMapping(value = { "/getVisitorByVisIdAndIsUsed" }, method = RequestMethod.POST)
+	public @ResponseBody VisitorWithOrgEventName getVisitorByVisIdAndIsUsed(@RequestParam("visitorId") int visitorId) {
+
+		VisitorWithOrgEventName visitor = new VisitorWithOrgEventName();
+
+		try {
+
+			visitor = visitorWithOrgEventNameRepo.getVisitorByVisitorId(visitorId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return visitor;
+
+	}
+
+	@RequestMapping(value = { "/deleteVisitor" }, method = RequestMethod.POST)
+	public @ResponseBody ErrorMessage deleteVisitor(@RequestParam("visitorId") int visitorId) {
+
+		ErrorMessage errorMessage = new ErrorMessage();
+
+		try {
+			int delete = visitorRepository.deleteVisitor(visitorId);
+
+			if (delete == 1) {
+				errorMessage.setError(false);
+				errorMessage.setMessage("successfully Deleted");
+			} else {
+				errorMessage.setError(true);
+				errorMessage.setMessage(" Deleted to Delete");
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			errorMessage.setError(true);
+			errorMessage.setMessage(" Deleted to Delete");
+
+		}
+		return errorMessage;
+
+	}
+
 }

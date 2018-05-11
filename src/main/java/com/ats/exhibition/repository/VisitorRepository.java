@@ -6,13 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ats.exhibition.model.ExhMaterial;
+import com.ats.exhibition.model.Visitor;
 
-public interface ExhMaterialRepository extends JpaRepository<ExhMaterial, Integer> {
-
+public interface VisitorRepository extends JpaRepository<Visitor, Integer> {
+	
 	@Transactional
 	@Modifying
-	@Query("UPDATE ExhMaterial SET isUsed=0  WHERE tr_id=:trId")
-	int deleteMaterial(@Param("trId") int trId);
+	@Query("UPDATE Visitor SET isUsed=0  WHERE visitor_id=:visitorId")
+	int deleteVisitor(@Param("visitorId") int visitorId);
+
 
 }

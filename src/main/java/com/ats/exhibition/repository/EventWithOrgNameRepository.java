@@ -17,6 +17,9 @@ public interface EventWithOrgNameRepository extends JpaRepository<EventWithOrgNa
 	List<EventWithOrgName> getAllEventsByIsUsed();
 
 	@Query(value = "SELECT c.*, o.org_name FROM t_events c,m_organiser o WHERE c.org_id=:orgId AND o.org_id=c.org_id AND  c.is_used=:isUsed ", nativeQuery = true)
-	List<EventWithOrgName> getAllEventsByOrgIdAndIsUsed(@Param("orgId") int orgId,@Param("isUsed") int isUsed);
+	List<EventWithOrgName> getAllEventsByOrgIdAndIsUsed(@Param("orgId") int orgId, @Param("isUsed") int isUsed);
+
+	@Query(value = "SELECT c.*, o.org_name FROM t_events c,m_organiser o WHERE c.event_from_date BETWEEN :fromDate AND :toDate  AND o.org_id=c.org_id AND  c.is_used=1", nativeQuery = true)
+	List<EventWithOrgName> getEventssBetweenDates(@Param("fromDate") String fromDate, @Param("toDate") String toDate);
 
 }

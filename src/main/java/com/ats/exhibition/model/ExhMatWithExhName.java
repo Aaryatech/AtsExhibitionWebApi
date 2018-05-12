@@ -18,8 +18,8 @@ public class ExhMatWithExhName {
 	private int exhId;
 
 	@Column(name = "exh_name")
-	private int exhName;
-	
+	private String exhName;
+
 	@Column(name = "mat_name")
 	private String matName;
 
@@ -45,11 +45,11 @@ public class ExhMatWithExhName {
 		this.exhId = exhId;
 	}
 
-	public int getExhName() {
+	public String getExhName() {
 		return exhName;
 	}
 
-	public void setExhName(int exhName) {
+	public void setExhName(String exhName) {
 		this.exhName = exhName;
 	}
 
@@ -79,10 +79,8 @@ public class ExhMatWithExhName {
 
 	@Override
 	public String toString() {
-		return "ExhMatWithExhId [trId=" + trId + ", exhId=" + exhId + ", exhName=" + exhName + ", matName=" + matName
+		return "ExhMatWithExhName [trId=" + trId + ", exhId=" + exhId + ", exhName=" + exhName + ", matName=" + matName
 				+ ", matLink=" + matLink + ", isUsed=" + isUsed + "]";
 	}
-	
-	
 
 }

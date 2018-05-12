@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ats.exhibition.model.ComMemWithOrgName;
 import com.ats.exhibition.model.ErrorMessage;
 import com.ats.exhibition.model.EventExhMapping;
+import com.ats.exhibition.model.EventPhoto;
+import com.ats.exhibition.model.EventProductsInterest;
 import com.ats.exhibition.model.Events;
 import com.ats.exhibition.model.ExhEmpWithExhName;
 import com.ats.exhibition.model.ExhEmployee;
@@ -24,6 +26,8 @@ import com.ats.exhibition.model.Organiser;
 import com.ats.exhibition.model.Visitor;
 import com.ats.exhibition.model.VisitorWithOrgEventName;
 import com.ats.exhibition.repository.EventExhMappingRepository;
+import com.ats.exhibition.repository.EventPhotoRepository;
+import com.ats.exhibition.repository.EventProductsInterestRepository;
 import com.ats.exhibition.repository.ExhEmpWithExhNameRepo;
 import com.ats.exhibition.repository.ExhEmployeeRepository;
 import com.ats.exhibition.repository.ExhMatWithExhNameRepo;
@@ -58,6 +62,13 @@ public class TestController {
 
 	@Autowired
 	VisitorWithOrgEventNameRepo visitorWithOrgEventNameRepo;
+	
+	
+	@Autowired
+	EventPhotoRepository eventPhotoRepository;
+	
+	@Autowired
+	EventProductsInterestRepository eventProductsInterestRepository;
 
 	// ------------------------------------------------------------------------
 	@RequestMapping(value = { "/loginResponse" }, method = RequestMethod.POST)
@@ -301,5 +312,123 @@ public class TestController {
 		return errorMessage;
 
 	}
+	
+	
+	// ------------ -------------------Event Photo--------------
+
+	@RequestMapping(value = { "/saveEventPhoto" }, method = RequestMethod.POST)
+	public @ResponseBody EventPhoto saveEventPhoto(@RequestBody EventPhoto EventPhoto) {
+
+		EventPhoto eventPhoto = new EventPhoto();
+
+		try {
+
+			eventPhoto = eventPhotoRepository.saveAndFlush(EventPhoto);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return eventPhoto;
+
+	}
+	
+	
+	/*@RequestMapping(value = { "/getEventPhotoByPhotoIdAndIsUsed" }, method = RequestMethod.POST)
+	public @ResponseBody VisitorWithOrgEventName getVisitorByVisIdAndIsUsed(@RequestParam("photoId") int photoId) {
+
+		VisitorWithOrgEventName visitor = new VisitorWithOrgEventName();
+
+		try {
+
+			visitor = visitorWithOrgEventNameRepo.getVisitorByVisitorId(photoId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return visitor;
+
+	}*/
+	
+	
+	@RequestMapping(value = { "/deleteEventPhoto" }, method = RequestMethod.POST)
+	public @ResponseBody ErrorMessage deleteEventPhoto(@RequestParam("photoId") int photoId) {
+
+		ErrorMessage errorMessage = new ErrorMessage();
+
+		try {
+			int delete = eventPhotoRepository.deleteEventPhoto(photoId);
+
+			if (delete == 1) {
+				errorMessage.setError(false);
+				errorMessage.setMessage("successfully Deleted");
+			} else {
+				errorMessage.setError(true);
+				errorMessage.setMessage(" Deleted to Delete");
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			errorMessage.setError(true);
+			errorMessage.setMessage(" Deleted to Delete");
+
+		}
+		return errorMessage;
+	}
+	
+	
+	
+	// ------------ -------------------Event product Interest--------------
+
+		@RequestMapping(value = { "/saveEventProductInterest" }, method = RequestMethod.POST)
+		public @ResponseBody EventProductsInterest saveEventProductInterest(@RequestBody EventProductsInterest EventProductsInterest) {
+
+			EventProductsInterest eventProductsInterest = new EventProductsInterest();
+
+			try {
+
+				eventProductsInterest = eventProductsInterestRepository.saveAndFlush(EventProductsInterest);
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+			return eventProductsInterest;
+
+		}
+		
+		
+		@RequestMapping(value = { "/deleteEventProductsInterest" }, method = RequestMethod.POST)
+		public @ResponseBody ErrorMessage deleteEventProductsInterest(@RequestParam("trId") int trId) {
+
+			ErrorMessage errorMessage = new ErrorMessage();
+
+			try {
+				int delete = eventProductsInterestRepository.deleteEventProductsInterest(trId);
+
+				if (delete == 1) {
+					errorMessage.setError(false);
+					errorMessage.setMessage("successfully Deleted");
+				} else {
+					errorMessage.setError(true);
+					errorMessage.setMessage(" Deleted to Delete");
+				}
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+				errorMessage.setError(true);
+				errorMessage.setMessage(" Deleted to Delete");
+
+			}
+			return errorMessage;
+		}
+		
+
 
 }

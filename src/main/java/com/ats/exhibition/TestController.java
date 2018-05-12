@@ -117,6 +117,24 @@ public class TestController {
 		return eventExhMapping;
 
 	}
+	
+	@RequestMapping(value = { "/eventMappingListByEventId" }, method = RequestMethod.POST)
+	public @ResponseBody List<EventExhMapping> eventMappingListByEventId(@RequestParam("eventId") int eventId) {
+
+		List<EventExhMapping> eventMappingListByEventId = new ArrayList<EventExhMapping>();
+
+		try {
+
+			eventMappingListByEventId = eventExhMappingRepository.findByEventIdAndIsUsed(eventId,1);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return eventMappingListByEventId;
+
+	}
 
 	// ------------ Exh Employee -----------------
 

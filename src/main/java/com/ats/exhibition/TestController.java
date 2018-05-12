@@ -147,6 +147,33 @@ public class TestController {
 
 	}
 
+	
+	@RequestMapping(value = { "/deleteExhMapping" }, method = RequestMethod.POST)
+	public @ResponseBody ErrorMessage deleteExhMapping(@RequestParam("mapId") int mapId) {
+
+		ErrorMessage errorMessage = new ErrorMessage();
+
+		try {
+			int delete = eventExhMappingRepository.deleteExhMapping(mapId);
+
+			if (delete == 1) {
+				errorMessage.setError(false);
+				errorMessage.setMessage("successfully Deleted");
+			} else {
+				errorMessage.setError(true);
+				errorMessage.setMessage(" Deleted to Delete");
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			errorMessage.setError(true);
+			errorMessage.setMessage(" Deleted to Delete");
+
+		}
+		return errorMessage;
+
+	}
 	// ------------ Exh Employee -----------------
 
 	@RequestMapping(value = { "/saveExhEmployee" }, method = RequestMethod.POST)
@@ -175,6 +202,26 @@ public class TestController {
 		try {
 
 			empList = exhEmpWithExhNameRepo.getAllEmployeeByEmpId(empId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return empList;
+
+	}
+	
+	
+	@RequestMapping(value = { "/getAllEmployeeIsUsed" }, method = RequestMethod.GET)
+	public @ResponseBody List<ExhEmpWithExhName> getAllEmployeeIsUsed() {
+
+
+		List<ExhEmpWithExhName> empList = new ArrayList<ExhEmpWithExhName>();
+
+		try {
+
+			empList = exhEmpWithExhNameRepo.getAllEmployeeByIsUsed();
 
 		} catch (Exception e) {
 
@@ -249,6 +296,27 @@ public class TestController {
 		return materialList;
 
 	}
+	
+	
+	@RequestMapping(value = { "/getAllMaterialIsUsed" }, method = RequestMethod.GET)
+	public @ResponseBody List<ExhMatWithExhName> getAllMaterialIsUsed() {
+
+
+		List<ExhMatWithExhName> materialList = new ArrayList<ExhMatWithExhName>();
+
+		try {
+
+			materialList = exhMatWithExhNameRepo.getAllMaterialByIsUsed();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return materialList;
+
+	}
+
 
 	@RequestMapping(value = { "/deleteExhMaterial" }, method = RequestMethod.POST)
 	public @ResponseBody ErrorMessage deleteExhMaterial(@RequestParam("trId") int trId) {
@@ -312,6 +380,26 @@ public class TestController {
 
 		}
 		return visitor;
+
+	}
+	
+
+	@RequestMapping(value = { "/getAllVisitorsByIsUsed" }, method = RequestMethod.GET)
+	public @ResponseBody List<VisitorWithOrgEventName> getAllVisitorsByIsUsed() {
+
+
+		List<VisitorWithOrgEventName> visitorList = new ArrayList<VisitorWithOrgEventName>();
+
+		try {
+
+			visitorList = visitorWithOrgEventNameRepo.getAllVisitorsByIsUsed();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return visitorList;
 
 	}
 
@@ -496,6 +584,25 @@ public class TestController {
 
 			}
 			return exhSubHeaderWithExhName;
+
+		}
+		
+		
+		@RequestMapping(value = { "/getAllSubHeaderByIsUsed" }, method = RequestMethod.POST)
+		public @ResponseBody List<ExhSubHeaderWithExhName> getAllSubHeaderByIsUsed() {
+
+			List<ExhSubHeaderWithExhName> exhSubHeaderWithExhNameList = new ArrayList<ExhSubHeaderWithExhName>();
+
+			try {
+
+				exhSubHeaderWithExhNameList = exhSubHeaderWithExhNameRepo.getAllSubHeaderByIsUsed();
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+			return exhSubHeaderWithExhNameList;
 
 		}
 		

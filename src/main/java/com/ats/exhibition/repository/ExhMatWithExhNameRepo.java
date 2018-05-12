@@ -9,9 +9,11 @@ import org.springframework.data.repository.query.Param;
 import com.ats.exhibition.model.ExhMatWithExhName;
 
 public interface ExhMatWithExhNameRepo extends JpaRepository<ExhMatWithExhName, Integer> {
-	
-	
+
 	@Query(value = "SELECT e.*, x.exh_name FROM m_exh_material e,m_exhibitor x WHERE e.tr_id=:trId AND x.exh_id=e.exh_id AND e.is_used=1", nativeQuery = true)
 	ExhMatWithExhName getAllMaterialByTrId(@Param("trId") int trId);
+
+	@Query(value = "SELECT e.*, x.exh_name FROM m_exh_material e,m_exhibitor x WHERE  x.exh_id=e.exh_id AND e.is_used=1", nativeQuery = true)
+	List<ExhMatWithExhName> getAllMaterialByIsUsed();
 
 }

@@ -21,6 +21,8 @@ import com.ats.exhibition.model.ExhEmpWithExhName;
 import com.ats.exhibition.model.ExhEmployee;
 import com.ats.exhibition.model.ExhMatWithExhName;
 import com.ats.exhibition.model.ExhMaterial;
+import com.ats.exhibition.model.ExhSubHeader;
+import com.ats.exhibition.model.ExhSubHeaderWithExhName;
 import com.ats.exhibition.model.LoginResponse;
 import com.ats.exhibition.model.Organiser;
 import com.ats.exhibition.model.Visitor;
@@ -32,6 +34,8 @@ import com.ats.exhibition.repository.ExhEmpWithExhNameRepo;
 import com.ats.exhibition.repository.ExhEmployeeRepository;
 import com.ats.exhibition.repository.ExhMatWithExhNameRepo;
 import com.ats.exhibition.repository.ExhMaterialRepository;
+import com.ats.exhibition.repository.ExhSubHeaderRepository;
+import com.ats.exhibition.repository.ExhSubHeaderWithExhNameRepo;
 import com.ats.exhibition.repository.OrganiserRepository;
 import com.ats.exhibition.repository.VisitorRepository;
 import com.ats.exhibition.repository.VisitorWithOrgEventNameRepo;
@@ -69,6 +73,13 @@ public class TestController {
 	
 	@Autowired
 	EventProductsInterestRepository eventProductsInterestRepository;
+	
+	@Autowired
+	ExhSubHeaderWithExhNameRepo exhSubHeaderWithExhNameRepo;
+	
+	@Autowired
+	ExhSubHeaderRepository  exhSubHeaderRepository;
+	
 
 	// ------------------------------------------------------------------------
 	@RequestMapping(value = { "/loginResponse" }, method = RequestMethod.POST)
@@ -101,20 +112,20 @@ public class TestController {
 	// ------------Event Exh Mapping------------------
 
 	@RequestMapping(value = { "/saveEventExhMapping" }, method = RequestMethod.POST)
-	public @ResponseBody EventExhMapping saveEventExhMapping(@RequestBody EventExhMapping EventExhMapping) {
+	public @ResponseBody List<EventExhMapping> saveEventExhMapping(@RequestBody List<EventExhMapping> EventExhMapping) {
 
-		EventExhMapping eventExhMapping = new EventExhMapping();
+		List<EventExhMapping> eventExhMappingList = new ArrayList<EventExhMapping>();
 
 		try {
 
-			eventExhMapping = eventExhMappingRepository.saveAndFlush(EventExhMapping);
+			eventExhMappingList = eventExhMappingRepository.saveAll(EventExhMapping);
 
 		} catch (Exception e) {
 
 			e.printStackTrace();
 
 		}
-		return eventExhMapping;
+		return eventExhMappingList;
 
 	}
 	
@@ -446,6 +457,74 @@ public class TestController {
 			}
 			return errorMessage;
 		}
+		
+		
+
+		// ------------Exhibitor Sub header ----------------
+
+		@RequestMapping(value = { "/saveExhSubHeader" }, method = RequestMethod.POST)
+		public @ResponseBody ExhSubHeader saveExhSubHeader(@RequestBody ExhSubHeader ExhSubHeader) {
+
+			ExhSubHeader exhSubHeader = new ExhSubHeader();
+
+			try {
+
+				exhSubHeader = exhSubHeaderRepository.saveAndFlush(ExhSubHeader);
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+			return exhSubHeader;
+
+		}
+		
+		
+		@RequestMapping(value = { "/getSubHeaderBySubIdAndIsUsed" }, method = RequestMethod.POST)
+		public @ResponseBody ExhSubHeaderWithExhName getSubHeaderBySubIdAndIsUsed(@RequestParam("subId") int subId) {
+
+			ExhSubHeaderWithExhName exhSubHeaderWithExhName = new ExhSubHeaderWithExhName();
+
+			try {
+
+				exhSubHeaderWithExhName = exhSubHeaderWithExhNameRepo.getSubHeaderBySubIdAndIsUsed(subId);
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+			return exhSubHeaderWithExhName;
+
+		}
+		
+		@RequestMapping(value = { "/deleteExhSubHeader" }, method = RequestMethod.POST)
+		public @ResponseBody ErrorMessage deleteExhSubHeader(@RequestParam("subId") int subId) {
+
+			ErrorMessage errorMessage = new ErrorMessage();
+
+			try {
+				int delete = exhSubHeaderRepository.deleteExhSubHeader(subId);
+
+				if (delete == 1) {
+					errorMessage.setError(false);
+					errorMessage.setMessage("successfully Deleted");
+				} else {
+					errorMessage.setError(true);
+					errorMessage.setMessage(" Deleted to Delete");
+				}
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+				errorMessage.setError(true);
+				errorMessage.setMessage(" Deleted to Delete");
+
+			}
+			return errorMessage;
+		}
+		
 		
 
 

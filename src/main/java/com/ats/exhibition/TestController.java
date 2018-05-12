@@ -21,6 +21,7 @@ import com.ats.exhibition.model.ExhEmpWithExhName;
 import com.ats.exhibition.model.ExhEmployee;
 import com.ats.exhibition.model.ExhMatWithExhName;
 import com.ats.exhibition.model.ExhMaterial;
+import com.ats.exhibition.model.ExhSubDetail;
 import com.ats.exhibition.model.ExhSubHeader;
 import com.ats.exhibition.model.ExhSubHeaderWithExhName;
 import com.ats.exhibition.model.LoginResponse;
@@ -36,6 +37,7 @@ import com.ats.exhibition.repository.ExhEmpWithExhNameRepo;
 import com.ats.exhibition.repository.ExhEmployeeRepository;
 import com.ats.exhibition.repository.ExhMatWithExhNameRepo;
 import com.ats.exhibition.repository.ExhMaterialRepository;
+import com.ats.exhibition.repository.ExhSubDetailRepository;
 import com.ats.exhibition.repository.ExhSubHeaderRepository;
 import com.ats.exhibition.repository.ExhSubHeaderWithExhNameRepo;
 import com.ats.exhibition.repository.MapEventEmpRepository;
@@ -88,6 +90,9 @@ public class TestController {
 
 	@Autowired
 	OrgSubscriptionDetailRepo orgSubscriptionDetailRepo;
+	
+	@Autowired
+	ExhSubDetailRepository exhSubDetailRepository;
 
 	// ------------------------------------------------------------------------
 	@RequestMapping(value = { "/loginResponse" }, method = RequestMethod.POST)
@@ -624,6 +629,56 @@ public class TestController {
 		}
 		return errorMessage;
 	}
+	
+	
+	// ------------Exhibitor Sub Details----------------
+
+		@RequestMapping(value = { "/saveExhSubDetail" }, method = RequestMethod.POST)
+		public @ResponseBody ExhSubDetail saveExhSubDetail(@RequestBody ExhSubDetail ExhSubDetail) {
+
+			ExhSubDetail exhSubDetail = new ExhSubDetail();
+
+			try {
+
+				exhSubDetail = exhSubDetailRepository.saveAndFlush(ExhSubDetail);
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+			return exhSubDetail;
+
+		}
+		
+		
+		@RequestMapping(value = { "/deleteExhSubDetail" }, method = RequestMethod.POST)
+		public @ResponseBody ErrorMessage deleteExhSubDetail(@RequestParam("subDetailId") int subDetailId) {
+
+			ErrorMessage errorMessage = new ErrorMessage();
+
+			try {
+				int delete = exhSubDetailRepository.deleteExhSubDetail(subDetailId);
+
+				if (delete == 1) {
+					errorMessage.setError(false);
+					errorMessage.setMessage("successfully Deleted");
+				} else {
+					errorMessage.setError(true);
+					errorMessage.setMessage(" Deleted to Delete");
+				}
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+				errorMessage.setError(true);
+				errorMessage.setMessage(" Deleted to Delete");
+
+			}
+			return errorMessage;
+		}
+		
+
 
 	// ------------ -------------------Map Event Emp ------------
 

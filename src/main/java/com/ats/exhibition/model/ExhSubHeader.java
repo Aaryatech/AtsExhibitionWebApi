@@ -13,8 +13,8 @@ public class ExhSubHeader {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "sub_id")
-	private int subId;
+	@Column(name = "sub_header_id")
+	private int subHeaderId;
 
 	@Column(name = "exh_id")
 	private int exhId;
@@ -43,12 +43,12 @@ public class ExhSubHeader {
 	@Column(name = "status")
 	private int status;
 
-	public int getSubId() {
-		return subId;
+	public int getSubHeaderId() {
+		return subHeaderId;
 	}
 
-	public void setSubId(int subId) {
-		this.subId = subId;
+	public void setSubHeaderId(int subHeaderId) {
+		this.subHeaderId = subHeaderId;
 	}
 
 	public int getExhId() {
@@ -125,9 +125,9 @@ public class ExhSubHeader {
 
 	@Override
 	public String toString() {
-		return "ExhSubHeader [subId=" + subId + ", exhId=" + exhId + ", fromDate=" + fromDate + ", toDate=" + toDate
-				+ ", paymentStatus=" + paymentStatus + ", totolAmt=" + totolAmt + ", paidAmt=" + paidAmt + ", remAmt="
-				+ remAmt + ", isUsed=" + isUsed + ", status=" + status + "]";
+		return "ExhSubHeader [subHeaderId=" + subHeaderId + ", exhId=" + exhId + ", fromDate=" + fromDate + ", toDate="
+				+ toDate + ", paymentStatus=" + paymentStatus + ", totolAmt=" + totolAmt + ", paidAmt=" + paidAmt
+				+ ", remAmt=" + remAmt + ", isUsed=" + isUsed + ", status=" + status + "]";
 	}
 
 }

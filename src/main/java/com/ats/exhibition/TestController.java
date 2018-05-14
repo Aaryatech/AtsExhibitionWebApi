@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ats.exhibition.model.ComMemWithOrgName;
 import com.ats.exhibition.model.ErrorMessage;
 import com.ats.exhibition.model.EventExhMapping;
+import com.ats.exhibition.model.EventExhMappingWithExhName;
 import com.ats.exhibition.model.EventPhoto;
 import com.ats.exhibition.model.EventPhotoWithEventName;
 import com.ats.exhibition.model.EventProductsInterest;
@@ -30,11 +31,13 @@ import com.ats.exhibition.model.Exhibitor;
 import com.ats.exhibition.model.LoginResponse;
 import com.ats.exhibition.model.LoginResponseExh;
 import com.ats.exhibition.model.MapEventEmp;
+import com.ats.exhibition.model.MktMaterial;
 import com.ats.exhibition.model.OrgSubscriptionDetail;
 import com.ats.exhibition.model.Organiser;
 import com.ats.exhibition.model.Visitor;
 import com.ats.exhibition.model.VisitorWithOrgEventName;
 import com.ats.exhibition.repository.EventExhMappingRepository;
+import com.ats.exhibition.repository.EventExhMappingWithExhNameRepo;
 import com.ats.exhibition.repository.EventPhotoRepository;
 import com.ats.exhibition.repository.EventPhotoWithEventNameRepo;
 import com.ats.exhibition.repository.EventProductsInterestAllNameRepo;
@@ -48,6 +51,7 @@ import com.ats.exhibition.repository.ExhSubHeaderRepository;
 import com.ats.exhibition.repository.ExhSubHeaderWithExhNameRepo;
 import com.ats.exhibition.repository.ExhibitorRepository;
 import com.ats.exhibition.repository.MapEventEmpRepository;
+import com.ats.exhibition.repository.MktMaterialRepository;
 import com.ats.exhibition.repository.OrgSubscriptionDetailRepo;
 import com.ats.exhibition.repository.OrganiserRepository;
 import com.ats.exhibition.repository.VisitorRepository;
@@ -97,18 +101,24 @@ public class TestController {
 
 	@Autowired
 	OrgSubscriptionDetailRepo orgSubscriptionDetailRepo;
-	
+
 	@Autowired
 	ExhSubDetailRepository exhSubDetailRepository;
-	
+
 	@Autowired
 	EventPhotoWithEventNameRepo eventPhotoWithEventNameRepo;
-	
+
 	@Autowired
 	EventProductsInterestAllNameRepo eventProductsInterestAllNameRepo;
-	
+
 	@Autowired
 	ExhibitorRepository exhibitorRepository;
+
+	@Autowired
+	MktMaterialRepository mktMaterialRepository;
+
+	@Autowired
+	EventExhMappingWithExhNameRepo eventExhMappingWithExhNameRepo;
 
 	// ---------------------------OrganiserLogin---------------------------------------------
 	@RequestMapping(value = { "/loginResponse" }, method = RequestMethod.POST)
@@ -138,52 +148,51 @@ public class TestController {
 		return loginResponse;
 	}
 
-	
-	// ---------------------------OrganiserLogin---------------------------------------------
-		@RequestMapping(value = { "/loginExhibitor" }, method = RequestMethod.POST)
-		public @ResponseBody LoginResponseExh loginExhibitor(@RequestParam("userMob") String userMob,
-				@RequestParam("password") String password) {
+	// ---------------------------Exhibitor Login-----------------------------
+	@RequestMapping(value = { "/loginExhibitor" }, method = RequestMethod.POST)
+	public @ResponseBody LoginResponseExh loginExhibitor(@RequestParam("userMob") String userMob,
+			@RequestParam("password") String password) {
 
-			LoginResponseExh loginResponse = new LoginResponseExh();
-			try {
+		LoginResponseExh loginResponse = new LoginResponseExh();
+		try {
 
-				Exhibitor exhibitor = exhibitorRepository.findByUserMobAndPasswordAndIsUsed(userMob, password, 1);
-				if (exhibitor == null) {
-					loginResponse.setError(true);
-					loginResponse.setMsg("login Failed");
-				} else {
-					loginResponse.setError(false);
-					loginResponse.setMsg("login successfully");
-					loginResponse.setExhibitor(exhibitor);
-				}
-
-			} catch (Exception e) {
-
-				e.printStackTrace();
+			Exhibitor exhibitor = exhibitorRepository.findByUserMobAndPasswordAndIsUsed(userMob, password, 1);
+			if (exhibitor == null) {
 				loginResponse.setError(true);
 				loginResponse.setMsg("login Failed");
+			} else {
+				loginResponse.setError(false);
+				loginResponse.setMsg("login successfully");
+				loginResponse.setExhibitor(exhibitor);
 			}
 
-			return loginResponse;
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			loginResponse.setError(true);
+			loginResponse.setMsg("login Failed");
 		}
 
-	// ------------Event Exh Mapping------------------
+		return loginResponse;
+	}
+
+	// ------------ -----------------Event Exh Mapping---------
 
 	@RequestMapping(value = { "/saveEventExhMapping" }, method = RequestMethod.POST)
-	public @ResponseBody List<EventExhMapping> saveEventExhMapping(@RequestBody List<EventExhMapping> EventExhMapping) {
+	public @ResponseBody EventExhMapping saveEventExhMapping(@RequestBody EventExhMapping EventExhMapping) {
 
-		List<EventExhMapping> eventExhMappingList = new ArrayList<EventExhMapping>();
+		EventExhMapping eventExhMapping = new EventExhMapping();
 
 		try {
 
-			eventExhMappingList = eventExhMappingRepository.saveAll(EventExhMapping);
+			eventExhMapping = eventExhMappingRepository.saveAndFlush(EventExhMapping);
 
 		} catch (Exception e) {
 
 			e.printStackTrace();
 
 		}
-		return eventExhMappingList;
+		return eventExhMapping;
 
 	}
 
@@ -202,6 +211,42 @@ public class TestController {
 
 		}
 		return eventMappingListByEventId;
+
+	}
+
+	@RequestMapping(value = { "/getAllExhMappingByMapIdAndIsUsed" }, method = RequestMethod.POST)
+	public @ResponseBody EventExhMappingWithExhName getAllExhMappingByMapIdAndIsUsed(@RequestParam("mapId") int mapId) {
+
+		EventExhMappingWithExhName mapExh = new EventExhMappingWithExhName();
+
+		try {
+
+			mapExh = eventExhMappingWithExhNameRepo.getExhMappingEmpByMapId(mapId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return mapExh;
+
+	}
+
+	@RequestMapping(value = { "/getAllExhMappingEmpByIsUsed" }, method = RequestMethod.GET)
+	public @ResponseBody List<EventExhMappingWithExhName> getAllExhMappingEmpByIsUsed() {
+
+		List<EventExhMappingWithExhName> eventList = new ArrayList<EventExhMappingWithExhName>();
+
+		try {
+
+			eventList = eventExhMappingWithExhNameRepo.getAllExhMappingEmpByIsUsed();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return eventList;
 
 	}
 
@@ -499,7 +544,6 @@ public class TestController {
 		return eventPhoto;
 
 	}
-	
 
 	@RequestMapping(value = { "/getAllEvnetsByPhotoId" }, method = RequestMethod.POST)
 	public @ResponseBody EventPhotoWithEventName getAllEvnetsByPhotoId(@RequestParam("photoId") int photoId) {
@@ -518,7 +562,7 @@ public class TestController {
 		return eventPhoto;
 
 	}
-	
+
 	@RequestMapping(value = { "/getAllPhotoByIsUsed" }, method = RequestMethod.GET)
 	public @ResponseBody List<EventPhotoWithEventName> getAllPhotoByIsUsed() {
 
@@ -536,8 +580,6 @@ public class TestController {
 		return photoList;
 
 	}
-
-	
 
 	@RequestMapping(value = { "/deleteEventPhoto" }, method = RequestMethod.POST)
 	public @ResponseBody ErrorMessage deleteEventPhoto(@RequestParam("photoId") int photoId) {
@@ -585,9 +627,7 @@ public class TestController {
 		return eventProductsInterest;
 
 	}
-	
-	
-	
+
 	@RequestMapping(value = { "/getAllProductInterestByTrId" }, method = RequestMethod.POST)
 	public @ResponseBody EventProductsInterestAllName getAllProductInterestByTrId(@RequestParam("trId") int trId) {
 
@@ -605,8 +645,7 @@ public class TestController {
 		return eventProductInterest;
 
 	}
-	
-	
+
 	@RequestMapping(value = { "/getAllPrpductInterestByIsUsed" }, method = RequestMethod.GET)
 	public @ResponseBody List<EventProductsInterestAllName> getAllPrpductInterestByIsUsed() {
 
@@ -624,7 +663,6 @@ public class TestController {
 		return EventProductInterestList;
 
 	}
-
 
 	@RequestMapping(value = { "/deleteEventProductsInterest" }, method = RequestMethod.POST)
 	public @ResponseBody ErrorMessage deleteEventProductsInterest(@RequestParam("trId") int trId) {
@@ -733,56 +771,52 @@ public class TestController {
 		}
 		return errorMessage;
 	}
-	
-	
+
 	// ------------Exhibitor Sub Details----------------
 
-		@RequestMapping(value = { "/saveExhSubDetail" }, method = RequestMethod.POST)
-		public @ResponseBody ExhSubDetail saveExhSubDetail(@RequestBody ExhSubDetail ExhSubDetail) {
+	@RequestMapping(value = { "/saveExhSubDetail" }, method = RequestMethod.POST)
+	public @ResponseBody ExhSubDetail saveExhSubDetail(@RequestBody ExhSubDetail ExhSubDetail) {
 
-			ExhSubDetail exhSubDetail = new ExhSubDetail();
+		ExhSubDetail exhSubDetail = new ExhSubDetail();
 
-			try {
+		try {
 
-				exhSubDetail = exhSubDetailRepository.saveAndFlush(ExhSubDetail);
+			exhSubDetail = exhSubDetailRepository.saveAndFlush(ExhSubDetail);
 
-			} catch (Exception e) {
+		} catch (Exception e) {
 
-				e.printStackTrace();
-
-			}
-			return exhSubDetail;
+			e.printStackTrace();
 
 		}
-		
-		
-		@RequestMapping(value = { "/deleteExhSubDetail" }, method = RequestMethod.POST)
-		public @ResponseBody ErrorMessage deleteExhSubDetail(@RequestParam("subDetailId") int subDetailId) {
+		return exhSubDetail;
 
-			ErrorMessage errorMessage = new ErrorMessage();
+	}
 
-			try {
-				int delete = exhSubDetailRepository.deleteExhSubDetail(subDetailId);
+	@RequestMapping(value = { "/deleteExhSubDetail" }, method = RequestMethod.POST)
+	public @ResponseBody ErrorMessage deleteExhSubDetail(@RequestParam("subDetailId") int subDetailId) {
 
-				if (delete == 1) {
-					errorMessage.setError(false);
-					errorMessage.setMessage("successfully Deleted");
-				} else {
-					errorMessage.setError(true);
-					errorMessage.setMessage(" Deleted to Delete");
-				}
+		ErrorMessage errorMessage = new ErrorMessage();
 
-			} catch (Exception e) {
+		try {
+			int delete = exhSubDetailRepository.deleteExhSubDetail(subDetailId);
 
-				e.printStackTrace();
+			if (delete == 1) {
+				errorMessage.setError(false);
+				errorMessage.setMessage("successfully Deleted");
+			} else {
 				errorMessage.setError(true);
 				errorMessage.setMessage(" Deleted to Delete");
-
 			}
-			return errorMessage;
-		}
-		
 
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			errorMessage.setError(true);
+			errorMessage.setMessage(" Deleted to Delete");
+
+		}
+		return errorMessage;
+	}
 
 	// ------------ -------------------Map Event Emp ------------
 
@@ -811,6 +845,52 @@ public class TestController {
 
 		try {
 			int delete = mapEventEmpRepository.deleteMapEventEmp(mapId);
+
+			if (delete == 1) {
+				errorMessage.setError(false);
+				errorMessage.setMessage("successfully Deleted");
+			} else {
+				errorMessage.setError(true);
+				errorMessage.setMessage(" Deleted to Delete");
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			errorMessage.setError(true);
+			errorMessage.setMessage(" Deleted to Delete");
+
+		}
+		return errorMessage;
+	}
+
+	// ------------ -------------------Mkt Material-----------
+
+	@RequestMapping(value = { "/saveMktMaterial" }, method = RequestMethod.POST)
+	public @ResponseBody MktMaterial saveMktMaterial(@RequestBody MktMaterial MktMaterial) {
+
+		MktMaterial mktMaterial = new MktMaterial();
+
+		try {
+
+			mktMaterial = mktMaterialRepository.saveAndFlush(MktMaterial);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return mktMaterial;
+
+	}
+
+	@RequestMapping(value = { "/deleteMktMaterial" }, method = RequestMethod.POST)
+	public @ResponseBody ErrorMessage deleteMktMaterial(@RequestParam("matId") int matId) {
+
+		ErrorMessage errorMessage = new ErrorMessage();
+
+		try {
+			int delete = mktMaterialRepository.deleteMktMaterial(matId);
 
 			if (delete == 1) {
 				errorMessage.setError(false);

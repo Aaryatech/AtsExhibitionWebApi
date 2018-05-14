@@ -19,4 +19,8 @@ public interface ExhibitorRepository extends JpaRepository<Exhibitor, Integer>{
 	@Query("UPDATE Exhibitor SET isUsed=0  WHERE exh_id=:exhId")
 	int deleteExhibitors(@Param("exhId") int exhId);
 
+	Exhibitor findByUserMobAndPasswordAndIsUsed(String userMob, String password, int i);
+
+	
+
 }

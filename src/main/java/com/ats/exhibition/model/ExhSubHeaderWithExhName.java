@@ -22,7 +22,7 @@ public class ExhSubHeaderWithExhName {
 	private int exhId;
 	
 	@Column(name = "exh_name")
-	private int exhName;
+	private String exhName;
 
 
 	@Column(name = "from_date")
@@ -65,11 +65,11 @@ public class ExhSubHeaderWithExhName {
 		this.exhId = exhId;
 	}
 
-	public int getExhName() {
+	public String getExhName() {
 		return exhName;
 	}
 
-	public void setExhName(int exhName) {
+	public void setExhName(String exhName) {
 		this.exhName = exhName;
 	}
 	

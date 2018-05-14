@@ -211,7 +211,7 @@ public class MasterController {
 
 	}
 
-	@RequestMapping(value = { "/getOrganisersByIsUsed" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/getAllOrganisersByIsUsed" }, method = RequestMethod.GET)
 	public @ResponseBody List<Organiser> getOrganiserByIsUsed() {
 
 		List<Organiser> organiserList = new ArrayList<Organiser>();

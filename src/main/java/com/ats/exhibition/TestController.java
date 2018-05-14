@@ -15,7 +15,9 @@ import com.ats.exhibition.model.ComMemWithOrgName;
 import com.ats.exhibition.model.ErrorMessage;
 import com.ats.exhibition.model.EventExhMapping;
 import com.ats.exhibition.model.EventPhoto;
+import com.ats.exhibition.model.EventPhotoWithEventName;
 import com.ats.exhibition.model.EventProductsInterest;
+import com.ats.exhibition.model.EventProductsInterestAllName;
 import com.ats.exhibition.model.Events;
 import com.ats.exhibition.model.ExhEmpWithExhName;
 import com.ats.exhibition.model.ExhEmployee;
@@ -24,7 +26,9 @@ import com.ats.exhibition.model.ExhMaterial;
 import com.ats.exhibition.model.ExhSubDetail;
 import com.ats.exhibition.model.ExhSubHeader;
 import com.ats.exhibition.model.ExhSubHeaderWithExhName;
+import com.ats.exhibition.model.Exhibitor;
 import com.ats.exhibition.model.LoginResponse;
+import com.ats.exhibition.model.LoginResponseExh;
 import com.ats.exhibition.model.MapEventEmp;
 import com.ats.exhibition.model.OrgSubscriptionDetail;
 import com.ats.exhibition.model.Organiser;
@@ -32,6 +36,8 @@ import com.ats.exhibition.model.Visitor;
 import com.ats.exhibition.model.VisitorWithOrgEventName;
 import com.ats.exhibition.repository.EventExhMappingRepository;
 import com.ats.exhibition.repository.EventPhotoRepository;
+import com.ats.exhibition.repository.EventPhotoWithEventNameRepo;
+import com.ats.exhibition.repository.EventProductsInterestAllNameRepo;
 import com.ats.exhibition.repository.EventProductsInterestRepository;
 import com.ats.exhibition.repository.ExhEmpWithExhNameRepo;
 import com.ats.exhibition.repository.ExhEmployeeRepository;
@@ -40,6 +46,7 @@ import com.ats.exhibition.repository.ExhMaterialRepository;
 import com.ats.exhibition.repository.ExhSubDetailRepository;
 import com.ats.exhibition.repository.ExhSubHeaderRepository;
 import com.ats.exhibition.repository.ExhSubHeaderWithExhNameRepo;
+import com.ats.exhibition.repository.ExhibitorRepository;
 import com.ats.exhibition.repository.MapEventEmpRepository;
 import com.ats.exhibition.repository.OrgSubscriptionDetailRepo;
 import com.ats.exhibition.repository.OrganiserRepository;
@@ -93,8 +100,17 @@ public class TestController {
 	
 	@Autowired
 	ExhSubDetailRepository exhSubDetailRepository;
+	
+	@Autowired
+	EventPhotoWithEventNameRepo eventPhotoWithEventNameRepo;
+	
+	@Autowired
+	EventProductsInterestAllNameRepo eventProductsInterestAllNameRepo;
+	
+	@Autowired
+	ExhibitorRepository exhibitorRepository;
 
-	// ------------------------------------------------------------------------
+	// ---------------------------OrganiserLogin---------------------------------------------
 	@RequestMapping(value = { "/loginResponse" }, method = RequestMethod.POST)
 	public @ResponseBody LoginResponse loginResponse(@RequestParam("userMob") String userMob,
 			@RequestParam("userPassword") String userPassword) {
@@ -121,6 +137,35 @@ public class TestController {
 
 		return loginResponse;
 	}
+
+	
+	// ---------------------------OrganiserLogin---------------------------------------------
+		@RequestMapping(value = { "/loginExhibitor" }, method = RequestMethod.POST)
+		public @ResponseBody LoginResponseExh loginExhibitor(@RequestParam("userMob") String userMob,
+				@RequestParam("password") String password) {
+
+			LoginResponseExh loginResponse = new LoginResponseExh();
+			try {
+
+				Exhibitor exhibitor = exhibitorRepository.findByUserMobAndPasswordAndIsUsed(userMob, password, 1);
+				if (exhibitor == null) {
+					loginResponse.setError(true);
+					loginResponse.setMsg("login Failed");
+				} else {
+					loginResponse.setError(false);
+					loginResponse.setMsg("login successfully");
+					loginResponse.setExhibitor(exhibitor);
+				}
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+				loginResponse.setError(true);
+				loginResponse.setMsg("login Failed");
+			}
+
+			return loginResponse;
+		}
 
 	// ------------Event Exh Mapping------------------
 
@@ -454,26 +499,45 @@ public class TestController {
 		return eventPhoto;
 
 	}
+	
 
-	/*
-	 * @RequestMapping(value = { "/getEventPhotoByPhotoIdAndIsUsed" }, method =
-	 * RequestMethod.POST) public @ResponseBody VisitorWithOrgEventName
-	 * getVisitorByVisIdAndIsUsed(@RequestParam("photoId") int photoId) {
-	 * 
-	 * VisitorWithOrgEventName visitor = new VisitorWithOrgEventName();
-	 * 
-	 * try {
-	 * 
-	 * visitor = visitorWithOrgEventNameRepo.getVisitorByVisitorId(photoId);
-	 * 
-	 * } catch (Exception e) {
-	 * 
-	 * e.printStackTrace();
-	 * 
-	 * } return visitor;
-	 * 
-	 * }
-	 */
+	@RequestMapping(value = { "/getAllEvnetsByPhotoId" }, method = RequestMethod.POST)
+	public @ResponseBody EventPhotoWithEventName getAllEvnetsByPhotoId(@RequestParam("photoId") int photoId) {
+
+		EventPhotoWithEventName eventPhoto = new EventPhotoWithEventName();
+
+		try {
+
+			eventPhoto = eventPhotoWithEventNameRepo.getAllEvnetsByPhotoId(photoId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return eventPhoto;
+
+	}
+	
+	@RequestMapping(value = { "/getAllPhotoByIsUsed" }, method = RequestMethod.GET)
+	public @ResponseBody List<EventPhotoWithEventName> getAllPhotoByIsUsed() {
+
+		List<EventPhotoWithEventName> photoList = new ArrayList<EventPhotoWithEventName>();
+
+		try {
+
+			photoList = eventPhotoWithEventNameRepo.getAllPhotoAndEventByIsUsed();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return photoList;
+
+	}
+
+	
 
 	@RequestMapping(value = { "/deleteEventPhoto" }, method = RequestMethod.POST)
 	public @ResponseBody ErrorMessage deleteEventPhoto(@RequestParam("photoId") int photoId) {
@@ -521,6 +585,46 @@ public class TestController {
 		return eventProductsInterest;
 
 	}
+	
+	
+	
+	@RequestMapping(value = { "/getAllProductInterestByTrId" }, method = RequestMethod.POST)
+	public @ResponseBody EventProductsInterestAllName getAllProductInterestByTrId(@RequestParam("trId") int trId) {
+
+		EventProductsInterestAllName eventProductInterest = new EventProductsInterestAllName();
+
+		try {
+
+			eventProductInterest = eventProductsInterestAllNameRepo.getProductInterestByTrId(trId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return eventProductInterest;
+
+	}
+	
+	
+	@RequestMapping(value = { "/getAllPrpductInterestByIsUsed" }, method = RequestMethod.GET)
+	public @ResponseBody List<EventProductsInterestAllName> getAllPrpductInterestByIsUsed() {
+
+		List<EventProductsInterestAllName> EventProductInterestList = new ArrayList<EventProductsInterestAllName>();
+
+		try {
+
+			EventProductInterestList = eventProductsInterestAllNameRepo.getProductInterestByIsUsed();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return EventProductInterestList;
+
+	}
+
 
 	@RequestMapping(value = { "/deleteEventProductsInterest" }, method = RequestMethod.POST)
 	public @ResponseBody ErrorMessage deleteEventProductsInterest(@RequestParam("trId") int trId) {
@@ -586,7 +690,7 @@ public class TestController {
 
 	}
 
-	@RequestMapping(value = { "/getAllSubHeaderByIsUsed" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/getAllSubHeaderByIsUsed" }, method = RequestMethod.GET)
 	public @ResponseBody List<ExhSubHeaderWithExhName> getAllSubHeaderByIsUsed() {
 
 		List<ExhSubHeaderWithExhName> exhSubHeaderWithExhNameList = new ArrayList<ExhSubHeaderWithExhName>();

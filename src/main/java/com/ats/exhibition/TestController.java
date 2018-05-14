@@ -330,9 +330,8 @@ public class TestController {
 		}
 		return empList;
 
-	} 
-	
-	
+	}
+
 	@RequestMapping(value = { "/deleteExhEmployee" }, method = RequestMethod.POST)
 	public @ResponseBody ErrorMessage deleteExhEmployee(@RequestParam("empId") int empId) {
 
@@ -406,6 +405,24 @@ public class TestController {
 		try {
 
 			materialList = exhMatWithExhNameRepo.getAllMaterialByIsUsed();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return materialList;
+
+	}
+
+	@RequestMapping(value = { "/getAllMaterialByExhIdAndIsUsed" }, method = RequestMethod.POST)
+	public @ResponseBody List<ExhMatWithExhName> getAllMaterialByExhIdAndIsUsed(@RequestParam("exhId") int exhId) {
+
+		List<ExhMatWithExhName> materialList = new ArrayList<ExhMatWithExhName>();
+
+		try {
+
+			materialList = exhMatWithExhNameRepo.getAllMaterialByExhIdAndIsUsed(exhId);
 
 		} catch (Exception e) {
 

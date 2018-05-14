@@ -15,5 +15,9 @@ public interface ExhMatWithExhNameRepo extends JpaRepository<ExhMatWithExhName, 
 
 	@Query(value = "SELECT e.*, x.exh_name FROM m_exh_material e,m_exhibitor x WHERE  x.exh_id=e.exh_id AND e.is_used=1", nativeQuery = true)
 	List<ExhMatWithExhName> getAllMaterialByIsUsed();
+	
+
+	@Query(value = "SELECT e.*, x.exh_name FROM m_exh_material e,m_exhibitor x WHERE e.exh_id=:exhId AND x.exh_id=e.exh_id AND e.is_used=1", nativeQuery = true)
+	List<ExhMatWithExhName> getAllMaterialByExhIdAndIsUsed(@Param("exhId") int exhId);
 
 }

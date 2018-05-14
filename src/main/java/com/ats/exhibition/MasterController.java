@@ -759,6 +759,23 @@ public class MasterController {
 		return productList;
 
 	}
+	@RequestMapping(value = { "/getAllProductsByExId" }, method = RequestMethod.POST)
+	public @ResponseBody List<ProductWithExhName> getAllProductsByExId(@RequestParam("exhId") int exhId) {
+
+		List<ProductWithExhName> productList = new ArrayList<ProductWithExhName>();
+
+		try {
+
+			productList = productWithExhNameRepository.findByExId(exhId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return productList;
+
+	}
 
 	@RequestMapping(value = { "/deleteProduct" }, method = RequestMethod.POST)
 	public @ResponseBody ErrorMessage deleteProduct(@RequestParam("prodId") int prodId) {

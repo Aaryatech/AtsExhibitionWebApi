@@ -269,14 +269,14 @@ public class TestController {
 
 	}
 
-	@RequestMapping(value = { "/getAllEmployeeIsUsed" }, method = RequestMethod.GET)
-	public @ResponseBody List<ExhEmpWithExhName> getAllEmployeeIsUsed() {
+	@RequestMapping(value = { "/getAllEmployeeIsUsed" }, method = RequestMethod.POST)
+	public @ResponseBody List<ExhEmpWithExhName> getAllEmployeeIsUsed(@RequestParam("exhId") int exhId) {
 
 		List<ExhEmpWithExhName> empList = new ArrayList<ExhEmpWithExhName>();
 
 		try {
 
-			empList = exhEmpWithExhNameRepo.getAllEmployeeByIsUsed();
+			empList = exhEmpWithExhNameRepo.getAllEmployeeByIsUsed(exhId);
 
 		} catch (Exception e) {
 

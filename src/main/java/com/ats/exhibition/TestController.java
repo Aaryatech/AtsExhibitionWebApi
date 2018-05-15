@@ -193,13 +193,13 @@ public class TestController {
 	// ------------ -----------------Event Exh Mapping---------
 
 	@RequestMapping(value = { "/saveEventExhMapping" }, method = RequestMethod.POST)
-	public @ResponseBody EventExhMapping saveEventExhMapping(@RequestBody EventExhMapping EventExhMapping) {
+	public @ResponseBody List<EventExhMapping> saveEventExhMapping(@RequestBody List<EventExhMapping> EventExhMapping) {
 
-		EventExhMapping eventExhMapping = new EventExhMapping();
+		List<EventExhMapping> eventExhMapping = new ArrayList<EventExhMapping>();
 
 		try {
 
-			eventExhMapping = eventExhMappingRepository.saveAndFlush(EventExhMapping);
+			eventExhMapping = eventExhMappingRepository.saveAll(EventExhMapping);
 
 		} catch (Exception e) {
 

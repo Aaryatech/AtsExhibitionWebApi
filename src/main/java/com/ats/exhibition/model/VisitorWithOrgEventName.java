@@ -43,6 +43,13 @@ public class VisitorWithOrgEventName {
 
 	@Column(name = "is_used")
 	private int isUsed;
+	
+	
+	@Column(name = "location_id")
+	private int locationId;
+	
+	@Column(name = "company_type_id")
+	private int companyTypeId;
 
 	public int getVisitorId() {
 		return visitorId;
@@ -132,14 +139,33 @@ public class VisitorWithOrgEventName {
 		this.isUsed = isUsed;
 	}
 
+	public int getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(int locationId) {
+		this.locationId = locationId;
+	}
+
+	public int getCompanyTypeId() {
+		return companyTypeId;
+	}
+
+	public void setCompanyTypeId(int companyTypeId) {
+		this.companyTypeId = companyTypeId;
+	}
+
 	@Override
 	public String toString() {
 		return "VisitorWithOrgEventName [visitorId=" + visitorId + ", eventId=" + eventId + ", orgId=" + orgId
 				+ ", orgName=" + orgName + ", eventName=" + eventName + ", visitorName=" + visitorName
 				+ ", visitorEmail=" + visitorEmail + ", visitorMobile=" + visitorMobile + ", visitorRepresent="
-				+ visitorRepresent + ", isActive=" + isActive + ", isUsed=" + isUsed + "]";
+				+ visitorRepresent + ", isActive=" + isActive + ", isUsed=" + isUsed + ", locationId=" + locationId
+				+ ", companyTypeId=" + companyTypeId + "]";
 	}
+
 	
+
 	
 
 }

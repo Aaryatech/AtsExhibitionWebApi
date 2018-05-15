@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ats.exhibition.model.ComMemWithOrgName;
+import com.ats.exhibition.model.CompanyType;
 import com.ats.exhibition.model.ErrorMessage;
 import com.ats.exhibition.model.EventExhMapping;
 import com.ats.exhibition.model.EventExhMappingWithExhName;
@@ -28,14 +29,17 @@ import com.ats.exhibition.model.ExhSubDetail;
 import com.ats.exhibition.model.ExhSubHeader;
 import com.ats.exhibition.model.ExhSubHeaderWithExhName;
 import com.ats.exhibition.model.Exhibitor;
+import com.ats.exhibition.model.Location;
 import com.ats.exhibition.model.LoginResponse;
 import com.ats.exhibition.model.LoginResponseExh;
 import com.ats.exhibition.model.MapEventEmp;
 import com.ats.exhibition.model.MktMaterial;
 import com.ats.exhibition.model.OrgSubscriptionDetail;
 import com.ats.exhibition.model.Organiser;
+import com.ats.exhibition.model.Package1;
 import com.ats.exhibition.model.Visitor;
 import com.ats.exhibition.model.VisitorWithOrgEventName;
+import com.ats.exhibition.repository.CompanyTypeRepository;
 import com.ats.exhibition.repository.EventExhMappingRepository;
 import com.ats.exhibition.repository.EventExhMappingWithExhNameRepo;
 import com.ats.exhibition.repository.EventPhotoRepository;
@@ -50,6 +54,7 @@ import com.ats.exhibition.repository.ExhSubDetailRepository;
 import com.ats.exhibition.repository.ExhSubHeaderRepository;
 import com.ats.exhibition.repository.ExhSubHeaderWithExhNameRepo;
 import com.ats.exhibition.repository.ExhibitorRepository;
+import com.ats.exhibition.repository.LocationRepository;
 import com.ats.exhibition.repository.MapEventEmpRepository;
 import com.ats.exhibition.repository.MktMaterialRepository;
 import com.ats.exhibition.repository.OrgSubscriptionDetailRepo;
@@ -119,7 +124,16 @@ public class TestController {
 
 	@Autowired
 	EventExhMappingWithExhNameRepo eventExhMappingWithExhNameRepo;
+	
+	
+	@Autowired
+	LocationRepository locationRepository;
 
+	
+	@Autowired
+	CompanyTypeRepository companyTypeRepository;
+	
+	
 	// ---------------------------OrganiserLogin---------------------------------------------
 	@RequestMapping(value = { "/loginResponse" }, method = RequestMethod.POST)
 	public @ResponseBody LoginResponse loginResponse(@RequestParam("userMob") String userMob,
@@ -973,6 +987,138 @@ public class TestController {
 
 		}
 		return errorMessage;
+	}
+	
+	
+	// ------------ ----------------Location---------
+
+	@RequestMapping(value = { "/saveLocation" }, method = RequestMethod.POST)
+	public @ResponseBody Location saveLocation(@RequestBody Location Location) {
+
+		Location location = new Location();
+
+		try {
+
+			location = locationRepository.saveAndFlush(Location);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return location;
+
+	}
+	
+	
+	@RequestMapping(value = { "/getAllLocationByIsUsed" }, method = RequestMethod.GET)
+	public @ResponseBody List<Location> getAllLocation() {
+
+		List<Location> locationList = new ArrayList<Location>();
+
+		try {
+
+			locationList = locationRepository.findAllByIsUsed(1);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return locationList;
+
+	}
+	
+	@RequestMapping(value = { "/deleteLocation" }, method = RequestMethod.POST)
+	public @ResponseBody ErrorMessage deleteLocation(@RequestParam("locationId") int locationId) {
+
+		ErrorMessage errorMessage = new ErrorMessage();
+
+		try {
+			int delete = locationRepository.deleteLocation(locationId);
+
+			if (delete == 1) {
+				errorMessage.setError(false);
+				errorMessage.setMessage("successfully Deleted");
+			} else {
+				errorMessage.setError(true);
+				errorMessage.setMessage(" Deleted to Delete");
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			errorMessage.setError(true);
+			errorMessage.setMessage(" Deleted to Delete");
+
+		}
+		return errorMessage;
+	}
+	
+	
+	
+	// ------------ ---------------CompanyType --------
+
+	@RequestMapping(value = { "/saveCompanyType" }, method = RequestMethod.POST)
+	public @ResponseBody CompanyType saveCompanyType(@RequestBody CompanyType CompanyType) {
+
+		CompanyType companyType = new CompanyType();
+
+		try {
+
+			companyType = companyTypeRepository.saveAndFlush(CompanyType);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return companyType;
+
+	}
+	@RequestMapping(value = { "/deleteCompanyType" }, method = RequestMethod.POST)
+	public @ResponseBody ErrorMessage deleteCompanyType(@RequestParam("companyTypeId") int companyTypeId) {
+
+		ErrorMessage errorMessage = new ErrorMessage();
+
+		try {
+			int delete = companyTypeRepository.deleteCompanyType(companyTypeId);
+
+			if (delete == 1) {
+				errorMessage.setError(false);
+				errorMessage.setMessage("successfully Deleted");
+			} else {
+				errorMessage.setError(true);
+				errorMessage.setMessage(" Deleted to Delete");
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			errorMessage.setError(true);
+			errorMessage.setMessage(" Deleted to Delete");
+
+		}
+		return errorMessage;
+	}
+	
+	
+	@RequestMapping(value = { "/getAllCompaniesByIsUsed" }, method = RequestMethod.GET)
+	public @ResponseBody List<CompanyType> getAllCompaniesByIsUsed() {
+
+		List<CompanyType> companyTypeList = new ArrayList<CompanyType>();
+
+		try {
+
+			companyTypeList = companyTypeRepository.findAllByIsUsed(1);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return companyTypeList;
+
 	}
 
 }

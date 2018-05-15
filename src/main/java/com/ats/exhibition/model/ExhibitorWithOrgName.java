@@ -8,19 +8,18 @@ import javax.persistence.Id;
 
 @Entity
 public class ExhibitorWithOrgName {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "exh_id")
 	private int exhId;
-	
+
 	@Column(name = "org_id")
 	private int orgId;
 
-
 	@Column(name = "org_name")
 	private String orgName;
-	
+
 	@Column(name = "exh_name")
 	private String exhName;
 
@@ -71,6 +70,12 @@ public class ExhibitorWithOrgName {
 
 	@Column(name = "is_used")
 	private int isUsed;
+
+	@Column(name = "location_id")
+	private int locationId;
+
+	@Column(name = "company_type_id")
+	private int companyTypeId;
 
 	public int getExhId() {
 		return exhId;
@@ -232,6 +237,22 @@ public class ExhibitorWithOrgName {
 		this.isUsed = isUsed;
 	}
 
+	public int getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(int locationId) {
+		this.locationId = locationId;
+	}
+
+	public int getCompanyTypeId() {
+		return companyTypeId;
+	}
+
+	public void setCompanyTypeId(int companyTypeId) {
+		this.companyTypeId = companyTypeId;
+	}
+
 	@Override
 	public String toString() {
 		return "ExhibitorWithOrgName [exhId=" + exhId + ", orgId=" + orgId + ", orgName=" + orgName + ", exhName="
@@ -240,8 +261,9 @@ public class ExhibitorWithOrgName {
 				+ ", personMob2=" + personMob2 + ", personEmail1=" + personEmail1 + ", personEmail2=" + personEmail2
 				+ ", address=" + address + ", compLat=" + compLat + ", compLong=" + compLong + ", userMob=" + userMob
 				+ ", password=" + password + ", aboutCompany=" + aboutCompany + ", companyType=" + companyType
-				+ ", isUsed=" + isUsed + "]";
+				+ ", isUsed=" + isUsed + ", locationId=" + locationId + ", companyTypeId=" + companyTypeId + "]";
 	}
+
 
 
 }

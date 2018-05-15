@@ -83,6 +83,9 @@ public class Organiser {
 	@Column(name = "bool1")
 	private int bool1;
 
+	@Column(name = "location_id")
+	private int locationId;
+
 	public int getOrgId() {
 		return orgId;
 	}
@@ -155,40 +158,6 @@ public class Organiser {
 		this.workAreaKeywords = workAreaKeywords;
 	}
 
-	public String getUserMob() {
-		return userMob;
-	}
-
-	public void setUserMob(String userMob) {
-		this.userMob = userMob;
-	}
-
-	public String getUserPassword() {
-		return userPassword;
-	}
-
-	public void setUserPassword(String userPassword) {
-		this.userPassword = userPassword;
-	}
-
-	public int getIsActive() {
-		return isActive;
-	}
-
-	public void setIsActive(int isActive) {
-		this.isActive = isActive;
-	}
-
-	public int getIsUsed() {
-		return isUsed;
-	}
-
-	public void setIsUsed(int isUsed) {
-		this.isUsed = isUsed;
-	}
-	
-	
-
 	public String getOrgImage() {
 		return orgImage;
 	}
@@ -227,6 +196,38 @@ public class Organiser {
 
 	public void setColor4(String color4) {
 		this.color4 = color4;
+	}
+
+	public String getUserMob() {
+		return userMob;
+	}
+
+	public void setUserMob(String userMob) {
+		this.userMob = userMob;
+	}
+
+	public String getUserPassword() {
+		return userPassword;
+	}
+
+	public void setUserPassword(String userPassword) {
+		this.userPassword = userPassword;
+	}
+
+	public int getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(int isActive) {
+		this.isActive = isActive;
+	}
+
+	public int getIsUsed() {
+		return isUsed;
+	}
+
+	public void setIsUsed(int isUsed) {
+		this.isUsed = isUsed;
 	}
 
 	public int getInt11() {
@@ -269,6 +270,14 @@ public class Organiser {
 		this.bool1 = bool1;
 	}
 
+	public int getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(int locationId) {
+		this.locationId = locationId;
+	}
+
 	@Override
 	public String toString() {
 		return "Organiser [orgId=" + orgId + ", orgName=" + orgName + ", orgAddress=" + orgAddress + ", orgContactNo="
@@ -277,7 +286,7 @@ public class Organiser {
 				+ ", color1=" + color1 + ", color2=" + color2 + ", color3=" + color3 + ", color4=" + color4
 				+ ", userMob=" + userMob + ", userPassword=" + userPassword + ", isActive=" + isActive + ", isUsed="
 				+ isUsed + ", int11=" + int11 + ", varchar1=" + varchar1 + ", varchar2=" + varchar2 + ", varchar3="
-				+ varchar3 + ", bool1=" + bool1 + "]";
+				+ varchar3 + ", bool1=" + bool1 + ", locationId=" + locationId + "]";
 	}
 
 }

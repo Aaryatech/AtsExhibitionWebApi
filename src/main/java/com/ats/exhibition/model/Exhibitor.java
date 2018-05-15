@@ -15,10 +15,9 @@ public class Exhibitor {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "exh_id")
 	private int exhId;
-	
+
 	@Column(name = "org_id")
 	private int orgId;
-
 
 	@Column(name = "exh_name")
 	private String exhName;
@@ -71,15 +70,11 @@ public class Exhibitor {
 	@Column(name = "is_used")
 	private int isUsed;
 
-	
-	
-	public int getOrgId() {
-		return orgId;
-	}
+	@Column(name = "location_id")
+	private int locationId;
 
-	public void setOrgId(int orgId) {
-		this.orgId = orgId;
-	}
+	@Column(name = "company_type_id")
+	private int companyTypeId;
 
 	public int getExhId() {
 		return exhId;
@@ -87,6 +82,14 @@ public class Exhibitor {
 
 	public void setExhId(int exhId) {
 		this.exhId = exhId;
+	}
+
+	public int getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(int orgId) {
+		this.orgId = orgId;
 	}
 
 	public String getExhName() {
@@ -225,6 +228,22 @@ public class Exhibitor {
 		this.isUsed = isUsed;
 	}
 
+	public int getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(int locationId) {
+		this.locationId = locationId;
+	}
+
+	public int getCompanyTypeId() {
+		return companyTypeId;
+	}
+
+	public void setCompanyTypeId(int companyTypeId) {
+		this.companyTypeId = companyTypeId;
+	}
+
 	@Override
 	public String toString() {
 		return "Exhibitor [exhId=" + exhId + ", orgId=" + orgId + ", exhName=" + exhName + ", exhCompany=" + exhCompany
@@ -232,7 +251,9 @@ public class Exhibitor {
 				+ contactPersonName2 + ", personMob1=" + personMob1 + ", personMob2=" + personMob2 + ", personEmail1="
 				+ personEmail1 + ", personEmail2=" + personEmail2 + ", address=" + address + ", compLat=" + compLat
 				+ ", compLong=" + compLong + ", userMob=" + userMob + ", password=" + password + ", aboutCompany="
-				+ aboutCompany + ", companyType=" + companyType + ", isUsed=" + isUsed + "]";
+				+ aboutCompany + ", companyType=" + companyType + ", isUsed=" + isUsed + ", locationId=" + locationId
+				+ ", companyTypeId=" + companyTypeId + "]";
 	}
 
+	
 }

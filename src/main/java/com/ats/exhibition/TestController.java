@@ -1029,6 +1029,24 @@ public class TestController {
 
 	}
 	
+	@RequestMapping(value = { "/getLocationByLocIdAndIsUsed" }, method = RequestMethod.POST)
+	public @ResponseBody Location getLocationByLocIdAndIsUsed(@RequestParam("locationId") int locationId) {
+
+		Location location = new Location();
+
+		try {
+
+			location = locationRepository.findByLocationIdAndIsUsed(locationId,1);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return location;
+
+	}
+	
 	@RequestMapping(value = { "/deleteLocation" }, method = RequestMethod.POST)
 	public @ResponseBody ErrorMessage deleteLocation(@RequestParam("locationId") int locationId) {
 
@@ -1121,4 +1139,22 @@ public class TestController {
 
 	}
 
+	
+	@RequestMapping(value = { "/getCompanyTypeByCompanyTypeIdAndIsUsed" }, method = RequestMethod.POST)
+	public @ResponseBody CompanyType getCompanyTypeByCompanyTypeIdAndIsUsed(@RequestParam("companyTypeId") int companyTypeId) {
+
+		CompanyType companyType = new CompanyType();
+
+		try {
+
+			companyType = companyTypeRepository.findByCompanyTypeIdAndIsUsed(companyTypeId,1);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return companyType;
+
+	}
 }

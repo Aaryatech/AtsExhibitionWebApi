@@ -14,7 +14,7 @@ public class CompanyType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "company_type_id")
-	private int company_type_id;
+	private int companyTypeId;
 
 	@Column(name = "company_type_name")
 	private String companyTypeName;
@@ -25,12 +25,14 @@ public class CompanyType {
 	@Column(name = "is_used")
 	private int isUsed;
 
-	public int getCompany_type_id() {
-		return company_type_id;
+
+
+	public int getCompanyTypeId() {
+		return companyTypeId;
 	}
 
-	public void setCompany_type_id(int company_type_id) {
-		this.company_type_id = company_type_id;
+	public void setCompanyTypeId(int companyTypeId) {
+		this.companyTypeId = companyTypeId;
 	}
 
 	public String getCompanyTypeName() {
@@ -59,8 +61,9 @@ public class CompanyType {
 
 	@Override
 	public String toString() {
-		return "CompanyType [company_type_id=" + company_type_id + ", companyTypeName=" + companyTypeName
+		return "CompanyType [companyTypeId=" + companyTypeId + ", companyTypeName=" + companyTypeName
 				+ ", companyTypeDesc=" + companyTypeDesc + ", isUsed=" + isUsed + "]";
 	}
 
+	
 }

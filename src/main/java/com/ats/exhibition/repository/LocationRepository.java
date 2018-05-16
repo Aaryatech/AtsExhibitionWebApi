@@ -18,6 +18,12 @@ public interface LocationRepository extends JpaRepository<Location, Integer> {
 	int deleteLocation(@Param("locationId") int locationId);
 
 	List<Location> findAllByIsUsed(int i);
+
+	Location findByLocationIdAndIsUsed(int locationId, int i);
+
+	
+
+
 	
 	
 

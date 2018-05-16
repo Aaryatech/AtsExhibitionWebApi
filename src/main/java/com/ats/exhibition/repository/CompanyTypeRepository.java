@@ -18,6 +18,8 @@ public interface CompanyTypeRepository extends JpaRepository<CompanyType, Intege
 	int deleteCompanyType(@Param("companyTypeId") int companyTypeId);
 
 	List<CompanyType> findAllByIsUsed(int i);
+
+	CompanyType findByCompanyTypeIdAndIsUsed(int companyTypeId, int i);
 	
 
 }

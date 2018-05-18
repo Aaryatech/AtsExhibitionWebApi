@@ -19,22 +19,34 @@ import com.ats.exhibition.model.EventWithOrgName;
 import com.ats.exhibition.model.Events;
 import com.ats.exhibition.model.Exhibitor;
 import com.ats.exhibition.model.ExhibitorWithOrgName;
+import com.ats.exhibition.model.FloarMap;
+import com.ats.exhibition.model.GetFloarMap;
+import com.ats.exhibition.model.GetSponsor;
 import com.ats.exhibition.model.OrgSubscription;
 import com.ats.exhibition.model.Organiser;
 import com.ats.exhibition.model.Package1;
 import com.ats.exhibition.model.ProductWithExhName;
 import com.ats.exhibition.model.Products;
+import com.ats.exhibition.model.ScheduleDetail;
+import com.ats.exhibition.model.ScheduleHeader;
+import com.ats.exhibition.model.Sponsor;
 import com.ats.exhibition.repository.ComMemWithOrgNameRepo;
 import com.ats.exhibition.repository.CommitteeMemRepository;
 import com.ats.exhibition.repository.EventWithOrgNameRepository;
 import com.ats.exhibition.repository.EventsRepository;
 import com.ats.exhibition.repository.ExhibitorRepository;
 import com.ats.exhibition.repository.ExhibitorWithOrgNameRepo;
+import com.ats.exhibition.repository.FloarMapRepository;
+import com.ats.exhibition.repository.GetFloarMapRepository;
+import com.ats.exhibition.repository.GetSponsorRepository;
 import com.ats.exhibition.repository.OrgSubscriptionRepository;
 import com.ats.exhibition.repository.OrganiserRepository;
 import com.ats.exhibition.repository.Package1Repository;
 import com.ats.exhibition.repository.ProductWithExhNameRepository;
 import com.ats.exhibition.repository.ProductsRepository;
+import com.ats.exhibition.repository.ScheduleDetailRepository;
+import com.ats.exhibition.repository.ScheduleHeaderRepository;
+import com.ats.exhibition.repository.SponsorRepository;
 
 @RestController
 public class MasterController {
@@ -71,7 +83,24 @@ public class MasterController {
 
 	@Autowired
 	ExhibitorWithOrgNameRepo exhibitorWithOrgNameRepo;
-
+	
+	@Autowired
+	SponsorRepository sponsorRepository;
+	
+	@Autowired
+	GetSponsorRepository getSponsorRepository;
+	
+	@Autowired
+	ScheduleHeaderRepository scheduleHeaderRepository;
+	
+	@Autowired
+	ScheduleDetailRepository scheduleDetailRepository;
+	
+	@Autowired
+	FloarMapRepository floarMapRepository;
+	
+	@Autowired
+	GetFloarMapRepository getFloarMapRepository;
 	// ------------Committee Member--------------------
 
 	@RequestMapping(value = { "/saveCommitteeMember" }, method = RequestMethod.POST)
@@ -91,7 +120,194 @@ public class MasterController {
 		return comMem;
 
 	}
+	@RequestMapping(value = { "/saveFloarMap" }, method = RequestMethod.POST)
+	public @ResponseBody FloarMap saveFloarMap(@RequestBody FloarMap floarMap) {
 
+		FloarMap floarMapRes = null;
+		try {
+			floarMapRes = floarMapRepository.saveAndFlush(floarMap);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		return floarMapRes;
+	}
+	@RequestMapping(value = { "/getFloarMapById" }, method = RequestMethod.POST)
+	public @ResponseBody GetFloarMap getFloarMapById(@RequestParam("floarMapId") int floarMapId) {
+
+		GetFloarMap flourMapRes = null;
+		try {
+			flourMapRes = getFloarMapRepository.findFloarMapById(floarMapId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return flourMapRes;
+
+	}
+	@RequestMapping(value = { "/getAllFloarMapByEventId" }, method = RequestMethod.POST)
+	public @ResponseBody List<GetFloarMap> getAllFloarMapByEventId(@RequestParam("eventId") int eventId) {
+
+		List<GetFloarMap> flourMapRes = null;
+		try {
+			flourMapRes = getFloarMapRepository.findAllFloarMap(eventId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return flourMapRes;
+
+	}
+	@RequestMapping(value = { "/deleteFloarMap" }, method = RequestMethod.POST)
+	public @ResponseBody ErrorMessage deleteFloarMap(@RequestParam("floarMapId") int floarMapId) {
+
+		ErrorMessage errorMessage = new ErrorMessage();
+
+		try {
+			int delete = floarMapRepository.deleteFloarMap(floarMapId);
+
+			if (delete == 1) {
+				errorMessage.setError(false);
+				errorMessage.setMessage("FloarMap Deleted Successfully");
+			} else {
+				errorMessage.setError(true);
+				errorMessage.setMessage("FloarMap Deletion Failed");
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			errorMessage.setError(true);
+			errorMessage.setMessage("FloarMap Deletion Failed :EXC");
+
+		}
+		return errorMessage;
+	}
+	@RequestMapping(value = { "/saveSchedule" }, method = RequestMethod.POST)
+	public @ResponseBody ScheduleHeader saveSchedule(@RequestBody ScheduleHeader scheduleHeader) {
+
+		ScheduleHeader scheduleHeaderRes = null;
+		try {
+			scheduleHeaderRes = scheduleHeaderRepository.saveAndFlush(scheduleHeader);
+			
+			if(!scheduleHeader.getScheduleDetailList().isEmpty())
+			{
+				for(ScheduleDetail schDetail:scheduleHeader.getScheduleDetailList())
+				{
+					schDetail.setScheduleId(scheduleHeaderRes.getScheduleId());
+					scheduleDetailRepository.saveAndFlush(schDetail);
+				}
+			}
+		
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		return scheduleHeaderRes;
+	}
+	@RequestMapping(value = { "/saveSponsor" }, method = RequestMethod.POST)
+	public @ResponseBody Sponsor saveSponsor(@RequestBody Sponsor sponsor) {
+
+		Sponsor sponsorRes = null;
+		try {
+			sponsorRes = sponsorRepository.saveAndFlush(sponsor);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		return sponsorRes;
+	}
+	@RequestMapping(value = { "/deleteSchedule" }, method = RequestMethod.POST)
+	public @ResponseBody ErrorMessage deleteSchedule(@RequestParam("scheduleId") int scheduleId) {
+
+		ErrorMessage errorMessage = new ErrorMessage();
+
+		try {
+			int delete = scheduleHeaderRepository.deleteSchedule(scheduleId);
+
+			if (delete == 1) {
+				errorMessage.setError(false);
+				errorMessage.setMessage("Schedule Deleted Successfully");
+			} else {
+				errorMessage.setError(true);
+				errorMessage.setMessage("Schedule Deletion Failed");
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			errorMessage.setError(true);
+			errorMessage.setMessage("Schedule Deletion Failed :EXC");
+
+		}
+		return errorMessage;
+	}
+	@RequestMapping(value = { "/getScheduleById" }, method = RequestMethod.POST)
+	public @ResponseBody ScheduleHeader getScheduleById(@RequestParam("scheduleId") int scheduleId) {
+
+		ScheduleHeader scheduleHeaderRes = null;
+		try {
+			scheduleHeaderRes = scheduleHeaderRepository.findByScheduleId(scheduleId);
+
+			List<ScheduleDetail> scheduleDetails= scheduleDetailRepository.findByScheduleId(scheduleId);
+			
+			scheduleHeaderRes.setScheduleDetailList(scheduleDetails);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return scheduleHeaderRes;
+
+	}
+	
+	@RequestMapping(value = { "/getSponsorById" }, method = RequestMethod.POST)
+	public @ResponseBody Sponsor getSponsorById(@RequestParam("sponsorId") int sponsorId) {
+
+		Sponsor sponsorRes = null;
+		try {
+			sponsorRes = sponsorRepository.findBySponsorId(sponsorId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return sponsorRes;
+
+	}
+	@RequestMapping(value = { "/deleteSponsor" }, method = RequestMethod.POST)
+	public @ResponseBody ErrorMessage deleteSponsor(@RequestParam("sponsorId") int sponsorId) {
+
+		ErrorMessage errorMessage = new ErrorMessage();
+
+		try {
+			int delete = sponsorRepository.deleteSponsor(sponsorId);
+
+			if (delete == 1) {
+				errorMessage.setError(false);
+				errorMessage.setMessage("Sponsor Deleted Successfully");
+			} else {
+				errorMessage.setError(true);
+				errorMessage.setMessage("Deletion Failed");
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			errorMessage.setError(true);
+			errorMessage.setMessage("Deletion Failed :EXC");
+
+		}
+		return errorMessage;
+	}
 	@RequestMapping(value = { "/getAllCommitteeMembersByOrgIdAndIsUsed" }, method = RequestMethod.POST)
 	public @ResponseBody List<ComMemWithOrgName> getAllCommitteeMembersByOrgIdAndIsUsed(@RequestParam("orgId") int orgId) {
 
@@ -125,6 +341,20 @@ public class MasterController {
 
 		}
 		return committeeMembersList;
+
+	}
+
+	@RequestMapping(value = { "/findAllSponsors" }, method = RequestMethod.GET)
+	public @ResponseBody List<GetSponsor> findAllSponsors() {
+
+		List<GetSponsor> sponsorList=null;
+		try {
+			sponsorList = getSponsorRepository.findAllSponsors();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		return sponsorList;
 
 	}
 

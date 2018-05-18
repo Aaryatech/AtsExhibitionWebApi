@@ -23,4 +23,6 @@ public interface OrganiserRepository extends JpaRepository<Organiser, Integer> {
 
 	Organiser findByUserMobAndUserPasswordAndIsUsed(String userMob, String userPassword, int i);
 
+	List<Organiser> findByIsUsedAndIsActive(int i, int j);
+
 }

@@ -46,6 +46,9 @@ public class Visitor {
 	@Column(name = "company_type_id")
 	private int companyTypeId;
 
+	@Column(name = "token")
+	private String token;
+
 	public int getVisitorId() {
 		return visitorId;
 	}
@@ -134,12 +137,20 @@ public class Visitor {
 		this.companyTypeId = companyTypeId;
 	}
 
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 	@Override
 	public String toString() {
 		return "Visitor [visitorId=" + visitorId + ", eventId=" + eventId + ", orgId=" + orgId + ", visitorName="
 				+ visitorName + ", visitorEmail=" + visitorEmail + ", visitorMobile=" + visitorMobile
 				+ ", visitorRepresent=" + visitorRepresent + ", isActive=" + isActive + ", isUsed=" + isUsed
-				+ ", locationId=" + locationId + ", companyTypeId=" + companyTypeId + "]";
+				+ ", locationId=" + locationId + ", companyTypeId=" + companyTypeId + ", token=" + token + "]";
 	}
 
 }

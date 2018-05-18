@@ -43,13 +43,15 @@ public class VisitorWithOrgEventName {
 
 	@Column(name = "is_used")
 	private int isUsed;
-	
-	
+
 	@Column(name = "location_id")
 	private int locationId;
-	
+
 	@Column(name = "company_type_id")
 	private int companyTypeId;
+
+	@Column(name = "token")
+	private String token;
 
 	public int getVisitorId() {
 		return visitorId;
@@ -155,17 +157,21 @@ public class VisitorWithOrgEventName {
 		this.companyTypeId = companyTypeId;
 	}
 
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 	@Override
 	public String toString() {
 		return "VisitorWithOrgEventName [visitorId=" + visitorId + ", eventId=" + eventId + ", orgId=" + orgId
 				+ ", orgName=" + orgName + ", eventName=" + eventName + ", visitorName=" + visitorName
 				+ ", visitorEmail=" + visitorEmail + ", visitorMobile=" + visitorMobile + ", visitorRepresent="
 				+ visitorRepresent + ", isActive=" + isActive + ", isUsed=" + isUsed + ", locationId=" + locationId
-				+ ", companyTypeId=" + companyTypeId + "]";
+				+ ", companyTypeId=" + companyTypeId + ", token=" + token + "]";
 	}
-
-	
-
-	
 
 }

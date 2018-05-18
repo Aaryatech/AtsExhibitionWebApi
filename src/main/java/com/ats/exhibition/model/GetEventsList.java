@@ -1,4 +1,3 @@
-
 package com.ats.exhibition.model;
 
 import javax.persistence.Column;
@@ -6,78 +5,50 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-@Table(name = "m_events")
-
-public class Events {
-
+public class GetEventsList {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "event_id")
 	private int eventId;
-
-	@Column(name = "org_id")
 	private int orgId;
-
-	@Column(name = "event_name")
 	private String eventName;
-
-	@Column(name = "event_from_date")
 	private String eventFromDate;
-
-	@Column(name = "event_to_date")
 	private String eventToDate;
-
-	@Column(name = "from_time")
 	private String fromTime;
-
-	@Column(name = "to_time")
 	private String toTime;
-
-	@Column(name = "event_location")
 	private String eventLocation;
-
-	@Column(name = "event_loc_lat")
 	private String eventLocLat;
-
-	@Column(name = "event_loc_long")
 	private String eventLocLong;
-
-	@Column(name = "about_event")
 	private String aboutEvent;
-
-	@Column(name = "event_logo")
 	private String eventLogo;
-
-	@Column(name = "contact_person_name1")
 	private String contactPersonName1;
-
-	@Column(name = "contact_person_name2")
 	private String contactPersonName2;
-
+	
 	@Column(name = "person1_mob")
 	private String person1Mob;
-
+	
 	@Column(name = "person2_mob")
 	private String person2Mob;
-
+	
 	@Column(name = "person1_email_id")
 	private String person1EmailId;
-
+	
 	@Column(name = "person2_email_id")
 	private String person2EmailId;
-
-	@Column(name = "is_used")
+	
 	private int isUsed;
-
-	@Column(name = "location_id")
 	private int locationId;
-	
-	@Column(name = "company_type_id")
 	private int companyTypeId;
+	private String orgName;
+	private String companyTypeName;
+	private String locationName;
 	
+	@Column(name = "subscribe_status")
+	private int subscribeStatus;
+
 	public int getEventId() {
 		return eventId;
 	}
@@ -102,6 +73,8 @@ public class Events {
 		this.eventName = eventName;
 	}
 
+	@JsonFormat(locale = "hi", timezone = "Asia/Kolkata", pattern = "dd-MM-yyyy")
+
 	public String getEventFromDate() {
 		return eventFromDate;
 	}
@@ -110,6 +83,7 @@ public class Events {
 		this.eventFromDate = eventFromDate;
 	}
 
+	@JsonFormat(locale = "hi", timezone = "Asia/Kolkata", pattern = "dd-MM-yyyy")
 	public String getEventToDate() {
 		return eventToDate;
 	}
@@ -229,8 +203,6 @@ public class Events {
 	public void setIsUsed(int isUsed) {
 		this.isUsed = isUsed;
 	}
-	
-	
 
 	public int getLocationId() {
 		return locationId;
@@ -248,17 +220,49 @@ public class Events {
 		this.companyTypeId = companyTypeId;
 	}
 
-	@Override
-	public String toString() {
-		return "Events [eventId=" + eventId + ", orgId=" + orgId + ", eventName=" + eventName + ", eventFromDate="
-				+ eventFromDate + ", eventToDate=" + eventToDate + ", fromTime=" + fromTime + ", toTime=" + toTime
-				+ ", eventLocation=" + eventLocation + ", eventLocLat=" + eventLocLat + ", eventLocLong=" + eventLocLong
-				+ ", aboutEvent=" + aboutEvent + ", eventLogo=" + eventLogo + ", contactPersonName1="
-				+ contactPersonName1 + ", contactPersonName2=" + contactPersonName2 + ", person1Mob=" + person1Mob
-				+ ", person2Mob=" + person2Mob + ", person1EmailId=" + person1EmailId + ", person2EmailId="
-				+ person2EmailId + ", isUsed=" + isUsed + ", locationId=" + locationId + ", companyTypeId="
-				+ companyTypeId + "]";
+	public String getOrgName() {
+		return orgName;
 	}
 
-	
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
+
+	public String getCompanyTypeName() {
+		return companyTypeName;
+	}
+
+	public void setCompanyTypeName(String companyTypeName) {
+		this.companyTypeName = companyTypeName;
+	}
+
+	public String getLocationName() {
+		return locationName;
+	}
+
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+
+	public int getSubscribeStatus() {
+		return subscribeStatus;
+	}
+
+	public void setSubscribeStatus(int subscribeStatus) {
+		this.subscribeStatus = subscribeStatus;
+	}
+
+	@Override
+	public String toString() {
+		return "GetEventsList [eventId=" + eventId + ", orgId=" + orgId + ", eventName=" + eventName
+				+ ", eventFromDate=" + eventFromDate + ", eventToDate=" + eventToDate + ", fromTime=" + fromTime
+				+ ", toTime=" + toTime + ", eventLocation=" + eventLocation + ", eventLocLat=" + eventLocLat
+				+ ", eventLocLong=" + eventLocLong + ", aboutEvent=" + aboutEvent + ", eventLogo=" + eventLogo
+				+ ", contactPersonName1=" + contactPersonName1 + ", contactPersonName2=" + contactPersonName2
+				+ ", person1Mob=" + person1Mob + ", person2Mob=" + person2Mob + ", person1EmailId=" + person1EmailId
+				+ ", person2EmailId=" + person2EmailId + ", isUsed=" + isUsed + ", locationId=" + locationId
+				+ ", companyTypeId=" + companyTypeId + ", orgName=" + orgName + ", companyTypeName=" + companyTypeName
+				+ ", locationName=" + locationName + ", subscribeStatus=" + subscribeStatus + "]";
+	}
+
 }

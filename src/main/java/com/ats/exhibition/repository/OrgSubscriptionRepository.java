@@ -1,5 +1,7 @@
 package com.ats.exhibition.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,6 +19,7 @@ public interface OrgSubscriptionRepository extends JpaRepository<OrgSubscription
 	@Modifying
 	@Query("UPDATE OrgSubscription SET isUsed=0  WHERE sub_id=:subId")
 	int deleteOrgSubscription(@Param("subId") int subId);
-	
+
+	List<OrgSubscription> findAllOrgSubscriptionByIsUsed(int i);	
 
 }

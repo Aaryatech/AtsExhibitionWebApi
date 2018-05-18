@@ -15,5 +15,15 @@ public interface VisitorRepository extends JpaRepository<Visitor, Integer> {
 	@Query("UPDATE Visitor SET isUsed=0  WHERE visitor_id=:visitorId")
 	int deleteVisitor(@Param("visitorId") int visitorId);
 
+	Visitor findByVisitorMobile(String visitorMobile);
+
+	Visitor findByVisitorId(int visitorId);
+
+	@Transactional
+	@Modifying
+	@Query("UPDATE Visitor SET token=:token  WHERE visitor_id=:visitorId")
+	int updateToken(@Param("visitorId") int visitorId, @Param("token") String token);
+
+
 
 }

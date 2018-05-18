@@ -126,12 +126,12 @@ public class TestController {
 	EventExhMappingWithExhNameRepo eventExhMappingWithExhNameRepo;
 	
 	
-	@Autowired
-	LocationRepository locationRepository;
+	
 
 	
-	@Autowired
-	CompanyTypeRepository companyTypeRepository;
+
+	
+	
 	
 	
 	// ---------------------------OrganiserLogin---------------------------------------------
@@ -990,171 +990,8 @@ public class TestController {
 	}
 	
 	
-	// ------------ ----------------Location---------
-
-	@RequestMapping(value = { "/saveLocation" }, method = RequestMethod.POST)
-	public @ResponseBody Location saveLocation(@RequestBody Location Location) {
-
-		Location location = new Location();
-
-		try {
-
-			location = locationRepository.saveAndFlush(Location);
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		}
-		return location;
-
-	}
-	
-	
-	@RequestMapping(value = { "/getAllLocationByIsUsed" }, method = RequestMethod.GET)
-	public @ResponseBody List<Location> getAllLocation() {
-
-		List<Location> locationList = new ArrayList<Location>();
-
-		try {
-
-			locationList = locationRepository.findAllByIsUsed(1);
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		}
-		return locationList;
-
-	}
-	
-	@RequestMapping(value = { "/getLocationByLocIdAndIsUsed" }, method = RequestMethod.POST)
-	public @ResponseBody Location getLocationByLocIdAndIsUsed(@RequestParam("locationId") int locationId) {
-
-		Location location = new Location();
-
-		try {
-
-			location = locationRepository.findByLocationIdAndIsUsed(locationId,1);
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		}
-		return location;
-
-	}
-	
-	@RequestMapping(value = { "/deleteLocation" }, method = RequestMethod.POST)
-	public @ResponseBody ErrorMessage deleteLocation(@RequestParam("locationId") int locationId) {
-
-		ErrorMessage errorMessage = new ErrorMessage();
-
-		try {
-			int delete = locationRepository.deleteLocation(locationId);
-
-			if (delete == 1) {
-				errorMessage.setError(false);
-				errorMessage.setMessage("successfully Deleted");
-			} else {
-				errorMessage.setError(true);
-				errorMessage.setMessage(" Deleted to Delete");
-			}
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-			errorMessage.setError(true);
-			errorMessage.setMessage(" Deleted to Delete");
-
-		}
-		return errorMessage;
-	}
 	
 	
 	
-	// ------------ ---------------CompanyType --------
-
-	@RequestMapping(value = { "/saveCompanyType" }, method = RequestMethod.POST)
-	public @ResponseBody CompanyType saveCompanyType(@RequestBody CompanyType CompanyType) {
-
-		CompanyType companyType = new CompanyType();
-
-		try {
-
-			companyType = companyTypeRepository.saveAndFlush(CompanyType);
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		}
-		return companyType;
-
-	}
-	@RequestMapping(value = { "/deleteCompanyType" }, method = RequestMethod.POST)
-	public @ResponseBody ErrorMessage deleteCompanyType(@RequestParam("companyTypeId") int companyTypeId) {
-
-		ErrorMessage errorMessage = new ErrorMessage();
-
-		try {
-			int delete = companyTypeRepository.deleteCompanyType(companyTypeId);
-
-			if (delete == 1) {
-				errorMessage.setError(false);
-				errorMessage.setMessage("successfully Deleted");
-			} else {
-				errorMessage.setError(true);
-				errorMessage.setMessage(" Deleted to Delete");
-			}
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-			errorMessage.setError(true);
-			errorMessage.setMessage(" Deleted to Delete");
-
-		}
-		return errorMessage;
-	}
 	
-	
-	@RequestMapping(value = { "/getAllCompaniesByIsUsed" }, method = RequestMethod.GET)
-	public @ResponseBody List<CompanyType> getAllCompaniesByIsUsed() {
-
-		List<CompanyType> companyTypeList = new ArrayList<CompanyType>();
-
-		try {
-
-			companyTypeList = companyTypeRepository.findAllByIsUsed(1);
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		}
-		return companyTypeList;
-
-	}
-
-	
-	@RequestMapping(value = { "/getCompanyTypeByCompanyTypeIdAndIsUsed" }, method = RequestMethod.POST)
-	public @ResponseBody CompanyType getCompanyTypeByCompanyTypeIdAndIsUsed(@RequestParam("companyTypeId") int companyTypeId) {
-
-		CompanyType companyType = new CompanyType();
-
-		try {
-
-			companyType = companyTypeRepository.findByCompanyTypeIdAndIsUsed(companyTypeId,1);
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		}
-		return companyType;
-
-	}
 }

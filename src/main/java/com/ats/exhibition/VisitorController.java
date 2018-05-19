@@ -19,8 +19,10 @@ import com.ats.exhibition.model.EventListByVisId;
 import com.ats.exhibition.model.EventVisitorMapping;
 import com.ats.exhibition.model.EventWithOrgName;
 import com.ats.exhibition.model.GetEventsList;
+import com.ats.exhibition.model.GetFloarMap;
 import com.ats.exhibition.model.Location;
 import com.ats.exhibition.model.LoginResponseVisitor;
+import com.ats.exhibition.model.SponsorWithEventName;
 import com.ats.exhibition.model.Visitor;
 import com.ats.exhibition.repository.CompanyTypeRepository;
 import com.ats.exhibition.repository.EventExhMappingRepository;
@@ -29,6 +31,7 @@ import com.ats.exhibition.repository.EventListByVisIdRepo;
 import com.ats.exhibition.repository.EventVisitorMappingRepository;
 import com.ats.exhibition.repository.GetEventsListRepository;
 import com.ats.exhibition.repository.LocationRepository;
+import com.ats.exhibition.repository.SponsorWithEventNameRepo;
 import com.ats.exhibition.repository.VisitorRepository;
 
 @RestController
@@ -57,6 +60,9 @@ public class VisitorController {
 
 	@Autowired
 	EventExhMappingRepository eventExhMappingRepository;
+	
+	@Autowired
+	SponsorWithEventNameRepo sponsorWithEventNameRepo;
 
 	@RequestMapping(value = { "/visitorLogin" }, method = RequestMethod.POST)
 	public @ResponseBody LoginResponseVisitor findByVisitorMobile(@RequestParam("visitorMobile") String visitorMobile) {
@@ -361,6 +367,22 @@ public class VisitorController {
 
 		}
 		return totalExhibitorCount;
+
+	}
+	
+	@RequestMapping(value = { "/getAllSponsorByEventId" }, method = RequestMethod.POST)
+	public @ResponseBody List<SponsorWithEventName> getAllSponsorByEventId(@RequestParam("eventId") int eventId) {
+
+		List<SponsorWithEventName> sponsorWithEventName = null;
+		try {
+			sponsorWithEventName = sponsorWithEventNameRepo.getAllSponsorByEventId(eventId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return sponsorWithEventName;
 
 	}
 

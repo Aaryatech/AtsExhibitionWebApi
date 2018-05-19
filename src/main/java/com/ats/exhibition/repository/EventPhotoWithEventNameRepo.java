@@ -15,6 +15,9 @@ public interface EventPhotoWithEventNameRepo extends JpaRepository<EventPhotoWit
 	
 	@Query(value = "SELECT c.*, e.event_name FROM t_event_photo c,m_events e WHERE  e.event_id=c.event_id AND c.is_used=1", nativeQuery = true)
 	List<EventPhotoWithEventName> getAllPhotoAndEventByIsUsed();
+	
+	@Query(value = "SELECT c.*, e.event_name FROM t_event_photo c,m_events e WHERE c.event_id=:eventId AND e.event_id=c.event_id AND c.is_used=1", nativeQuery = true)
+	List<EventPhotoWithEventName> getAllPhotoByEventId(@Param("eventId") int eventId);
 
 
 }

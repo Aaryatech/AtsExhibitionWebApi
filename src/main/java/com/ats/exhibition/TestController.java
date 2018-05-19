@@ -594,6 +594,25 @@ public class TestController {
 		return eventPhoto;
 
 	}
+	
+	
+	@RequestMapping(value = { "/getAllPhotoByEventId" }, method = RequestMethod.POST)
+	public @ResponseBody List<EventPhotoWithEventName> getAllPhotoByEventId(@RequestParam("eventId") int eventId) {
+
+		List<EventPhotoWithEventName> photoList = new ArrayList<EventPhotoWithEventName>();
+
+		try {
+
+			photoList = eventPhotoWithEventNameRepo.getAllPhotoByEventId(eventId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return photoList;
+
+	}
 
 	@RequestMapping(value = { "/getAllPhotoByIsUsed" }, method = RequestMethod.GET)
 	public @ResponseBody List<EventPhotoWithEventName> getAllPhotoByIsUsed() {

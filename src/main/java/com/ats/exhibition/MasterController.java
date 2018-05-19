@@ -541,6 +541,24 @@ public class MasterController {
 
 	}
 
+	@RequestMapping(value = { "/getAllOrganisersByIsUsedAndIsActive" }, method = RequestMethod.GET)
+	public @ResponseBody List<Organiser> getAllOrganisersByIsUsedAndIsActive() {
+
+		List<Organiser> organiserList = new ArrayList<Organiser>();
+
+		try {
+
+			organiserList = organiserRepository.findByIsUsedAndIsActive(1, 1);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return organiserList;
+
+	}
+
 	// ------------ Package 1------------------------------
 
 	@RequestMapping(value = { "/savePackage" }, method = RequestMethod.POST)

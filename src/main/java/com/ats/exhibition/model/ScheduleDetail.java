@@ -32,6 +32,17 @@ public class ScheduleDetail implements Serializable{
 	
 	private int seatsAvailable;
 
+	private int isUsed;
+	
+	
+	public int getIsUsed() {
+		return isUsed;
+	}
+
+	public void setIsUsed(int isUsed) {
+		this.isUsed = isUsed;
+	}
+
 	public int getScheduleDetailId() {
 		return scheduleDetailId;
 	}

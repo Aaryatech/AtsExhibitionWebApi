@@ -21,6 +21,7 @@ import com.ats.exhibition.model.Exhibitor;
 import com.ats.exhibition.model.ExhibitorWithOrgName;
 import com.ats.exhibition.model.FloarMap;
 import com.ats.exhibition.model.GetFloarMap;
+import com.ats.exhibition.model.GetSchedule;
 import com.ats.exhibition.model.GetSponsor;
 import com.ats.exhibition.model.OrgSubscription;
 import com.ats.exhibition.model.Organiser;
@@ -38,6 +39,7 @@ import com.ats.exhibition.repository.ExhibitorRepository;
 import com.ats.exhibition.repository.ExhibitorWithOrgNameRepo;
 import com.ats.exhibition.repository.FloarMapRepository;
 import com.ats.exhibition.repository.GetFloarMapRepository;
+import com.ats.exhibition.repository.GetScheduleHeaderRepository;
 import com.ats.exhibition.repository.GetSponsorRepository;
 import com.ats.exhibition.repository.OrgSubscriptionRepository;
 import com.ats.exhibition.repository.OrganiserRepository;
@@ -101,6 +103,9 @@ public class MasterController {
 	
 	@Autowired
 	GetFloarMapRepository getFloarMapRepository;
+	
+	@Autowired
+	GetScheduleHeaderRepository getScheduleHeaderRepository;
 	// ------------Committee Member--------------------
 
 	@RequestMapping(value = { "/saveCommitteeMember" }, method = RequestMethod.POST)
@@ -266,6 +271,44 @@ public class MasterController {
 		}
 		return scheduleHeaderRes;
 
+	}
+	@RequestMapping(value = { "/getScheduleHeaderById" }, method = RequestMethod.POST)
+	public @ResponseBody GetSchedule getScheduleHeaderById(@RequestParam("scheduleId") int scheduleId) {
+
+		GetSchedule scheduleHeaderRes = null;
+		try {
+			scheduleHeaderRes = getScheduleHeaderRepository.findByScheduleId(scheduleId);
+
+			List<ScheduleDetail> scheduleDetails= scheduleDetailRepository.findByScheduleId(scheduleId);
+			
+			scheduleHeaderRes.setScheduleDetailList(scheduleDetails);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return scheduleHeaderRes;
+
+	}
+	@RequestMapping(value = { "/getSchedules" }, method = RequestMethod.POST)
+	public @ResponseBody List<GetSchedule> getSchedules(@RequestParam("orgId") int orgId) {
+
+		List<GetSchedule> scheduleHeaderRes = null;
+		try {
+			scheduleHeaderRes = getScheduleHeaderRepository.findByOrgId(orgId);
+
+			for(int i=0;i<scheduleHeaderRes.size();i++)
+			{
+				List<ScheduleDetail> scheduleDetails= scheduleDetailRepository.findByScheduleId(scheduleHeaderRes.get(i).getScheduleId());
+				scheduleHeaderRes.get(i).setScheduleDetailList(scheduleDetails);
+			}
+			
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		return scheduleHeaderRes;
 	}
 	
 	@RequestMapping(value = { "/getSponsorById" }, method = RequestMethod.POST)

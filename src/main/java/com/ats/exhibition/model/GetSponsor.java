@@ -10,11 +10,15 @@ public class GetSponsor implements Serializable{
 	@Id
 	private int sponsorId;
 	
+	private int orgId;
+	
 	private int eventId;
 	
 	private String eventName;
 
 	private String name;
+	
+	private int companyId;
 	
 	private String company;
 	
@@ -31,6 +35,23 @@ public class GetSponsor implements Serializable{
 	private String remark;
 	
 	private int isUsed;
+
+	
+	public int getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
+	}
+
+	public int getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(int orgId) {
+		this.orgId = orgId;
+	}
 
 	public int getSponsorId() {
 		return sponsorId;
@@ -130,11 +151,10 @@ public class GetSponsor implements Serializable{
 
 	@Override
 	public String toString() {
-		return "GetSponsor [sponsorId=" + sponsorId + ", eventId=" + eventId + ", eventName=" + eventName + ", name="
-				+ name + ", company=" + company + ", designation=" + designation + ", photo=" + photo + ", email="
-				+ email + ", website=" + website + ", mobile=" + mobile + ", remark=" + remark + ", isUsed=" + isUsed
-				+ "]";
+		return "GetSponsor [sponsorId=" + sponsorId + ", orgId=" + orgId + ", eventId=" + eventId + ", eventName="
+				+ eventName + ", name=" + name + ", company=" + company + ", designation=" + designation + ", photo="
+				+ photo + ", email=" + email + ", website=" + website + ", mobile=" + mobile + ", remark=" + remark
+				+ ", isUsed=" + isUsed + "]";
 	}
-	
-	
+    
 }

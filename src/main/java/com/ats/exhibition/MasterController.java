@@ -344,12 +344,12 @@ public class MasterController {
 
 	}
 
-	@RequestMapping(value = { "/findAllSponsors" }, method = RequestMethod.GET)
-	public @ResponseBody List<GetSponsor> findAllSponsors() {
+	@RequestMapping(value = { "/findAllSponsors" }, method = RequestMethod.POST)
+	public @ResponseBody List<GetSponsor> findAllSponsors(@RequestParam("orgId")int orgId) {
 
 		List<GetSponsor> sponsorList=null;
 		try {
-			sponsorList = getSponsorRepository.findAllSponsors();
+			sponsorList = getSponsorRepository.findAllSponsors(orgId);
 		} catch (Exception e) {
 
 			e.printStackTrace();

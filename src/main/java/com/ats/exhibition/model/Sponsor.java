@@ -16,11 +16,13 @@ public class Sponsor implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int sponsorId;
 	
+	private int orgId;
+	
 	private int eventId;
 
 	private String name;
 	
-	private String company;
+	private int companyId;
 	
 	private String designation;
 	
@@ -37,6 +39,14 @@ public class Sponsor implements Serializable{
 	private int isUsed;
 
 	
+	public int getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(int orgId) {
+		this.orgId = orgId;
+	}
+
 	public String getMobile() {
 		return mobile;
 	}
@@ -56,11 +66,6 @@ public class Sponsor implements Serializable{
 	public String getName() {
 		return name;
 	}
-
-	public String getCompany() {
-		return company;
-	}
-
 	public String getDesignation() {
 		return designation;
 	}
@@ -97,10 +102,6 @@ public class Sponsor implements Serializable{
 		this.name = name;
 	}
 
-	public void setCompany(String company) {
-		this.company = company;
-	}
-
 	public void setDesignation(String designation) {
 		this.designation = designation;
 	}
@@ -124,14 +125,21 @@ public class Sponsor implements Serializable{
 	public void setIsUsed(int isUsed) {
 		this.isUsed = isUsed;
 	}
+    
+	public int getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
+	}
 
 	@Override
 	public String toString() {
-		return "Sponsor [sponsorId=" + sponsorId + ", eventId=" + eventId + ", name=" + name + ", company=" + company
-				+ ", designation=" + designation + ", photo=" + photo + ", email=" + email + ", website=" + website
-				+ ", mobile=" + mobile + ", remark=" + remark + ", isUsed=" + isUsed + "]";
+		return "Sponsor [sponsorId=" + sponsorId + ", orgId=" + orgId + ", eventId=" + eventId + ", name=" + name
+				+ ", designation=" + designation + ", photo=" + photo + ", email=" + email
+				+ ", website=" + website + ", mobile=" + mobile + ", remark=" + remark + ", isUsed=" + isUsed + "]";
 	}
 
-	
     
 }

@@ -18,10 +18,12 @@ import com.ats.exhibition.model.EventInfoWithAllName;
 import com.ats.exhibition.model.EventListByVisId;
 import com.ats.exhibition.model.EventVisitorMapping;
 import com.ats.exhibition.model.EventWithOrgName;
+import com.ats.exhibition.model.ExhibitorWithOrgName;
 import com.ats.exhibition.model.GetEventsList;
 import com.ats.exhibition.model.GetFloarMap;
 import com.ats.exhibition.model.Location;
 import com.ats.exhibition.model.LoginResponseVisitor;
+import com.ats.exhibition.model.ProductWithExhName;
 import com.ats.exhibition.model.SponsorWithEventName;
 import com.ats.exhibition.model.Visitor;
 import com.ats.exhibition.model.VisitorExhibitorMapping;
@@ -31,8 +33,10 @@ import com.ats.exhibition.repository.EventExhMappingRepository;
 import com.ats.exhibition.repository.EventInfoWithAllNameRepo;
 import com.ats.exhibition.repository.EventListByVisIdRepo;
 import com.ats.exhibition.repository.EventVisitorMappingRepository;
+import com.ats.exhibition.repository.ExhibitorWithOrgNameRepo;
 import com.ats.exhibition.repository.GetEventsListRepository;
 import com.ats.exhibition.repository.LocationRepository;
+import com.ats.exhibition.repository.ProductWithExhNameRepository;
 import com.ats.exhibition.repository.SponsorWithEventNameRepo;
 import com.ats.exhibition.repository.VisitorExhibitorMappingRepository;
 import com.ats.exhibition.repository.VisitorProductMappingRepo;
@@ -70,9 +74,15 @@ public class VisitorController {
 
 	@Autowired
 	VisitorExhibitorMappingRepository visitorExhibitorMappingRepository;
-	
+
 	@Autowired
 	VisitorProductMappingRepo visitorProductMappingRepo;
+
+	@Autowired
+	ExhibitorWithOrgNameRepo exhibitorWithOrgNameRepo;
+	
+	@Autowired
+	ProductWithExhNameRepository productWithExhNameRepository;
 
 	// ---------------------Visitor Login----------------------
 
@@ -411,21 +421,61 @@ public class VisitorController {
 
 		return visitorExhibitorMapping;
 	}
-	
-	
-	// ---------------------------update Visitor Product like Status----------------------
-		@RequestMapping(value = { "/updateProductLikeStatus" }, method = RequestMethod.POST)
-		public @ResponseBody VisitorProductMapping updateProductLikeStatus(@RequestParam("visitorId") int visitorId,
-				@RequestParam("productId") int productId, @RequestParam("likeStatus") int likeStatus) {
 
-			VisitorProductMapping visitorProductMapping = visitorProductMappingRepo
-					.findByVisitorIdAndProductId(visitorId, productId);
+	// ---------------------------update Visitor Product like
+	// Status----------------------
+	@RequestMapping(value = { "/updateProductLikeStatus" }, method = RequestMethod.POST)
+	public @ResponseBody VisitorProductMapping updateProductLikeStatus(@RequestParam("visitorId") int visitorId,
+			@RequestParam("productId") int productId, @RequestParam("likeStatus") int likeStatus) {
 
-			int isUpdated = visitorProductMappingRepo.updateStatus(visitorProductMapping.getVisitorId(),
-					visitorProductMapping.getProductId(), likeStatus);
+		VisitorProductMapping visitorProductMapping = visitorProductMappingRepo.findByVisitorIdAndProductId(visitorId,
+				productId);
 
-			return visitorProductMapping;
+		int isUpdated = visitorProductMappingRepo.updateStatus(visitorProductMapping.getVisitorId(),
+				visitorProductMapping.getProductId(), likeStatus);
+
+		return visitorProductMapping;
+	}
+
+	// -----------------------------All Exhibitor list by Visitor Id--------------
+
+	@RequestMapping(value = { "/getAllExhibitorsByVisitorIdAndLikeStatus" }, method = RequestMethod.POST)
+	public @ResponseBody List<ExhibitorWithOrgName> getAllExhibitorsByVisitorIdAndLikeStatus(
+			@RequestParam("visitorId") int visitorId) {
+
+		List<ExhibitorWithOrgName> exhibitorList = new ArrayList<ExhibitorWithOrgName>();
+
+		try {
+
+			exhibitorList = exhibitorWithOrgNameRepo.getAllExhibitorsByVisitorIdAndLikeStatus(visitorId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
 		}
+		return exhibitorList;
+
+	}
+	
+	
+	@RequestMapping(value = { "/getAllProductListByVisId" }, method = RequestMethod.POST)
+	public @ResponseBody List<ProductWithExhName> getAllProductListByVisId(@RequestParam("visitorId") int visitorId) {
+
+		List<ProductWithExhName> productList = new ArrayList<ProductWithExhName>();
+
+		try {
+
+			productList = productWithExhNameRepository.getAllProductListByVisId(visitorId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return productList;
+
+	}
 
 
 }

@@ -199,6 +199,9 @@ public class TestController {
 
 		try {
 
+	
+			
+			
 			eventExhMapping = eventExhMappingRepository.saveAll(EventExhMapping);
 
 		} catch (Exception e) {

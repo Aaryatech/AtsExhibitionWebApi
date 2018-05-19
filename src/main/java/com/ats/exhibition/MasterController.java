@@ -996,7 +996,7 @@ public class MasterController {
 
 		try {
 
-			productList = productWithExhNameRepository.findByExId(exhId);
+			productList = productWithExhNameRepository.findByExhId(exhId);
 
 		} catch (Exception e) {
 

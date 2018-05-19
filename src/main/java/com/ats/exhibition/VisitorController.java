@@ -24,6 +24,8 @@ import com.ats.exhibition.model.Location;
 import com.ats.exhibition.model.LoginResponseVisitor;
 import com.ats.exhibition.model.SponsorWithEventName;
 import com.ats.exhibition.model.Visitor;
+import com.ats.exhibition.model.VisitorExhibitorMapping;
+import com.ats.exhibition.model.VisitorProductMapping;
 import com.ats.exhibition.repository.CompanyTypeRepository;
 import com.ats.exhibition.repository.EventExhMappingRepository;
 import com.ats.exhibition.repository.EventInfoWithAllNameRepo;
@@ -32,6 +34,8 @@ import com.ats.exhibition.repository.EventVisitorMappingRepository;
 import com.ats.exhibition.repository.GetEventsListRepository;
 import com.ats.exhibition.repository.LocationRepository;
 import com.ats.exhibition.repository.SponsorWithEventNameRepo;
+import com.ats.exhibition.repository.VisitorExhibitorMappingRepository;
+import com.ats.exhibition.repository.VisitorProductMappingRepo;
 import com.ats.exhibition.repository.VisitorRepository;
 
 @RestController
@@ -60,9 +64,17 @@ public class VisitorController {
 
 	@Autowired
 	EventExhMappingRepository eventExhMappingRepository;
-	
+
 	@Autowired
 	SponsorWithEventNameRepo sponsorWithEventNameRepo;
+
+	@Autowired
+	VisitorExhibitorMappingRepository visitorExhibitorMappingRepository;
+	
+	@Autowired
+	VisitorProductMappingRepo visitorProductMappingRepo;
+
+	// ---------------------Visitor Login----------------------
 
 	@RequestMapping(value = { "/visitorLogin" }, method = RequestMethod.POST)
 	public @ResponseBody LoginResponseVisitor findByVisitorMobile(@RequestParam("visitorMobile") String visitorMobile) {
@@ -369,7 +381,7 @@ public class VisitorController {
 		return totalExhibitorCount;
 
 	}
-	
+
 	@RequestMapping(value = { "/getAllSponsorByEventId" }, method = RequestMethod.POST)
 	public @ResponseBody List<SponsorWithEventName> getAllSponsorByEventId(@RequestParam("eventId") int eventId) {
 
@@ -385,5 +397,35 @@ public class VisitorController {
 		return sponsorWithEventName;
 
 	}
+
+	// ---------------------------update Exhibitor like Status----------------------
+	@RequestMapping(value = { "/updateExhibitorLikeStatus" }, method = RequestMethod.POST)
+	public @ResponseBody VisitorExhibitorMapping updateExhibitorLikeStatus(@RequestParam("visitorId") int visitorId,
+			@RequestParam("exhibitorId") int exhibitorId, @RequestParam("likeStatus") int likeStatus) {
+
+		VisitorExhibitorMapping visitorExhibitorMapping = visitorExhibitorMappingRepository
+				.findByVisitorIdAndExhibitorId(visitorId, exhibitorId);
+
+		int isUpdated = visitorExhibitorMappingRepository.updateStatus(visitorExhibitorMapping.getVisitorId(),
+				visitorExhibitorMapping.getExhibitorId(), likeStatus);
+
+		return visitorExhibitorMapping;
+	}
+	
+	
+	// ---------------------------update Visitor Product like Status----------------------
+		@RequestMapping(value = { "/updateProductLikeStatus" }, method = RequestMethod.POST)
+		public @ResponseBody VisitorProductMapping updateProductLikeStatus(@RequestParam("visitorId") int visitorId,
+				@RequestParam("productId") int productId, @RequestParam("likeStatus") int likeStatus) {
+
+			VisitorProductMapping visitorProductMapping = visitorProductMappingRepo
+					.findByVisitorIdAndProductId(visitorId, productId);
+
+			int isUpdated = visitorProductMappingRepo.updateStatus(visitorProductMapping.getVisitorId(),
+					visitorProductMapping.getProductId(), likeStatus);
+
+			return visitorProductMapping;
+		}
+
 
 }

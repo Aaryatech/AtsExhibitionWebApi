@@ -85,27 +85,28 @@ public class MasterController {
 
 	@Autowired
 	ExhibitorWithOrgNameRepo exhibitorWithOrgNameRepo;
-	
+
 	@Autowired
 	SponsorRepository sponsorRepository;
-	
+
 	@Autowired
 	GetSponsorRepository getSponsorRepository;
-	
+
 	@Autowired
 	ScheduleHeaderRepository scheduleHeaderRepository;
-	
+
 	@Autowired
 	ScheduleDetailRepository scheduleDetailRepository;
-	
+
 	@Autowired
 	FloarMapRepository floarMapRepository;
-	
+
 	@Autowired
 	GetFloarMapRepository getFloarMapRepository;
-	
+
 	@Autowired
 	GetScheduleHeaderRepository getScheduleHeaderRepository;
+
 	// ------------Committee Member--------------------
 
 	@RequestMapping(value = { "/saveCommitteeMember" }, method = RequestMethod.POST)
@@ -125,6 +126,7 @@ public class MasterController {
 		return comMem;
 
 	}
+
 	@RequestMapping(value = { "/saveFloarMap" }, method = RequestMethod.POST)
 	public @ResponseBody FloarMap saveFloarMap(@RequestBody FloarMap floarMap) {
 
@@ -138,6 +140,7 @@ public class MasterController {
 		}
 		return floarMapRes;
 	}
+
 	@RequestMapping(value = { "/getFloarMapById" }, method = RequestMethod.POST)
 	public @ResponseBody GetFloarMap getFloarMapById(@RequestParam("floarMapId") int floarMapId) {
 
@@ -153,6 +156,7 @@ public class MasterController {
 		return flourMapRes;
 
 	}
+
 	@RequestMapping(value = { "/getAllFloarMapByEventId" }, method = RequestMethod.POST)
 	public @ResponseBody List<GetFloarMap> getAllFloarMapByEventId(@RequestParam("eventId") int eventId) {
 
@@ -168,6 +172,7 @@ public class MasterController {
 		return flourMapRes;
 
 	}
+
 	@RequestMapping(value = { "/deleteFloarMap" }, method = RequestMethod.POST)
 	public @ResponseBody ErrorMessage deleteFloarMap(@RequestParam("floarMapId") int floarMapId) {
 
@@ -193,28 +198,28 @@ public class MasterController {
 		}
 		return errorMessage;
 	}
+
 	@RequestMapping(value = { "/saveSchedule" }, method = RequestMethod.POST)
 	public @ResponseBody ScheduleHeader saveSchedule(@RequestBody ScheduleHeader scheduleHeader) {
 
 		ScheduleHeader scheduleHeaderRes = null;
 		try {
 			scheduleHeaderRes = scheduleHeaderRepository.saveAndFlush(scheduleHeader);
-			
-			if(!scheduleHeader.getScheduleDetailList().isEmpty())
-			{
-				for(ScheduleDetail schDetail:scheduleHeader.getScheduleDetailList())
-				{
+
+			if (!scheduleHeader.getScheduleDetailList().isEmpty()) {
+				for (ScheduleDetail schDetail : scheduleHeader.getScheduleDetailList()) {
 					schDetail.setScheduleId(scheduleHeaderRes.getScheduleId());
 					scheduleDetailRepository.saveAndFlush(schDetail);
 				}
 			}
-		
+
 		} catch (Exception e) {
 
 			e.printStackTrace();
 		}
 		return scheduleHeaderRes;
 	}
+
 	@RequestMapping(value = { "/saveSponsor" }, method = RequestMethod.POST)
 	public @ResponseBody Sponsor saveSponsor(@RequestBody Sponsor sponsor) {
 
@@ -228,6 +233,7 @@ public class MasterController {
 		}
 		return sponsorRes;
 	}
+
 	@RequestMapping(value = { "/deleteSchedule" }, method = RequestMethod.POST)
 	public @ResponseBody ErrorMessage deleteSchedule(@RequestParam("scheduleId") int scheduleId) {
 
@@ -253,6 +259,7 @@ public class MasterController {
 		}
 		return errorMessage;
 	}
+
 	@RequestMapping(value = { "/getScheduleById" }, method = RequestMethod.POST)
 	public @ResponseBody ScheduleHeader getScheduleById(@RequestParam("scheduleId") int scheduleId) {
 
@@ -260,8 +267,8 @@ public class MasterController {
 		try {
 			scheduleHeaderRes = scheduleHeaderRepository.findByScheduleId(scheduleId);
 
-			List<ScheduleDetail> scheduleDetails= scheduleDetailRepository.findByScheduleId(scheduleId);
-			
+			List<ScheduleDetail> scheduleDetails = scheduleDetailRepository.findByScheduleId(scheduleId);
+
 			scheduleHeaderRes.setScheduleDetailList(scheduleDetails);
 
 		} catch (Exception e) {
@@ -272,6 +279,7 @@ public class MasterController {
 		return scheduleHeaderRes;
 
 	}
+
 	@RequestMapping(value = { "/getScheduleHeaderById" }, method = RequestMethod.POST)
 	public @ResponseBody GetSchedule getScheduleHeaderById(@RequestParam("scheduleId") int scheduleId) {
 
@@ -279,8 +287,8 @@ public class MasterController {
 		try {
 			scheduleHeaderRes = getScheduleHeaderRepository.findByScheduleId(scheduleId);
 
-			List<ScheduleDetail> scheduleDetails= scheduleDetailRepository.findByScheduleId(scheduleId);
-			
+			List<ScheduleDetail> scheduleDetails = scheduleDetailRepository.findByScheduleId(scheduleId);
+
 			scheduleHeaderRes.setScheduleDetailList(scheduleDetails);
 
 		} catch (Exception e) {
@@ -291,6 +299,7 @@ public class MasterController {
 		return scheduleHeaderRes;
 
 	}
+
 	@RequestMapping(value = { "/getSchedules" }, method = RequestMethod.POST)
 	public @ResponseBody List<GetSchedule> getSchedules(@RequestParam("orgId") int orgId) {
 
@@ -298,19 +307,19 @@ public class MasterController {
 		try {
 			scheduleHeaderRes = getScheduleHeaderRepository.findByOrgId(orgId);
 
-			for(int i=0;i<scheduleHeaderRes.size();i++)
-			{
-				List<ScheduleDetail> scheduleDetails= scheduleDetailRepository.findByScheduleId(scheduleHeaderRes.get(i).getScheduleId());
+			for (int i = 0; i < scheduleHeaderRes.size(); i++) {
+				List<ScheduleDetail> scheduleDetails = scheduleDetailRepository
+						.findByScheduleId(scheduleHeaderRes.get(i).getScheduleId());
 				scheduleHeaderRes.get(i).setScheduleDetailList(scheduleDetails);
 			}
-			
+
 		} catch (Exception e) {
 
 			e.printStackTrace();
 		}
 		return scheduleHeaderRes;
 	}
-	
+
 	@RequestMapping(value = { "/getSponsorById" }, method = RequestMethod.POST)
 	public @ResponseBody Sponsor getSponsorById(@RequestParam("sponsorId") int sponsorId) {
 
@@ -326,6 +335,7 @@ public class MasterController {
 		return sponsorRes;
 
 	}
+
 	@RequestMapping(value = { "/deleteSponsor" }, method = RequestMethod.POST)
 	public @ResponseBody ErrorMessage deleteSponsor(@RequestParam("sponsorId") int sponsorId) {
 
@@ -351,8 +361,10 @@ public class MasterController {
 		}
 		return errorMessage;
 	}
+
 	@RequestMapping(value = { "/getAllCommitteeMembersByOrgIdAndIsUsed" }, method = RequestMethod.POST)
-	public @ResponseBody List<ComMemWithOrgName> getAllCommitteeMembersByOrgIdAndIsUsed(@RequestParam("orgId") int orgId) {
+	public @ResponseBody List<ComMemWithOrgName> getAllCommitteeMembersByOrgIdAndIsUsed(
+			@RequestParam("orgId") int orgId) {
 
 		List<ComMemWithOrgName> committeeMembersList = new ArrayList<ComMemWithOrgName>();
 
@@ -388,9 +400,9 @@ public class MasterController {
 	}
 
 	@RequestMapping(value = { "/findAllSponsors" }, method = RequestMethod.POST)
-	public @ResponseBody List<GetSponsor> findAllSponsors(@RequestParam("orgId")int orgId) {
+	public @ResponseBody List<GetSponsor> findAllSponsors(@RequestParam("orgId") int orgId) {
 
-		List<GetSponsor> sponsorList=null;
+		List<GetSponsor> sponsorList = null;
 		try {
 			sponsorList = getSponsorRepository.findAllSponsors(orgId);
 		} catch (Exception e) {
@@ -685,7 +697,7 @@ public class MasterController {
 		return eventList;
 
 	}
-	
+
 	@RequestMapping(value = { "/getEventsBetweenDates" }, method = RequestMethod.POST)
 	public @ResponseBody List<EventWithOrgName> getEventsBetweenDates(@RequestParam("fromDate") String fromDate,
 			@RequestParam("toDate") String toDate) {
@@ -694,7 +706,7 @@ public class MasterController {
 
 		try {
 
-			eventList = eventWithOrgNameRepository.getEventssBetweenDates(fromDate,toDate);
+			eventList = eventWithOrgNameRepository.getEventssBetweenDates(fromDate, toDate);
 
 		} catch (Exception e) {
 
@@ -704,7 +716,6 @@ public class MasterController {
 		return eventList;
 
 	}
-	
 
 	@RequestMapping(value = { "/getAllEventsByIsUsed" }, method = RequestMethod.GET)
 	public @ResponseBody List<EventWithOrgName> getAllEventsByIsUsed() {
@@ -940,25 +951,29 @@ public class MasterController {
 
 	}
 
-	/*@RequestMapping(value = { "/getExhibitorBetweenDates" }, method = RequestMethod.POST)
-	public @ResponseBody List<ExhibitorWithOrgName> getExhibitorBetweenDates(@RequestParam("fromDate") String fromDate,
-			@RequestParam("toDate") String toDate) {
-
-		List<ExhibitorWithOrgName> exhibitorList = new ArrayList<ExhibitorWithOrgName>();
-
-		try {
-
-			exhibitorList = exhibitorWithOrgNameRepo.getAllExhibitorsBetweenDates(fromDate,toDate);
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		}
-		return exhibitorList;
-
-	}
-*/
+	/*
+	 * @RequestMapping(value = { "/getExhibitorBetweenDates" }, method =
+	 * RequestMethod.POST) public @ResponseBody List<ExhibitorWithOrgName>
+	 * getExhibitorBetweenDates(@RequestParam("fromDate") String fromDate,
+	 * 
+	 * @RequestParam("toDate") String toDate) {
+	 * 
+	 * List<ExhibitorWithOrgName> exhibitorList = new
+	 * ArrayList<ExhibitorWithOrgName>();
+	 * 
+	 * try {
+	 * 
+	 * exhibitorList =
+	 * exhibitorWithOrgNameRepo.getAllExhibitorsBetweenDates(fromDate,toDate);
+	 * 
+	 * } catch (Exception e) {
+	 * 
+	 * e.printStackTrace();
+	 * 
+	 * } return exhibitorList;
+	 * 
+	 * }
+	 */
 	// ------------Products------------------------------------------
 
 	@RequestMapping(value = { "/saveProducts" }, method = RequestMethod.POST)
@@ -1032,6 +1047,7 @@ public class MasterController {
 		return productList;
 
 	}
+
 	@RequestMapping(value = { "/getAllProductsByExId" }, method = RequestMethod.POST)
 	public @ResponseBody List<ProductWithExhName> getAllProductsByExId(@RequestParam("exhId") int exhId) {
 

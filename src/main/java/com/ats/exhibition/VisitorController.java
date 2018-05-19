@@ -1,6 +1,7 @@
 package com.ats.exhibition;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ats.exhibition.model.CompanyType;
 import com.ats.exhibition.model.ErrorMessage;
+import com.ats.exhibition.model.EventInfoWithAllName;
 import com.ats.exhibition.model.EventListByVisId;
 import com.ats.exhibition.model.EventVisitorMapping;
+import com.ats.exhibition.model.EventWithOrgName;
 import com.ats.exhibition.model.GetEventsList;
 import com.ats.exhibition.model.Location;
 import com.ats.exhibition.model.LoginResponseVisitor;
 import com.ats.exhibition.model.Visitor;
 import com.ats.exhibition.repository.CompanyTypeRepository;
+import com.ats.exhibition.repository.EventExhMappingRepository;
+import com.ats.exhibition.repository.EventInfoWithAllNameRepo;
 import com.ats.exhibition.repository.EventListByVisIdRepo;
 import com.ats.exhibition.repository.EventVisitorMappingRepository;
 import com.ats.exhibition.repository.GetEventsListRepository;
@@ -43,9 +48,15 @@ public class VisitorController {
 
 	@Autowired
 	GetEventsListRepository getEventsListRepository;
-	
+
 	@Autowired
 	EventListByVisIdRepo eventListByVisIdRepo;
+
+	@Autowired
+	EventInfoWithAllNameRepo eventInfoWithAllNameRepo;
+
+	@Autowired
+	EventExhMappingRepository eventExhMappingRepository;
 
 	@RequestMapping(value = { "/visitorLogin" }, method = RequestMethod.POST)
 	public @ResponseBody LoginResponseVisitor findByVisitorMobile(@RequestParam("visitorMobile") String visitorMobile) {
@@ -313,6 +324,43 @@ public class VisitorController {
 
 		}
 		return getEventsList;
+
+	}
+
+	// ---------------EventInfoBy EventId------------------------
+
+	@RequestMapping(value = { "/getAllEventsInfoByEventId" }, method = RequestMethod.POST)
+	public @ResponseBody EventInfoWithAllName getAllEventsInfoByEventId(@RequestParam("eventId") int eventId) {
+
+		EventInfoWithAllName eventInfoWithAllName = new EventInfoWithAllName();
+
+		try {
+
+			eventInfoWithAllName = eventInfoWithAllNameRepo.getAllEventsInfoByEventId(eventId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return eventInfoWithAllName;
+
+	}
+
+	@RequestMapping(value = { "/getExhCountByEventId" }, method = RequestMethod.POST)
+	public @ResponseBody int getExhCountByEventId(@RequestParam("eventId") int eventId) {
+
+		int totalExhibitorCount = 0;
+		try {
+
+			totalExhibitorCount = eventExhMappingRepository.totalCountOfExhId(eventId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return totalExhibitorCount;
 
 	}
 

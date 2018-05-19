@@ -20,5 +20,11 @@ public interface EventExhMappingRepository  extends JpaRepository <EventExhMappi
 	@Modifying
 	@Query("UPDATE EventExhMapping SET isUsed=0  WHERE map_id=:mapId")
 	int deleteExhMapping(@Param("mapId") int mapId);
+	
+	@Query(value = "SELECT COUNT(t_event_exh_mapping.exh_id) FROM t_event_exh_mapping WHERE t_event_exh_mapping.is_used=1 "
+			+ "AND t_event_exh_mapping.event_id=:eventId"
+			+ "", nativeQuery = true)
+	Integer totalCountOfExhId(@Param("eventId") int eventId);
+
 
 }

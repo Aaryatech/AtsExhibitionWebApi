@@ -9,6 +9,6 @@ import com.ats.exhibition.model.ScheduleDetail;
 @Repository
 public interface ScheduleDetailRepository extends JpaRepository<ScheduleDetail, Integer>{
 
-	List<ScheduleDetail> findByScheduleId(int scheduleId);
+	List<ScheduleDetail> findByScheduleIdAndIsUsed(int scheduleId, int i);
 
 }

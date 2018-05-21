@@ -267,7 +267,7 @@ public class MasterController {
 		try {
 			scheduleHeaderRes = scheduleHeaderRepository.findByScheduleId(scheduleId);
 
-			List<ScheduleDetail> scheduleDetails = scheduleDetailRepository.findByScheduleId(scheduleId);
+			List<ScheduleDetail> scheduleDetails = scheduleDetailRepository.findByScheduleIdAndIsUsed(scheduleId,1);
 
 			scheduleHeaderRes.setScheduleDetailList(scheduleDetails);
 
@@ -287,7 +287,7 @@ public class MasterController {
 		try {
 			scheduleHeaderRes = getScheduleHeaderRepository.findByScheduleId(scheduleId);
 
-			List<ScheduleDetail> scheduleDetails = scheduleDetailRepository.findByScheduleId(scheduleId);
+			List<ScheduleDetail> scheduleDetails = scheduleDetailRepository.findByScheduleIdAndIsUsed(scheduleId,1);
 
 			scheduleHeaderRes.setScheduleDetailList(scheduleDetails);
 
@@ -305,11 +305,11 @@ public class MasterController {
 
 		List<GetSchedule> scheduleHeaderRes = null;
 		try {
-			scheduleHeaderRes = getScheduleHeaderRepository.findByOrgId(orgId);
+			scheduleHeaderRes = getScheduleHeaderRepository.findByOrgId(orgId,1);
 
 			for (int i = 0; i < scheduleHeaderRes.size(); i++) {
 				List<ScheduleDetail> scheduleDetails = scheduleDetailRepository
-						.findByScheduleId(scheduleHeaderRes.get(i).getScheduleId());
+						.findByScheduleIdAndIsUsed(scheduleHeaderRes.get(i).getScheduleId(),1);
 				scheduleHeaderRes.get(i).setScheduleDetailList(scheduleDetails);
 			}
 
@@ -335,7 +335,7 @@ public class MasterController {
 		return sponsorRes;
 
 	}
-
+    
 	@RequestMapping(value = { "/deleteSponsor" }, method = RequestMethod.POST)
 	public @ResponseBody ErrorMessage deleteSponsor(@RequestParam("sponsorId") int sponsorId) {
 

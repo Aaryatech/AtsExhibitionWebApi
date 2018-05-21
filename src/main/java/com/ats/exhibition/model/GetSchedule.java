@@ -1,6 +1,7 @@
 package com.ats.exhibition.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -8,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 public class GetSchedule implements Serializable{
@@ -20,7 +23,7 @@ public class GetSchedule implements Serializable{
 	
 	private String eventName;
 
-	private String date;
+	private Date date;
 	
 	private String dayName;
 	
@@ -50,8 +53,8 @@ public class GetSchedule implements Serializable{
 	public String getEventName() {
 		return eventName;
 	}
-
-	public String getDate() {
+	@JsonFormat(locale = "hi",timezone = "Asia/Kolkata", pattern = "dd-MM-yyyy")
+	public Date getDate() {
 		return date;
 	}
 
@@ -75,7 +78,7 @@ public class GetSchedule implements Serializable{
 		this.eventName = eventName;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 

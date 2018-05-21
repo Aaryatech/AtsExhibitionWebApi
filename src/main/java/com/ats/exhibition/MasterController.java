@@ -157,12 +157,12 @@ public class MasterController {
 
 	}
 
-	@RequestMapping(value = { "/getAllFloarMapByEventId" }, method = RequestMethod.POST)
-	public @ResponseBody List<GetFloarMap> getAllFloarMapByEventId(@RequestParam("eventId") int eventId) {
+	@RequestMapping(value = { "/getAllFloarMapByOrgId" }, method = RequestMethod.POST)
+	public @ResponseBody List<GetFloarMap> getAllFloarMapByOrgId(@RequestParam("orgId") int orgId) {
 
 		List<GetFloarMap> flourMapRes = null;
 		try {
-			flourMapRes = getFloarMapRepository.findAllFloarMap(eventId);
+			flourMapRes = getFloarMapRepository.findAllOrgId(orgId);
 
 		} catch (Exception e) {
 
@@ -260,16 +260,19 @@ public class MasterController {
 		return errorMessage;
 	}
 
-	@RequestMapping(value = { "/getScheduleById" }, method = RequestMethod.POST)
-	public @ResponseBody ScheduleHeader getScheduleById(@RequestParam("scheduleId") int scheduleId) {
+	@RequestMapping(value = { "/getScheduleByEventId" }, method = RequestMethod.POST)
+	public @ResponseBody List<GetSchedule> getScheduleById(@RequestParam("eventId") int eventId) {
 
-		ScheduleHeader scheduleHeaderRes = null;
+		List<GetSchedule> scheduleHeaderRes = null;
 		try {
-			scheduleHeaderRes = scheduleHeaderRepository.findByScheduleId(scheduleId);
+			scheduleHeaderRes = getScheduleHeaderRepository.findByEventIdAndIsUsed(eventId,1);
 
-			List<ScheduleDetail> scheduleDetails = scheduleDetailRepository.findByScheduleIdAndIsUsed(scheduleId,1);
+			for(int i=0;i<scheduleHeaderRes.size();i++)
+			{
+			List<ScheduleDetail> scheduleDetails = scheduleDetailRepository.findByScheduleIdAndIsUsed(scheduleHeaderRes.get(i).getScheduleId(),1);
 
-			scheduleHeaderRes.setScheduleDetailList(scheduleDetails);
+			scheduleHeaderRes.get(i).setScheduleDetailList(scheduleDetails);
+			}
 
 		} catch (Exception e) {
 

@@ -59,6 +59,7 @@ import com.ats.exhibition.repository.MapEventEmpRepository;
 import com.ats.exhibition.repository.MktMaterialRepository;
 import com.ats.exhibition.repository.OrgSubscriptionDetailRepo;
 import com.ats.exhibition.repository.OrganiserRepository;
+import com.ats.exhibition.repository.Package1Repository;
 import com.ats.exhibition.repository.VisitorRepository;
 import com.ats.exhibition.repository.VisitorWithOrgEventNameRepo;
 
@@ -124,6 +125,9 @@ public class TestController {
 
 	@Autowired
 	EventExhMappingWithExhNameRepo eventExhMappingWithExhNameRepo;
+	
+	@Autowired
+	Package1Repository package1Repository;
 	
 	
 	
@@ -1015,7 +1019,26 @@ public class TestController {
 	
 	
 	
-	
-	
-	
+	// ------------ Package 1------------------------------
+
+
+
+		@RequestMapping(value = { "/getPackageByPkgId" }, method = RequestMethod.POST)
+		public @ResponseBody Package1 getPackageByPkgId(@RequestParam("pkgId") int pkgId) {
+
+			Package1 package1 = new Package1();
+
+			try {
+
+				package1 = package1Repository.findByPkgId(pkgId);
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+			return package1;
+
+		}
+
 }

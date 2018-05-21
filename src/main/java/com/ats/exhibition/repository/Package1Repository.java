@@ -21,4 +21,6 @@ public interface Package1Repository extends JpaRepository<Package1, Integer> {
 
 	Package1 findByPkgId(int pkgId);
 
+	List<Package1> findByPkgTypeAndIsUsed(int pkgType, int i);
+
 }

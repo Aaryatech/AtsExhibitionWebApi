@@ -27,6 +27,9 @@ public class Package1 {
 
 	@Column(name = "is_used")
 	private int isUsed;
+	
+	@Column(name = "pkg_type")
+	private int pkgType;
 
 	public int getPkgId() {
 		return pkgId;
@@ -68,10 +71,18 @@ public class Package1 {
 		this.isUsed = isUsed;
 	}
 
+	public int getPkgType() {
+		return pkgType;
+	}
+
+	public void setPkgType(int pkgType) {
+		this.pkgType = pkgType;
+	}
+
 	@Override
 	public String toString() {
-		return "Package [pkgId=" + pkgId + ", pkgName=" + pkgName + ", subDuration=" + subDuration + ", pkgAmt="
-				+ pkgAmt + ", isUsed=" + isUsed + "]";
+		return "Package1 [pkgId=" + pkgId + ", pkgName=" + pkgName + ", subDuration=" + subDuration + ", pkgAmt="
+				+ pkgAmt + ", isUsed=" + isUsed + ", pkgType=" + pkgType + "]";
 	}
 
 }

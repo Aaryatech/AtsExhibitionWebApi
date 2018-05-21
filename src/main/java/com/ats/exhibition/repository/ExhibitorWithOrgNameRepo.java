@@ -31,4 +31,42 @@ public interface ExhibitorWithOrgNameRepo extends JpaRepository<ExhibitorWithOrg
 			+ "AND  t_visitor_exhibitor.like_status=1)", nativeQuery = true)
 	List<ExhibitorWithOrgName> getAllExhibitorsByVisitorIdAndLikeStatus(@Param("visitorId") int visitorId);
 
+	@Query(value = "SELECT\r\n" + 
+			"    x.*, o.org_name,l.location_name,c.company_type_name \r\n" + 
+			"FROM \r\n" + 
+			"    m_exhibitor x,m_organiser o,m_location l,m_company c \r\n" + 
+			"WHERE  \r\n" + 
+			"    o.org_id=x.org_id \r\n" + 
+			"    and l.location_id=x.location_id \r\n" + 
+			"    and c.company_type_id = x.company_type_id \r\n" + 
+			"order by \r\n" + 
+			"    x.exh_name", nativeQuery = true)
+	List<ExhibitorWithOrgName> sortedExhibitorListByLocationAndCompType();
+
+	@Query(value = "SELECT\r\n" + 
+			"    x.*, o.org_name,l.location_name,c.company_type_name \r\n" + 
+			"FROM \r\n" + 
+			"    m_exhibitor x,m_organiser o,m_location l,m_company c \r\n" + 
+			"WHERE  \r\n" + 
+			"    o.org_id=x.org_id\r\n" + 
+			"    and x.company_type_id in (:companyType)\r\n" + 
+			"    and l.location_id=x.location_id \r\n" + 
+			"    and c.company_type_id = x.company_type_id \r\n" + 
+			"order by \r\n" + 
+			"    x.exh_name", nativeQuery = true)
+	List<ExhibitorWithOrgName> sortedExhibitorByAllLocation(@Param("companyType")List<Integer> companyType);
+
+	@Query(value = "SELECT\r\n" + 
+			"    x.*, o.org_name,l.location_name,c.company_type_name \r\n" + 
+			"FROM \r\n" + 
+			"    m_exhibitor x,m_organiser o,m_location l,m_company c \r\n" + 
+			"WHERE  \r\n" + 
+			"    o.org_id=x.org_id\r\n" + 
+			"    and x.location_id in (:locationId)\r\n" + 
+			"    and l.location_id=x.location_id \r\n" + 
+			"    and c.company_type_id = x.company_type_id \r\n" + 
+			"order by \r\n" + 
+			"    x.exh_name", nativeQuery = true)
+	List<ExhibitorWithOrgName> sortedExhibitorByAllCompanyType(@Param("locationId")List<Integer> locationId);
+
 }

@@ -34,7 +34,9 @@ import com.ats.exhibition.model.LoginResponse;
 import com.ats.exhibition.model.LoginResponseExh;
 import com.ats.exhibition.model.MapEventEmp;
 import com.ats.exhibition.model.MktMaterial;
+import com.ats.exhibition.model.OrgSubscription;
 import com.ats.exhibition.model.OrgSubscriptionDetail;
+import com.ats.exhibition.model.OrgSubscriptionWithName;
 import com.ats.exhibition.model.Organiser;
 import com.ats.exhibition.model.Package1;
 import com.ats.exhibition.model.Visitor;
@@ -58,6 +60,8 @@ import com.ats.exhibition.repository.LocationRepository;
 import com.ats.exhibition.repository.MapEventEmpRepository;
 import com.ats.exhibition.repository.MktMaterialRepository;
 import com.ats.exhibition.repository.OrgSubscriptionDetailRepo;
+import com.ats.exhibition.repository.OrgSubscriptionRepository;
+import com.ats.exhibition.repository.OrgSubscriptionWithNameRepo;
 import com.ats.exhibition.repository.OrganiserRepository;
 import com.ats.exhibition.repository.Package1Repository;
 import com.ats.exhibition.repository.VisitorRepository;
@@ -129,10 +133,12 @@ public class TestController {
 	@Autowired
 	Package1Repository package1Repository;
 	
-	
+	@Autowired
+	OrgSubscriptionRepository orgSubscriptionRepository;
 	
 
-	
+	@Autowired
+	OrgSubscriptionWithNameRepo orgSubscriptionWithNameRepo;
 
 	
 	
@@ -990,6 +996,25 @@ public class TestController {
 		return orgSubscriptionDetail;
 
 	}
+	
+	@RequestMapping(value = { "/getDetailsBySubIdAndIsUsed" }, method = RequestMethod.POST)
+	public @ResponseBody List<OrgSubscriptionDetail> getDetailsBySubIdAndIsUsed(@RequestParam("subId") int subId) {
+
+		List<OrgSubscriptionDetail> orgSubscriptionDetail = new ArrayList<OrgSubscriptionDetail>();
+
+		try {
+
+			orgSubscriptionDetail = orgSubscriptionDetailRepo.findAllBySubIdAndIsUsed(subId,1);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return orgSubscriptionDetail;
+
+	}
+
 
 	@RequestMapping(value = { "/deleteOrgSubscriptionDetail" }, method = RequestMethod.POST)
 	public @ResponseBody ErrorMessage deleteOrgSubscriptionDetail(@RequestParam("orgSubDetailId") int orgSubDetailId) {
@@ -1038,6 +1063,43 @@ public class TestController {
 
 			}
 			return package1;
+
+		}
+
+		@RequestMapping(value = { "/getAllSubscriptions" }, method = RequestMethod.GET)
+		public @ResponseBody List<OrgSubscriptionWithName> getAllSubscriptions() {
+
+			List<OrgSubscriptionWithName> subscriptionList = new ArrayList<OrgSubscriptionWithName>();
+
+			try {
+
+				subscriptionList = orgSubscriptionWithNameRepo.getAllSubscriptions();
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+			return subscriptionList;
+
+		}
+
+		
+		@RequestMapping(value = { "/getSubDetailsBySubIdAndIsUSed" }, method = RequestMethod.POST)
+		public @ResponseBody OrgSubscriptionWithName getSubDetailsByOrgIdAndstatus(@RequestParam("subId") int subId) {
+
+			OrgSubscriptionWithName orgSubscriptionWithName = new OrgSubscriptionWithName();
+
+			try {
+
+				orgSubscriptionWithName  = orgSubscriptionWithNameRepo.getSubscriptionById(subId);
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+			return orgSubscriptionWithName;
 
 		}
 

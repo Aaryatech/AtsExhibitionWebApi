@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -646,6 +647,24 @@ public class TestController {
 		return photoList;
 
 	}
+	@RequestMapping(value = { "/getAllPhotoByOrgId" }, method = RequestMethod.POST)
+	public @ResponseBody List<EventPhotoWithEventName> getAllPhotoByOrgId(@Param("orgId") int orgId) {
+
+		List<EventPhotoWithEventName> photoList = new ArrayList<EventPhotoWithEventName>();
+
+		try {
+
+			photoList = eventPhotoWithEventNameRepo.getAllPhotoByOrgId(orgId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return photoList;
+
+	}
+
 
 	@RequestMapping(value = { "/deleteEventPhoto" }, method = RequestMethod.POST)
 	public @ResponseBody ErrorMessage deleteEventPhoto(@RequestParam("photoId") int photoId) {

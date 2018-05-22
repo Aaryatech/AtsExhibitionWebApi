@@ -10,17 +10,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ats.exhibition.model.Exhibitor;
 
-public interface ExhibitorRepository extends JpaRepository<Exhibitor, Integer>{
+public interface ExhibitorRepository extends JpaRepository<Exhibitor, Integer> {
 
 	List<Exhibitor> findByIsUsed(int isUsed);
-	
+
 	@Transactional
 	@Modifying
 	@Query("UPDATE Exhibitor SET isUsed=0  WHERE exh_id=:exhId")
 	int deleteExhibitors(@Param("exhId") int exhId);
 
 	Exhibitor findByUserMobAndPasswordAndIsUsed(String userMob, String password, int i);
-
-	
 
 }

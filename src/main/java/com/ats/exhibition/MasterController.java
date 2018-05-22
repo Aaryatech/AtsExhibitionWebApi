@@ -971,6 +971,26 @@ public class MasterController {
 		return errorMessage;
 
 	}
+	
+	@RequestMapping(value = { "/getAllExhibitorsByIsUsed" }, method = RequestMethod.GET)
+	public @ResponseBody List<Exhibitor> getAllExhibitorsWithOrgNameByIsUsed() {
+
+		List<Exhibitor> exhibitorList = new ArrayList<Exhibitor>();
+
+		try {
+
+			exhibitorList = exhibitorRepository.findByIsUsed(1);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return exhibitorList;
+
+	}
+
+
 
 	@RequestMapping(value = { "/getAllExhibotorsByorgIdAndIsUsed" }, method = RequestMethod.POST)
 	public @ResponseBody List<ExhibitorWithOrgName> getAllExhibotorsByorgIdAndIsUsed(@RequestParam("orgId") int orgId) {

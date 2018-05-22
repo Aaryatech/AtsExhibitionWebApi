@@ -13,7 +13,7 @@ public interface ExhibitorWithOrgNameRepo extends JpaRepository<ExhibitorWithOrg
 	@Query(value = "SELECT x.*, o.org_name,l.location_name,c.company_type_name FROM m_exhibitor x,m_organiser o,m_location l,m_company c WHERE x.exh_id=:exhId AND o.org_id=x.org_id and l.location_id=x.location_id and c.company_type_id = x.company_type_id", nativeQuery = true)
 	ExhibitorWithOrgName getAllExhibitorsByExhId(@Param("exhId") int exhId);
 
-	@Query(value = "SELECT x.*, o.org_name FROM m_exhibitor x,m_organiser o WHERE x.is_used=1 AND o.org_id=x.org_id", nativeQuery = true)
+	@Query(value = "SELECT x.*, o.org_name,l.location_name,c.company_type_name  FROM m_exhibitor x,m_organiser o,m_location l,m_company c  WHERE x.is_used=1 AND o.org_id=x.org_id and l.location_id=x.location_id and c.company_type_id = x.company_type_id", nativeQuery = true)
 	List<ExhibitorWithOrgName> findByIsUsed();
 
 	@Query(value = "SELECT x.*, o.org_name,l.location_name,c.company_type_name "

@@ -1121,5 +1121,27 @@ public class TestController {
 			return orgSubscriptionWithName;
 
 		}
+		
+		//sachin
+		@RequestMapping(value = { "/getEventsByExhbId" }, method = RequestMethod.POST)
+		public @ResponseBody List<EventExhMapping> getEventsByExhbId(@RequestParam("exhbId") int exhbId) {
+
+			List<EventExhMapping> eventListByExhbId = new ArrayList<EventExhMapping>();
+
+			try {
+
+				eventListByExhbId = eventExhMappingRepository.getAllEventByExhbId(exhbId);
+
+			} catch (Exception e) {
+				
+				System.err.println("Exception in /getEventsByExhbId  @TestController" +e.getMessage());
+
+				e.printStackTrace();
+
+			}
+			return eventListByExhbId;
+
+		}
+
 
 }

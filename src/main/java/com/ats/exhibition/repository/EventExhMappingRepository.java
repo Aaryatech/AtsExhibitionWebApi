@@ -25,6 +25,13 @@ public interface EventExhMappingRepository  extends JpaRepository <EventExhMappi
 			+ "AND t_event_exh_mapping.event_id=:eventId"
 			+ "", nativeQuery = true)
 	Integer totalCountOfExhId(@Param("eventId") int eventId);
+	
+	
+	
+	@Query(value = "SELECT t_event_exh_mapping.* FROM t_event_exh_mapping WHERE t_event_exh_mapping.exh_id=:exhbId AND " + 
+			"t_event_exh_mapping.is_used=1 "
+			+ "", nativeQuery = true)
+	List<EventExhMapping> getAllEventByExhbId(@Param("exhbId") int exhbId);
 
 
 }

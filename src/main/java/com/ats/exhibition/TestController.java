@@ -27,6 +27,7 @@ import com.ats.exhibition.model.ExhEmployee;
 import com.ats.exhibition.model.ExhMatWithExhName;
 import com.ats.exhibition.model.ExhMaterial;
 import com.ats.exhibition.model.ExhSubDetail;
+import com.ats.exhibition.model.ExhSubDetailWithDate;
 import com.ats.exhibition.model.ExhSubHeader;
 import com.ats.exhibition.model.ExhSubHeaderWithExhName;
 import com.ats.exhibition.model.Exhibitor;
@@ -54,6 +55,7 @@ import com.ats.exhibition.repository.ExhEmployeeRepository;
 import com.ats.exhibition.repository.ExhMatWithExhNameRepo;
 import com.ats.exhibition.repository.ExhMaterialRepository;
 import com.ats.exhibition.repository.ExhSubDetailRepository;
+import com.ats.exhibition.repository.ExhSubDetailWithDateRepo;
 import com.ats.exhibition.repository.ExhSubHeaderRepository;
 import com.ats.exhibition.repository.ExhSubHeaderWithExhNameRepo;
 import com.ats.exhibition.repository.ExhibitorRepository;
@@ -116,6 +118,9 @@ public class TestController {
 	@Autowired
 	ExhSubDetailRepository exhSubDetailRepository;
 
+	@Autowired
+	ExhSubDetailWithDateRepo exhSubDetailWithDateRepo;
+	
 	@Autowired
 	EventPhotoWithEventNameRepo eventPhotoWithEventNameRepo;
 
@@ -1142,6 +1147,22 @@ public class TestController {
 			return eventListByExhbId;
 
 		}
+		@RequestMapping(value = { "/exhSubDetailBySubHeaderIdAndIsUsed" }, method = RequestMethod.POST)
+		public @ResponseBody List<ExhSubDetailWithDate> exhSubDetailBySubHeaderIdAndIsUsed(@RequestParam("subHeaderId") int subHeaderId) {
 
+			List<ExhSubDetailWithDate> exhSubDetailWithDateList = new ArrayList<ExhSubDetailWithDate>();
+
+			try {
+
+				exhSubDetailWithDateList = exhSubDetailWithDateRepo.findBySubHeaderIdAndIsUsed(subHeaderId, 1);
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+			return exhSubDetailWithDateList;
+
+		}
 
 }

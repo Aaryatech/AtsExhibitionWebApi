@@ -1,6 +1,7 @@
 package com.ats.exhibition.model;
+ 
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +16,7 @@ public class ExhSubHeaderWithExhName {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "sub_id")
+	@Column(name = "sub_header_id")
 	private int subId;
 
 	@Column(name = "exh_id")

@@ -20,6 +20,9 @@ public interface OrgSubscriptionRepository extends JpaRepository<OrgSubscription
 	@Query("UPDATE OrgSubscription SET isUsed=0  WHERE sub_id=:subId")
 	int deleteOrgSubscription(@Param("subId") int subId);
 
-	List<OrgSubscription> findAllOrgSubscriptionByIsUsed(int i);	
+	List<OrgSubscription> findAllOrgSubscriptionByIsUsed(int i);
+
+
+	OrgSubscription findBySubId(int subId);	
 
 }

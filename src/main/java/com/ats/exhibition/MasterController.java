@@ -821,6 +821,24 @@ public class MasterController {
 		return organiser;
 
 	}
+	
+	@RequestMapping(value = { "/getSubHeaderById" }, method = RequestMethod.POST)
+	public @ResponseBody OrgSubscription getSubHeaderById(@RequestParam("subId") int subId ) {
+
+		OrgSubscription organiser = new OrgSubscription();
+
+		try {
+
+			organiser = orgSubscriptionRepository.findBySubId(subId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return organiser;
+
+	}
 
 	@RequestMapping(value = { "/insertNewSubscription" }, method = RequestMethod.POST)
 	public @ResponseBody OrgSubscription insertNewSubscription(@RequestBody OrgSubscription orgSubscription) {

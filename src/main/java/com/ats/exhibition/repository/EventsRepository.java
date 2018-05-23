@@ -15,5 +15,6 @@ public interface EventsRepository extends JpaRepository<Events, Integer> {
 	@Query("UPDATE Events SET isUsed=0  WHERE event_id=:eventId")
 	int deleteEvent(@Param("eventId") int eventId);
 
+	Events findByEventId(int eventId);
 
 }

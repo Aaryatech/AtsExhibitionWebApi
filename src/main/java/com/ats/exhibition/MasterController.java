@@ -160,6 +160,23 @@ public class MasterController {
 		return flourMapRes;
 
 	}
+	
+	//sachin get Event 
+	@RequestMapping(value = { "/getEventByEId" }, method = RequestMethod.POST)
+	public @ResponseBody Events getEventByEId(@RequestParam("eventId") int eventId) {
+
+		Events eventResponse = null;
+		try {
+			eventResponse = eventsRepository.findByEventId(eventId);
+
+		} catch (Exception e) {
+			System.err.println("Exception in getting /getEventByEId @MasterController "+e.getMessage());
+			e.printStackTrace();
+
+		}
+		return eventResponse;
+
+	}
 
 	@RequestMapping(value = { "/getAllFloarMapByOrgId" }, method = RequestMethod.POST)
 	public @ResponseBody List<GetFloarMap> getAllFloarMapByOrgId(@RequestParam("orgId") int orgId) {

@@ -20,6 +20,7 @@ import com.ats.exhibition.model.EventVisitorMapping;
 import com.ats.exhibition.model.EventWithOrgName;
 import com.ats.exhibition.model.ExhibitorWithOrgName;
 import com.ats.exhibition.model.GetEventsList;
+import com.ats.exhibition.model.GetExhibitorsList;
 import com.ats.exhibition.model.GetFloarMap;
 import com.ats.exhibition.model.Location;
 import com.ats.exhibition.model.LoginResponseVisitor;
@@ -35,6 +36,7 @@ import com.ats.exhibition.repository.EventListByVisIdRepo;
 import com.ats.exhibition.repository.EventVisitorMappingRepository;
 import com.ats.exhibition.repository.ExhibitorWithOrgNameRepo;
 import com.ats.exhibition.repository.GetEventsListRepository;
+import com.ats.exhibition.repository.GetExhListRepository;
 import com.ats.exhibition.repository.LocationRepository;
 import com.ats.exhibition.repository.ProductWithExhNameRepository;
 import com.ats.exhibition.repository.SponsorWithEventNameRepo;
@@ -47,6 +49,9 @@ public class VisitorController {
 
 	@Autowired
 	VisitorRepository visitorRepository;
+
+	@Autowired
+	GetExhListRepository getExhListRepository;
 
 	@Autowired
 	LocationRepository locationRepository;
@@ -80,7 +85,7 @@ public class VisitorController {
 
 	@Autowired
 	ExhibitorWithOrgNameRepo exhibitorWithOrgNameRepo;
-	
+
 	@Autowired
 	ProductWithExhNameRepository productWithExhNameRepository;
 
@@ -457,8 +462,7 @@ public class VisitorController {
 		return exhibitorList;
 
 	}
-	
-	
+
 	@RequestMapping(value = { "/getAllProductListByVisId" }, method = RequestMethod.POST)
 	public @ResponseBody List<ProductWithExhName> getAllProductListByVisId(@RequestParam("visitorId") int visitorId) {
 
@@ -477,5 +481,23 @@ public class VisitorController {
 
 	}
 
+	@RequestMapping(value = { "/getAllExhListByEventIdAndVisitorId" }, method = RequestMethod.POST)
+	public @ResponseBody List<GetExhibitorsList> getAllExhListByEventIdAndVisitorId(
+			@RequestParam("visitorId") int visitorId, @RequestParam("eventId") int eventId) {
+
+		List<GetExhibitorsList> getExhibitorsList = new ArrayList<GetExhibitorsList>();
+
+		try {
+
+			getExhibitorsList = getExhListRepository.getAllExhListByEventIdAndVisitorId(visitorId, eventId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return getExhibitorsList;
+
+	}
 
 }

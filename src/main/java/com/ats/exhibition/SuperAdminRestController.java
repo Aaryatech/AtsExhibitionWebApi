@@ -11,12 +11,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ats.exhibition.model.EventExhMapping;
+import com.ats.exhibition.model.EventWithOrgName;
 import com.ats.exhibition.model.ExhibitorWithOrgName;
 import com.ats.exhibition.model.Package1;
 import com.ats.exhibition.model.SortedExhibitor;
+import com.ats.exhibition.model.SortedVisitor;
 import com.ats.exhibition.repository.OrganiserRepository;
 import com.ats.exhibition.repository.Package1Repository;
 import com.ats.exhibition.repository.SortedExhibitorRepository;
+import com.ats.exhibition.repository.SortedVisitorRepository;
+import com.ats.exhibition.repository.EventWithOrgNameRepository;
 import com.ats.exhibition.repository.ExhibitorWithOrgNameRepo;
 
 @RestController
@@ -31,6 +35,12 @@ public class SuperAdminRestController {
 	
 	@Autowired
 	Package1Repository package1Repository;
+	
+	@Autowired
+	EventWithOrgNameRepository eventWithOrgNameRepository;
+	
+	@Autowired
+	SortedVisitorRepository sortedVisitorRepository;
 	
 	
 	@RequestMapping(value = { "/sortedExhibitorByLocationAndCompanyType" }, method = RequestMethod.POST)
@@ -115,6 +125,63 @@ public class SuperAdminRestController {
 
 		}
 		return packageList;
+
+	}
+	
+	@RequestMapping(value = { "/eventListByMultipleOrgId" }, method = RequestMethod.POST)
+	public @ResponseBody List<EventWithOrgName> eventListByMultipleOrgId(@RequestParam("orgList") List<Integer> orgList) {
+
+		List<EventWithOrgName> eventList = new ArrayList<EventWithOrgName>();
+
+		try {
+
+			if(orgList.get(0)==0)
+				eventList = eventWithOrgNameRepository.getAllEventsByIsUsed();
+			else
+				eventList = eventWithOrgNameRepository.eventListByMultipleOrgId(orgList);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return eventList;
+
+	}
+	
+	
+	@RequestMapping(value = { "/visitorListFilterByLocationAndCompType" }, method = RequestMethod.POST)
+	public @ResponseBody List<SortedVisitor> visitorListFilterByLocationAndCompType(@RequestParam("eventId") int eventId
+			,@RequestParam("locationId") List<Integer> locationId, @RequestParam("companyType") List<Integer> companyType) {
+
+		List<SortedVisitor> visitorListFilterByLocationAndCompType = new ArrayList<SortedVisitor>();
+
+		try { 
+			
+			if(locationId.get(0)==0 && companyType.get(0)!=0)
+			{
+				visitorListFilterByLocationAndCompType = sortedVisitorRepository.sortedVisitorByAllLocation(eventId,companyType);
+			}
+			else if(locationId.get(0)!=0 && companyType.get(0)==0)
+			{
+				visitorListFilterByLocationAndCompType = sortedVisitorRepository.sortedVisitorByAllCompanyType(eventId,locationId);
+			}
+			else if(locationId.get(0)!=0 && companyType.get(0)!=0)
+			{
+				visitorListFilterByLocationAndCompType = sortedVisitorRepository.sortedVisitorByLocationAndCompanyType(eventId,companyType,locationId);
+			}
+			else
+			{
+				visitorListFilterByLocationAndCompType = sortedVisitorRepository.sortedVisitorByLocationAndCompanyType(eventId);
+			}
+			
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return visitorListFilterByLocationAndCompType;
 
 	}
 	

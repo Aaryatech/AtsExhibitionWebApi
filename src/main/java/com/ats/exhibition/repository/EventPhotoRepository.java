@@ -15,5 +15,9 @@ public interface EventPhotoRepository extends JpaRepository<EventPhoto, Integer>
 	@Modifying
 	@Query("UPDATE EventPhoto SET isUsed=0  WHERE photo_id=:photoId")
 	int deleteEventPhoto(@Param("photoId") int photoId);
+	
+	@Query(value="select count(*) as count from t_event_photo where t_event_photo.event_id=:eventId ",nativeQuery=true)
+	int getGallaryCount(@Param("eventId")int eventId);
+
 
 }

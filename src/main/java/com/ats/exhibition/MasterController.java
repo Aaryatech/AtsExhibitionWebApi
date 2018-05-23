@@ -33,6 +33,7 @@ import com.ats.exhibition.model.ScheduleHeader;
 import com.ats.exhibition.model.Sponsor;
 import com.ats.exhibition.repository.ComMemWithOrgNameRepo;
 import com.ats.exhibition.repository.CommitteeMemRepository;
+import com.ats.exhibition.repository.EventPhotoRepository;
 import com.ats.exhibition.repository.EventWithOrgNameRepository;
 import com.ats.exhibition.repository.EventsRepository;
 import com.ats.exhibition.repository.ExhibitorRepository;
@@ -106,6 +107,9 @@ public class MasterController {
 
 	@Autowired
 	GetScheduleHeaderRepository getScheduleHeaderRepository;
+	
+	@Autowired
+	EventPhotoRepository eventPhotoRepository;
 
 	// ------------Committee Member--------------------
 
@@ -971,10 +975,22 @@ public class MasterController {
 		return errorMessage;
 
 	}
-	
-	
+	@RequestMapping(value = { "/getGallaryCount" }, method = RequestMethod.POST)
+	public @ResponseBody int getGallaryCount(@RequestParam("eventId")int eventId) {
 
+      int count = 0;
+		try {
 
+			count = eventPhotoRepository.getGallaryCount(eventId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return count;
+
+	}
 	@RequestMapping(value = { "/getAllExhibotorsByorgIdAndIsUsed" }, method = RequestMethod.POST)
 	public @ResponseBody List<ExhibitorWithOrgName> getAllExhibotorsByorgIdAndIsUsed(@RequestParam("orgId") int orgId) {
 

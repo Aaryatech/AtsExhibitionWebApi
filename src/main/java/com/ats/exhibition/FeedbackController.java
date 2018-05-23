@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ats.exhibition.model.feedback.FeedbackQue;
 import com.ats.exhibition.model.feedback.FeedbackTxn;
 import com.ats.exhibition.model.feedback.GetFbQueTxn;
+import com.ats.exhibition.model.feedback.GetFeedbackTxnDetails;
 import com.ats.exhibition.repository.feedback.FeedbackQueRepo;
 import com.ats.exhibition.repository.feedback.FeedbackTxnRepo;
 import com.ats.exhibition.repository.feedback.GetFbQueTxnRepo;
+import com.ats.exhibition.repository.feedback.GetFeedbackTxnDetailsRepo;
 
 @RestController
 public class FeedbackController {
@@ -26,6 +28,30 @@ public class FeedbackController {
 	
 	@Autowired
 	GetFbQueTxnRepo getFbQueTxnRepo;
+	
+	@Autowired
+	GetFeedbackTxnDetailsRepo getFeedbackTxnDetailsRepo;
+	
+	@RequestMapping(value = { "/getFeedbackTxnDetails" }, method = RequestMethod.POST)
+	public @ResponseBody List<GetFeedbackTxnDetails> getFeedbackTxnDetailsRepo(@RequestParam("fbId") int fbId) {
+
+		List<GetFeedbackTxnDetails> fbTxnDetailList = null;
+		
+		try {
+			
+			fbTxnDetailList = getFeedbackTxnDetailsRepo.getFbQueDetailByFbId(fbId);
+			
+		} catch (Exception e) {
+			
+			System.err.println("Exception in getting getFbQueTxnByExhbId @ /FeedbackController" +e.getMessage());
+
+			e.printStackTrace();
+
+		}
+		
+		return fbTxnDetailList;
+
+	}
 	
 	
 	@RequestMapping(value = { "/getFbQueTxnByExhbId" }, method = RequestMethod.POST)

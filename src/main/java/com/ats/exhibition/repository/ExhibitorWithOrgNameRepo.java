@@ -69,4 +69,13 @@ public interface ExhibitorWithOrgNameRepo extends JpaRepository<ExhibitorWithOrg
 			"    x.exh_name", nativeQuery = true)
 	List<ExhibitorWithOrgName> sortedExhibitorByAllCompanyType(@Param("locationId")List<Integer> locationId);
 
+	@Query(value = "SELECT x.*, o.org_name,l.location_name,c.company_type_name FROM m_exhibitor x,m_organiser o,m_location l,m_company c WHERE x.user_mob=:mob AND o.org_id=x.org_id and l.location_id=x.location_id and c.company_type_id = x.company_type_id", nativeQuery = true)
+	List<ExhibitorWithOrgName> getExhibitorsByParam1(@Param("mob")String parameter);
+
+	@Query(value = "SELECT x.*, o.org_name,l.location_name,c.company_type_name FROM m_exhibitor x,m_organiser o,m_location l,m_company c WHERE x.exh_id=:exhId AND o.org_id=x.org_id and l.location_id=x.location_id and c.company_type_id = x.company_type_id", nativeQuery = true)
+	List<ExhibitorWithOrgName> getExhibitorsByParam2(@Param("exhId")String parameter);
+
+	@Query(value = "SELECT x.*, o.org_name,l.location_name,c.company_type_name FROM m_exhibitor x,m_organiser o,m_location l,m_company c WHERE x.exh_name=:exhName AND o.org_id=x.org_id and l.location_id=x.location_id and c.company_type_id = x.company_type_id", nativeQuery = true)
+	List<ExhibitorWithOrgName> getExhibitorsByParam3(@Param("exhName")String parameter);
+
 }

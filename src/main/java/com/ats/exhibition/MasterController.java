@@ -1150,5 +1150,33 @@ public class MasterController {
 		return errorMessage;
 
 	}
+	@RequestMapping(value = { "/getExhibitorsByParam" }, method = RequestMethod.POST)
+	public @ResponseBody List<ExhibitorWithOrgName> getExhibitorsByParam(@RequestParam("parameter") String parameter,@RequestParam("status") int status) {
 
+		List<ExhibitorWithOrgName> exhibitorList=null;
+
+		try {
+
+			if(status==1)
+			{
+			exhibitorList = exhibitorWithOrgNameRepo.getExhibitorsByParam1(parameter);
+			}
+			else if(status==2)
+			{
+				exhibitorList = exhibitorWithOrgNameRepo.getExhibitorsByParam2(parameter);
+
+			}else if(status==3)
+			{
+				exhibitorList = exhibitorWithOrgNameRepo.getExhibitorsByParam3(parameter);
+
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return exhibitorList;
+
+	}
 }

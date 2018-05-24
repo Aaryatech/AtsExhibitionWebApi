@@ -1,7 +1,8 @@
 package com.ats.exhibition;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,16 @@ import com.ats.exhibition.model.EventInfoWithAllName;
 import com.ats.exhibition.model.EventListByVisId;
 import com.ats.exhibition.model.EventVisitorMapping;
 import com.ats.exhibition.model.EventWithOrgName;
+import com.ats.exhibition.model.Events;
+import com.ats.exhibition.model.ExhSubHeader;
+import com.ats.exhibition.model.ExhSubHeaderWithExhName;
+import com.ats.exhibition.model.Exhibitor;
 import com.ats.exhibition.model.ExhibitorWithOrgName;
 import com.ats.exhibition.model.GetEventsList;
 import com.ats.exhibition.model.GetExhibitorsList;
 import com.ats.exhibition.model.GetFloarMap;
 import com.ats.exhibition.model.Location;
+import com.ats.exhibition.model.LoginResponseExh;
 import com.ats.exhibition.model.LoginResponseVisitor;
 import com.ats.exhibition.model.ProductWithExhName;
 import com.ats.exhibition.model.SponsorWithEventName;
@@ -34,6 +40,10 @@ import com.ats.exhibition.repository.EventExhMappingRepository;
 import com.ats.exhibition.repository.EventInfoWithAllNameRepo;
 import com.ats.exhibition.repository.EventListByVisIdRepo;
 import com.ats.exhibition.repository.EventVisitorMappingRepository;
+import com.ats.exhibition.repository.EventsRepository;
+import com.ats.exhibition.repository.ExhSubHeaderRepository;
+import com.ats.exhibition.repository.ExhSubHeaderWithExhNameRepo;
+import com.ats.exhibition.repository.ExhibitorRepository;
 import com.ats.exhibition.repository.ExhibitorWithOrgNameRepo;
 import com.ats.exhibition.repository.GetEventsListRepository;
 import com.ats.exhibition.repository.GetExhListRepository;
@@ -50,11 +60,21 @@ public class VisitorController {
 	@Autowired
 	VisitorRepository visitorRepository;
 
+	@Autowired 
+	ExhSubHeaderRepository  exhSubHeaderRepository;
+	
 	@Autowired
 	GetExhListRepository getExhListRepository;
-
+	
+	@Autowired
+	EventsRepository eventsRepository;
+	
+	
 	@Autowired
 	LocationRepository locationRepository;
+
+	@Autowired
+	ExhibitorRepository exhibitorRepository;
 
 	@Autowired
 	CompanyTypeRepository companyTypeRepository;
@@ -88,6 +108,9 @@ public class VisitorController {
 
 	@Autowired
 	ProductWithExhNameRepository productWithExhNameRepository;
+
+	@Autowired
+	ExhSubHeaderWithExhNameRepo exhSubHeaderWithExhNameRepo;
 
 	// ---------------------Visitor Login----------------------
 
@@ -483,13 +506,19 @@ public class VisitorController {
 
 	@RequestMapping(value = { "/getAllExhListByEventIdAndVisitorId" }, method = RequestMethod.POST)
 	public @ResponseBody List<GetExhibitorsList> getAllExhListByEventIdAndVisitorId(
-			@RequestParam("visitorId") int visitorId, @RequestParam("eventId") int eventId) {
+			@RequestParam("visitorId") int visitorId, @RequestParam("eventId") int eventId,
+			@RequestParam("companyTypeId") List<Integer> companyTypeId, @RequestParam("status") int status) {
 
 		List<GetExhibitorsList> getExhibitorsList = new ArrayList<GetExhibitorsList>();
 
 		try {
+			if (status == 0) {
 
-			getExhibitorsList = getExhListRepository.getAllExhListByEventIdAndVisitorId(visitorId, eventId);
+				getExhibitorsList = getExhListRepository.getAllExhListByEventIdAndVisitorId(eventId, visitorId);
+			} else {
+				getExhibitorsList = getExhListRepository.getExhListByEventIdAndVisIdAndcompanyTypeId(eventId, visitorId,
+						companyTypeId);
+			}
 
 		} catch (Exception e) {
 
@@ -497,6 +526,46 @@ public class VisitorController {
 
 		}
 		return getExhibitorsList;
+
+	}
+
+	@RequestMapping(value = { "/getAllSubHeaderBetweenDates" }, method = RequestMethod.POST)
+	public @ResponseBody List<ExhSubHeader> getAllSubHeaderBetweenDates(
+			@RequestParam("exhId") int exhId) {
+
+		List<ExhSubHeader> exhSubHeaderList = new ArrayList<ExhSubHeader>();
+
+		try {
+			Date date = new Date();
+			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+			exhSubHeaderList = exhSubHeaderRepository.getAllSubHeaderBetweenDates(exhId,sf.format(date));
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return exhSubHeaderList;
+
+	}
+	
+	@RequestMapping(value = { "/getAllEventsWithExhId" }, method = RequestMethod.POST)
+	public @ResponseBody List<Events> getAllEventsWithExhId(
+			@RequestParam("exhId") int exhId) {
+
+		List<Events> eventsList = new ArrayList<Events>();
+
+		try {
+			Date date = new Date();
+			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+			eventsList = eventsRepository.getAllEventsWithExhId(exhId,sf.format(date));
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return eventsList;
 
 	}
 

@@ -2,23 +2,17 @@ package com.ats.exhibition.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
 
 @Entity
 public class GetExhibitorsList {
 
 	@Id
-	@Column(name = "visitor_exhibitor_id")
-	private String visitor_exhibitor_id;
-	
-	public String getVisitor_exhibitor_id() {
-		return visitor_exhibitor_id;
-	}
-
-	public void setVisitor_exhibitor_id(String visitor_exhibitor_id) {
-		this.visitor_exhibitor_id = visitor_exhibitor_id;
-	}
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "exh_id")
+	private int exhId;
 
 	@Column(name = "exh_name")
 	private String exhName;
@@ -53,10 +47,18 @@ public class GetExhibitorsList {
 		this.likeStatus = likeStatus;
 	}
 
+	public int getExhId() {
+		return exhId;
+	}
+
+	public void setExhId(int exhId) {
+		this.exhId = exhId;
+	}
+
 	@Override
 	public String toString() {
-		return "GetExhibitorsList [visitor_exhibitor_id=" + visitor_exhibitor_id + ", exhName=" + exhName
-				+ ", eventName=" + eventName + ", likeStatus=" + likeStatus + "]";
+		return "GetExhibitorsList [exhId=" + exhId + ", exhName=" + exhName + ", eventName=" + eventName
+				+ ", likeStatus=" + likeStatus + "]";
 	}
 
 }

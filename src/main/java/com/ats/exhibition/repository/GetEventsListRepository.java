@@ -22,6 +22,9 @@ public interface GetEventsListRepository extends JpaRepository<GetEventsList, In
 			+ " In(:companyTypeIdList) and e.location_id IN(:locationIdList) group by e.event_id", nativeQuery = true)
 	List<GetEventsList> getEventList(@Param("companyTypeIdList") List<Integer> companyTypeIdList,
 			@Param("locationIdList") List<Integer> locationIdList, @Param("visitorId") int visitorId);
+	
+	
+	
 
 	
 

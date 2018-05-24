@@ -173,6 +173,25 @@ public class EnquiryController {
 			return errorMessage;
 		}
 
+		
+		
+		@RequestMapping(value = { "/getAllEnquiryDetailByIsUsed" }, method = RequestMethod.GET)
+		public @ResponseBody List<EnquiryDetail> getAllEnquiryDetailByIsUsed() {
+
+			List<EnquiryDetail> enquiryDetailList = new ArrayList<EnquiryDetail>();
+
+			try {
+
+				enquiryDetailList = enquiryDetailRepository.getAllEnquiryDetailByIsUsed(1);
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+			return enquiryDetailList;
+
+		}
 
 
 

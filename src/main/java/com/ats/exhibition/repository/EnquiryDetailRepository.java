@@ -1,5 +1,7 @@
 package com.ats.exhibition.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +14,9 @@ public interface EnquiryDetailRepository extends JpaRepository<EnquiryDetail, In
 	
 	@Transactional
 	@Modifying
-	@Query("UPDATE EnquiryDetail SET isUsed=0  WHERE enq_id=:enqId")
+	@Query("UPDATE EnquiryDetail SET isUsed=0  WHERE enq_detail_id=:enqDetailId")
 	int deleteEnquiryDetail(@Param("enqDetailId") int enqDetailId);
+
+	List<EnquiryDetail> getAllEnquiryDetailByIsUsed(int i);
 
 }

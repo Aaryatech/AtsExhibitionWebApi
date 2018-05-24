@@ -8,13 +8,47 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.ats.exhibition.model.eventhistory.GetEventHistory;
+import com.ats.exhibition.model.eventhistory.GetEventVisitorName;
 import com.ats.exhibition.repository.eventhistory.GetEventHistoryRepo;
+import com.ats.exhibition.repository.eventhistory.GetEventVisitorNameRepo;
 
 @RestController
 public class EventHistoryApi {
 
 	@Autowired
 	GetEventHistoryRepo getEventHistoryRepo;
+	
+	@Autowired
+	GetEventVisitorNameRepo getEventVisitorNameRepo;
+	
+	
+	@RequestMapping(value = { "/getEventVisitorName" }, method = RequestMethod.POST)
+	public @ResponseBody List<GetEventVisitorName> getEventVisitorName(@RequestParam("eventId") int eventId) {
+
+		List<GetEventVisitorName> eventVistorNames = null;
+		
+		try {
+			if(eventId!=0) {
+				
+			eventVistorNames = getEventVisitorNameRepo.getEventVisitorNames(eventId);
+			
+			}
+			else {
+				
+				eventVistorNames = getEventVisitorNameRepo.getEventVisitorNamesAllEvent();
+			}
+		} catch (Exception e) {
+			
+			System.err.println("Exception in getting getEventVisitorName @ /EventHistoryApi" +e.getMessage());
+
+			e.printStackTrace();
+
+		}
+		
+		return eventVistorNames;
+
+	}
+	
 	
 	@RequestMapping(value = { "/getEventHistory" }, method = RequestMethod.POST)
 	public @ResponseBody List<GetEventHistory> getFeedbackTxnDetailsRepo(@RequestParam("exhbId") int exhbId) {
@@ -36,14 +70,5 @@ public class EventHistoryApi {
 		return eventHistoryList;
 
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }

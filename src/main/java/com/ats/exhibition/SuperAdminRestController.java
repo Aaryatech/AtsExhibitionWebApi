@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ats.exhibition.model.EventExhMapping;
 import com.ats.exhibition.model.EventWithOrgName;
 import com.ats.exhibition.model.ExhibitorWithOrgName;
+import com.ats.exhibition.model.GetEventSheduleDetail;
+import com.ats.exhibition.model.GetEventSheduleHeader;
 import com.ats.exhibition.model.Package1;
 import com.ats.exhibition.model.SortedExhibitor;
 import com.ats.exhibition.model.SortedVisitor;
@@ -22,6 +24,8 @@ import com.ats.exhibition.repository.SortedExhibitorRepository;
 import com.ats.exhibition.repository.SortedVisitorRepository;
 import com.ats.exhibition.repository.EventWithOrgNameRepository;
 import com.ats.exhibition.repository.ExhibitorWithOrgNameRepo;
+import com.ats.exhibition.repository.GetEventSheduleDetailRepository;
+import com.ats.exhibition.repository.GetEventSheduleHeaderRepository;
 
 @RestController
 public class SuperAdminRestController {
@@ -41,6 +45,12 @@ public class SuperAdminRestController {
 	
 	@Autowired
 	SortedVisitorRepository sortedVisitorRepository;
+	
+	@Autowired
+	GetEventSheduleHeaderRepository getEventSheduleHeaderRepository;
+	
+	@Autowired
+	GetEventSheduleDetailRepository getEventSheduleDetailRepository;
 	
 	
 	@RequestMapping(value = { "/sortedExhibitorByLocationAndCompanyType" }, method = RequestMethod.POST)
@@ -151,8 +161,8 @@ public class SuperAdminRestController {
 	
 	
 	@RequestMapping(value = { "/visitorListFilterByLocationAndCompType" }, method = RequestMethod.POST)
-	public @ResponseBody List<SortedVisitor> visitorListFilterByLocationAndCompType(@RequestParam("eventId") int eventId
-			,@RequestParam("locationId") List<Integer> locationId, @RequestParam("companyType") List<Integer> companyType) {
+	public @ResponseBody List<SortedVisitor> visitorListFilterByLocationAndCompType(@RequestParam("eventId") List<Integer> eventId
+			,@RequestParam("locationId") List<Integer> locationId, @RequestParam("companyType") List<Integer> companyType,@RequestParam("next") int next) {
 
 		List<SortedVisitor> visitorListFilterByLocationAndCompType = new ArrayList<SortedVisitor>();
 
@@ -160,19 +170,19 @@ public class SuperAdminRestController {
 			
 			if(locationId.get(0)==0 && companyType.get(0)!=0)
 			{
-				visitorListFilterByLocationAndCompType = sortedVisitorRepository.sortedVisitorByAllLocation(eventId,companyType);
+				visitorListFilterByLocationAndCompType = sortedVisitorRepository.sortedVisitorByAllLocation(eventId,companyType,next);
 			}
 			else if(locationId.get(0)!=0 && companyType.get(0)==0)
 			{
-				visitorListFilterByLocationAndCompType = sortedVisitorRepository.sortedVisitorByAllCompanyType(eventId,locationId);
+				visitorListFilterByLocationAndCompType = sortedVisitorRepository.sortedVisitorByAllCompanyType(eventId,locationId,next);
 			}
 			else if(locationId.get(0)!=0 && companyType.get(0)!=0)
 			{
-				visitorListFilterByLocationAndCompType = sortedVisitorRepository.sortedVisitorByLocationAndCompanyType(eventId,companyType,locationId);
+				visitorListFilterByLocationAndCompType = sortedVisitorRepository.sortedVisitorByLocationAndCompanyType(eventId,companyType,locationId,next);
 			}
 			else
 			{
-				visitorListFilterByLocationAndCompType = sortedVisitorRepository.sortedVisitorByLocationAndCompanyType(eventId);
+				visitorListFilterByLocationAndCompType = sortedVisitorRepository.sortedVisitorByLocationAndCompanyType(eventId,next);
 			}
 			
 
@@ -182,6 +192,33 @@ public class SuperAdminRestController {
 
 		}
 		return visitorListFilterByLocationAndCompType;
+
+	}
+	
+	
+	@RequestMapping(value = { "/getEventSheduleByEventId" }, method = RequestMethod.POST)
+	public @ResponseBody List<GetEventSheduleHeader> getEventSheduleByEventId(@RequestParam("eventId") int eventId) {
+
+		List<GetEventSheduleHeader> getEventSheduleByEventId = new ArrayList<GetEventSheduleHeader>();
+
+		try {
+
+			 
+				getEventSheduleByEventId = getEventSheduleHeaderRepository.findByEventIdAndIsUsed(eventId,1);
+				
+				for(int i=0; i<getEventSheduleByEventId.size();i++)
+				{
+					List<GetEventSheduleDetail> getEventSheduleDetailList = getEventSheduleDetailRepository.findByScheduleIdAndIsUsed(getEventSheduleByEventId.get(i).getScheduleId(),1);
+					getEventSheduleByEventId.get(i).setGetEventSheduleDetailList(getEventSheduleDetailList);
+				}
+		 
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return getEventSheduleByEventId;
 
 	}
 	

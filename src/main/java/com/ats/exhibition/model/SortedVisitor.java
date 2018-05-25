@@ -19,12 +19,21 @@ public class SortedVisitor {
 
 	@Column(name = "event_id")
 	private int eventId;
+	
+	@Column(name = "event_name")
+	private String eventName;
 
 	@Column(name = "subscribe_status")
 	private int subscribeStatus;
 	
 	@Column(name = "visitor_name")
 	private String visitorName;
+	
+	@Column(name = "visitor_email")
+	private String visitoremail;
+	
+	@Column(name = "visitor_mobile")
+	private String visitorMobile;
 	
 	@Column(name = "location_id")
 	private int locationId;
@@ -110,10 +119,35 @@ public class SortedVisitor {
 		this.companyTypeName = companyTypeName;
 	}
 
+	public String getEventName() {
+		return eventName;
+	}
+
+	public void setEventName(String eventName) {
+		this.eventName = eventName;
+	}
+
+	public String getVisitoremail() {
+		return visitoremail;
+	}
+
+	public void setVisitoremail(String visitoremail) {
+		this.visitoremail = visitoremail;
+	}
+
+	public String getVisitorMobile() {
+		return visitorMobile;
+	}
+
+	public void setVisitorMobile(String visitorMobile) {
+		this.visitorMobile = visitorMobile;
+	}
+
 	@Override
 	public String toString() {
 		return "SortedVisitor [visitorEventId=" + visitorEventId + ", visitorId=" + visitorId + ", eventId=" + eventId
-				+ ", subscribeStatus=" + subscribeStatus + ", visitorName=" + visitorName + ", locationId=" + locationId
+				+ ", eventName=" + eventName + ", subscribeStatus=" + subscribeStatus + ", visitorName=" + visitorName
+				+ ", visitoremail=" + visitoremail + ", visitorMobile=" + visitorMobile + ", locationId=" + locationId
 				+ ", locationName=" + locationName + ", companyTypeId=" + companyTypeId + ", companyTypeName="
 				+ companyTypeName + "]";
 	}

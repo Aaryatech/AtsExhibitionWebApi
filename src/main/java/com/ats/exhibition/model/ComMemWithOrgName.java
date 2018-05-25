@@ -9,7 +9,7 @@ import javax.persistence.Transient;
 
 @Entity
 public class ComMemWithOrgName {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "mem_id")
@@ -17,10 +17,9 @@ public class ComMemWithOrgName {
 
 	@Column(name = "org_id")
 	private int orgId;
-	
+
 	@Column(name = "org_name")
 	private String orgName;
-
 
 	@Column(name = "member_name")
 	private String memberName;
@@ -40,11 +39,12 @@ public class ComMemWithOrgName {
 	@Column(name = "remark")
 	private String remark;
 
-	
 	@Column(name = "is_used")
 	private int isUsed;
-	
-	
+
+	@Column(name = "image")
+	private String image;
+
 	public int getIsUsed() {
 		return isUsed;
 	}
@@ -125,14 +125,20 @@ public class ComMemWithOrgName {
 		this.remark = remark;
 	}
 
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	@Override
 	public String toString() {
 		return "ComMemWithOrgName [memId=" + memId + ", orgId=" + orgId + ", orgName=" + orgName + ", memberName="
 				+ memberName + ", designation=" + designation + ", contactNo=" + contactNo + ", emailId=" + emailId
-				+ ", companyName=" + companyName + ", remark=" + remark + ", isUsed=" + isUsed + "]";
+				+ ", companyName=" + companyName + ", remark=" + remark + ", isUsed=" + isUsed + ", image=" + image
+				+ "]";
 	}
-	
-	
-
 
 }

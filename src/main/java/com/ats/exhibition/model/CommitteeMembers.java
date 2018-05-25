@@ -36,9 +36,12 @@ public class CommitteeMembers {
 
 	@Column(name = "remark")
 	private String remark;
-	
+
 	@Column(name = "is_used")
 	private int isUsed;
+
+	@Column(name = "image")
+	private String image;
 
 	public int getMemId() {
 		return memId;
@@ -104,8 +107,6 @@ public class CommitteeMembers {
 		this.remark = remark;
 	}
 
-	
-	
 	public int getIsUsed() {
 		return isUsed;
 	}
@@ -114,15 +115,20 @@ public class CommitteeMembers {
 		this.isUsed = isUsed;
 	}
 
+	
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	@Override
 	public String toString() {
 		return "CommitteeMembers [memId=" + memId + ", orgId=" + orgId + ", memberName=" + memberName + ", designation="
 				+ designation + ", contactNo=" + contactNo + ", emailId=" + emailId + ", companyName=" + companyName
-				+ ", remark=" + remark + ", isUsed=" + isUsed + "]";
+				+ ", remark=" + remark + ", isUsed=" + isUsed + ", image=" + image + "]";
 	}
-
-	
-	
-	
 
 }

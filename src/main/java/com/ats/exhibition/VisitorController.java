@@ -658,5 +658,24 @@ public class VisitorController {
 		return productList;
 
 	}
+	
+	@RequestMapping(value = { "/getAllEventsWithVisitorId" }, method = RequestMethod.POST)
+	public @ResponseBody List<Events> getAllEventsWithVisitorId(
+		 @RequestParam("visitorId") int visitorId) {
+
+		List<Events> eventList = new ArrayList<Events>();
+
+		try {
+
+			eventList = eventsRepository.getAllEventsWithVisitorId(visitorId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return eventList;
+
+	}
 
 }

@@ -30,6 +30,7 @@ import com.ats.exhibition.model.Location;
 
 import com.ats.exhibition.model.LoginResponseVisitor;
 import com.ats.exhibition.model.ProductWithExhName;
+import com.ats.exhibition.model.ProductsListWithLikeStatus;
 import com.ats.exhibition.model.SponsorWithEventName;
 import com.ats.exhibition.model.Visitor;
 import com.ats.exhibition.model.VisitorExhibitorMapping;
@@ -48,6 +49,7 @@ import com.ats.exhibition.repository.GetEventsListRepository;
 import com.ats.exhibition.repository.GetExhListRepository;
 import com.ats.exhibition.repository.LocationRepository;
 import com.ats.exhibition.repository.ProductWithExhNameRepository;
+import com.ats.exhibition.repository.ProductsListWithLikeStatusRepo;
 import com.ats.exhibition.repository.SponsorWithEventNameRepo;
 import com.ats.exhibition.repository.VisitorExhibitorMappingRepository;
 import com.ats.exhibition.repository.VisitorProductMappingRepo;
@@ -110,6 +112,8 @@ public class VisitorController {
 	@Autowired
 	ExhSubHeaderWithExhNameRepo exhSubHeaderWithExhNameRepo;
 
+	@Autowired
+	ProductsListWithLikeStatusRepo productsListWithLikeStatusRepo;
 	// ---------------------Visitor Login----------------------
 
 	@RequestMapping(value = { "/visitorLogin" }, method = RequestMethod.POST)
@@ -633,6 +637,25 @@ public class VisitorController {
 
 		}
 		return eventsList;
+
+	}
+
+	@RequestMapping(value = { "/getAllProductListByVisIdAndExhId" }, method = RequestMethod.POST)
+	public @ResponseBody List<ProductsListWithLikeStatus> getAllProductListByVisIdAndExhId(
+			@RequestParam("exhibitorId") int exhibitorId, @RequestParam("visitorId") int visitorId) {
+
+		List<ProductsListWithLikeStatus> productList = new ArrayList<ProductsListWithLikeStatus>();
+
+		try {
+
+			productList = productsListWithLikeStatusRepo.getAllProductListWithLikeStatus(exhibitorId, visitorId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return productList;
 
 	}
 

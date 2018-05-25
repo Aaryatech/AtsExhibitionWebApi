@@ -18,17 +18,16 @@ import com.ats.exhibition.model.ErrorMessage;
 import com.ats.exhibition.model.EventInfoWithAllName;
 import com.ats.exhibition.model.EventListByVisId;
 import com.ats.exhibition.model.EventVisitorMapping;
-import com.ats.exhibition.model.EventWithOrgName;
+
 import com.ats.exhibition.model.Events;
 import com.ats.exhibition.model.ExhSubHeader;
-import com.ats.exhibition.model.ExhSubHeaderWithExhName;
-import com.ats.exhibition.model.Exhibitor;
+
 import com.ats.exhibition.model.ExhibitorWithOrgName;
 import com.ats.exhibition.model.GetEventsList;
 import com.ats.exhibition.model.GetExhibitorsList;
-import com.ats.exhibition.model.GetFloarMap;
+
 import com.ats.exhibition.model.Location;
-import com.ats.exhibition.model.LoginResponseExh;
+
 import com.ats.exhibition.model.LoginResponseVisitor;
 import com.ats.exhibition.model.ProductWithExhName;
 import com.ats.exhibition.model.SponsorWithEventName;
@@ -60,16 +59,15 @@ public class VisitorController {
 	@Autowired
 	VisitorRepository visitorRepository;
 
-	@Autowired 
-	ExhSubHeaderRepository  exhSubHeaderRepository;
-	
+	@Autowired
+	ExhSubHeaderRepository exhSubHeaderRepository;
+
 	@Autowired
 	GetExhListRepository getExhListRepository;
-	
+
 	@Autowired
 	EventsRepository eventsRepository;
-	
-	
+
 	@Autowired
 	LocationRepository locationRepository;
 
@@ -339,8 +337,17 @@ public class VisitorController {
 		EventVisitorMapping eventVisitorMapping = eventVisitorMappingRepository.findByVisitorIdAndEventId(visitorId,
 				eventId);
 
-		int isUpdated = eventVisitorMappingRepository.updateStatus(eventVisitorMapping.getVisitorId(),
-				eventVisitorMapping.getEventId(), subscribeStatus);
+		if (eventVisitorMapping != null) {
+			int isUpdated = eventVisitorMappingRepository.updateStatus(eventVisitorMapping.getVisitorId(),
+					eventVisitorMapping.getEventId(), subscribeStatus);
+		} else {
+			EventVisitorMapping eventVisitorMap = new EventVisitorMapping();
+			eventVisitorMap.setEventId(eventId);
+			eventVisitorMap.setVisitorId(visitorId);
+			eventVisitorMap.setSubscribeStatus(subscribeStatus);
+
+			eventVisitorMapping = eventVisitorMappingRepository.saveAndFlush(eventVisitorMap);
+		}
 
 		return eventVisitorMapping;
 	}
@@ -348,13 +355,26 @@ public class VisitorController {
 	@RequestMapping(value = { "/getEventsList" }, method = RequestMethod.POST)
 	public @ResponseBody List<GetEventsList> getEventsList(
 			@RequestParam("companyTypeIdList") List<Integer> companyTypeIdList,
-			@RequestParam("locationIdList") List<Integer> locationIdList, @RequestParam("visitorId") int visitorId) {
+			@RequestParam("locationIdList") List<Integer> locationIdList, @RequestParam("visitorId") int visitorId,
+			@RequestParam("isCompany") int isCompany, @RequestParam("isLocation") int isLocation) {
 
 		List<GetEventsList> getEventsList = new ArrayList<GetEventsList>();
 
 		try {
 
-			getEventsList = getEventsListRepository.getEventList(companyTypeIdList, locationIdList, visitorId);
+			if (isLocation == 0 && isCompany == 0) {
+
+				getEventsList = getEventsListRepository.getEventList(visitorId);
+			} else if (isLocation == 0 && isCompany == 1) {
+				getEventsList = getEventsListRepository.getEventListWithAllCompanyList(locationIdList, visitorId);
+			} else if (isLocation == 1 && isCompany == 0) {
+				getEventsList = getEventsListRepository.getEventListWithAllLocationList(companyTypeIdList, visitorId);
+			}
+
+			else {
+				getEventsList = getEventsListRepository.getEventListithAllLocationListAndCompanyList(companyTypeIdList,
+						locationIdList, visitorId);
+			}
 
 		} catch (Exception e) {
 
@@ -439,29 +459,78 @@ public class VisitorController {
 	// ---------------------------update Exhibitor like Status----------------------
 	@RequestMapping(value = { "/updateExhibitorLikeStatus" }, method = RequestMethod.POST)
 	public @ResponseBody VisitorExhibitorMapping updateExhibitorLikeStatus(@RequestParam("visitorId") int visitorId,
-			@RequestParam("exhibitorId") int exhibitorId, @RequestParam("likeStatus") int likeStatus) {
+			@RequestParam("exhibitorId") int exhibitorId, @RequestParam("eventId") int eventId,
+			@RequestParam("likeStatus") int likeStatus) {
 
 		VisitorExhibitorMapping visitorExhibitorMapping = visitorExhibitorMappingRepository
-				.findByVisitorIdAndExhibitorId(visitorId, exhibitorId);
+				.findByVisitorIdAndExhibitorIdAndEventId(visitorId, exhibitorId, eventId);
+		if (visitorExhibitorMapping != null) {
+			int isUpdated = visitorExhibitorMappingRepository.updateStatus(visitorExhibitorMapping.getVisitorId(),
+					visitorExhibitorMapping.getExhibitorId(), visitorExhibitorMapping.getEventId(), likeStatus);
+		} else {
+			VisitorExhibitorMapping ve = new VisitorExhibitorMapping();
+			ve.setEventId(eventId);
+			ve.setExhibitorId(exhibitorId);
+			ve.setLikeStatus(likeStatus);
+			ve.setVisitorId(visitorId);
 
-		int isUpdated = visitorExhibitorMappingRepository.updateStatus(visitorExhibitorMapping.getVisitorId(),
-				visitorExhibitorMapping.getExhibitorId(), likeStatus);
+			visitorExhibitorMapping = visitorExhibitorMappingRepository.saveAndFlush(ve);
+		}
 
 		return visitorExhibitorMapping;
 	}
 
-	// ---------------------------update Visitor Product like
-	// Status----------------------
+	// ---------------------------update Visitor Product like Status-----
+
 	@RequestMapping(value = { "/updateProductLikeStatus" }, method = RequestMethod.POST)
 	public @ResponseBody VisitorProductMapping updateProductLikeStatus(@RequestParam("visitorId") int visitorId,
-			@RequestParam("productId") int productId, @RequestParam("likeStatus") int likeStatus) {
+			@RequestParam("exhibitorId") int exhibitorId,
 
-		VisitorProductMapping visitorProductMapping = visitorProductMappingRepo.findByVisitorIdAndProductId(visitorId,
-				productId);
+			@RequestParam("productId") int productId, @RequestParam("eventId") int eventId,
 
-		int isUpdated = visitorProductMappingRepo.updateStatus(visitorProductMapping.getVisitorId(),
-				visitorProductMapping.getProductId(), likeStatus);
+			@RequestParam("likeStatus") int likeStatus) {
+		VisitorProductMapping visitorProductMapping = new VisitorProductMapping();
+		try {
 
+			boolean isPrev = false;
+			List<VisitorProductMapping> visitorProductMappingList = visitorProductMappingRepo
+					.findByVisitorIdAndProductIdAndExhibitorId(visitorId, productId, exhibitorId);
+			System.err.println("Visitor Prod List " + visitorProductMappingList.toString());
+
+			if (!visitorProductMappingList.isEmpty()) {
+				System.err.println("Visitor Prod List " + visitorProductMappingList.toString());
+
+				visitorProductMapping = visitorProductMappingList.get(0);
+				isPrev = true;
+
+			}
+			if (likeStatus == 1) {
+
+				if (isPrev) {
+					visitorProductMapping.setEventId(eventId);
+					visitorProductMapping.setLikeStatus(1);
+
+					visitorProductMapping = visitorProductMappingRepo.saveAndFlush(visitorProductMapping);
+
+				} else {
+					VisitorProductMapping visitorProduct = new VisitorProductMapping();
+					visitorProduct.setExhibitorId(exhibitorId);
+					visitorProduct.setEventId(eventId);
+					visitorProduct.setProductId(productId);
+					visitorProduct.setVisitorId(visitorId);
+					visitorProduct.setLikeStatus(1);
+					visitorProductMapping = visitorProductMappingRepo.saveAndFlush(visitorProduct);
+				}
+			} else {
+
+				visitorProductMapping.setLikeStatus(0);
+
+				visitorProductMapping = visitorProductMappingRepo.saveAndFlush(visitorProductMapping);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return visitorProductMapping;
 	}
 
@@ -530,15 +599,14 @@ public class VisitorController {
 	}
 
 	@RequestMapping(value = { "/getAllSubHeaderBetweenDates" }, method = RequestMethod.POST)
-	public @ResponseBody List<ExhSubHeader> getAllSubHeaderBetweenDates(
-			@RequestParam("exhId") int exhId) {
+	public @ResponseBody List<ExhSubHeader> getAllSubHeaderBetweenDates(@RequestParam("exhId") int exhId) {
 
 		List<ExhSubHeader> exhSubHeaderList = new ArrayList<ExhSubHeader>();
 
 		try {
 			Date date = new Date();
 			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-			exhSubHeaderList = exhSubHeaderRepository.getAllSubHeaderBetweenDates(exhId,sf.format(date));
+			exhSubHeaderList = exhSubHeaderRepository.getAllSubHeaderBetweenDates(exhId, sf.format(date));
 
 		} catch (Exception e) {
 
@@ -548,17 +616,16 @@ public class VisitorController {
 		return exhSubHeaderList;
 
 	}
-	
+
 	@RequestMapping(value = { "/getAllEventsWithExhId" }, method = RequestMethod.POST)
-	public @ResponseBody List<Events> getAllEventsWithExhId(
-			@RequestParam("exhId") int exhId) {
+	public @ResponseBody List<Events> getAllEventsWithExhId(@RequestParam("exhId") int exhId) {
 
 		List<Events> eventsList = new ArrayList<Events>();
 
 		try {
 			Date date = new Date();
 			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-			eventsList = eventsRepository.getAllEventsWithExhId(exhId,sf.format(date));
+			eventsList = eventsRepository.getAllEventsWithExhId(exhId, sf.format(date));
 
 		} catch (Exception e) {
 

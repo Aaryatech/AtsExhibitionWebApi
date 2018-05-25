@@ -79,7 +79,7 @@ public class EnquiryController {
 
 		try {
 
-			enquiryHeaderWithNameList = enquiryHeaderWithNameRepo.getAllEnquiryByIsUsed(1);
+			enquiryHeaderWithNameList = enquiryHeaderWithNameRepo.getAllEnquiryByIsUsed();
 
 		} catch (Exception e) {
 

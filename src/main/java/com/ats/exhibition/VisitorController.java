@@ -35,6 +35,7 @@ import com.ats.exhibition.model.SponsorWithEventName;
 import com.ats.exhibition.model.Visitor;
 import com.ats.exhibition.model.VisitorExhibitorMapping;
 import com.ats.exhibition.model.VisitorProductMapping;
+import com.ats.exhibition.model.eventhistory.EventsWithSubStatus;
 import com.ats.exhibition.repository.CompanyTypeRepository;
 import com.ats.exhibition.repository.EventExhMappingRepository;
 import com.ats.exhibition.repository.EventInfoWithAllNameRepo;
@@ -54,6 +55,7 @@ import com.ats.exhibition.repository.SponsorWithEventNameRepo;
 import com.ats.exhibition.repository.VisitorExhibitorMappingRepository;
 import com.ats.exhibition.repository.VisitorProductMappingRepo;
 import com.ats.exhibition.repository.VisitorRepository;
+import com.ats.exhibition.repository.eventhistory.EventsWithSubStatusRepo;
 
 @RestController
 public class VisitorController {
@@ -114,6 +116,10 @@ public class VisitorController {
 
 	@Autowired
 	ProductsListWithLikeStatusRepo productsListWithLikeStatusRepo;
+	
+	
+	@Autowired
+	EventsWithSubStatusRepo getEventsWithSubStatusRepo;
 	// ---------------------Visitor Login----------------------
 
 	@RequestMapping(value = { "/visitorLogin" }, method = RequestMethod.POST)
@@ -622,17 +628,20 @@ public class VisitorController {
 	}
 
 	@RequestMapping(value = { "/getAllEventsWithExhId" }, method = RequestMethod.POST)
-	public @ResponseBody List<Events> getAllEventsWithExhId(@RequestParam("exhId") int exhId) {
+	public @ResponseBody List<EventsWithSubStatus> getAllEventsWithExhId(@RequestParam("exhId") int exhId) {
 
-		List<Events> eventsList = new ArrayList<Events>();
+		List<EventsWithSubStatus> eventsList = new ArrayList<EventsWithSubStatus>();
 
 		try {
 			Date date = new Date();
 			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-			eventsList = eventsRepository.getAllEventsWithExhId(exhId, sf.format(date));
+			eventsList = getEventsWithSubStatusRepo.getAllEventsWithExhId(exhId, sf.format(date));
 
 		} catch (Exception e) {
 
+			
+			
+			System.err.println("Exception in getAllEventsWithExhId @Visitor controller" + e.getMessage());
 			e.printStackTrace();
 
 		}

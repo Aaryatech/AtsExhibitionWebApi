@@ -7,12 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "t_spin_que_detail")
-public class SpinQueDetail {
 
+public class SpinQueDetailWithQue {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "t_que_detail_id")
@@ -23,6 +21,8 @@ public class SpinQueDetail {
 
 	@Column(name = "que_id")
 	private int queId;
+
+	private String question;
 
 	@Column(name = "date")
 	private Date date;
@@ -60,6 +60,14 @@ public class SpinQueDetail {
 		this.queId = queId;
 	}
 
+	public String getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(String question) {
+		this.question = question;
+	}
+
 	public Date getDate() {
 		return date;
 	}
@@ -94,8 +102,9 @@ public class SpinQueDetail {
 
 	@Override
 	public String toString() {
-		return "SpinQueDetail [tQueDetailId=" + tQueDetailId + ", tQueId=" + tQueId + ", queId=" + queId + ", date="
-				+ date + ", actualAns=" + actualAns + ", isUsed=" + isUsed + ", status=" + status + "]";
+		return "SpinQueDetailWithQue [tQueDetailId=" + tQueDetailId + ", tQueId=" + tQueId + ", queId=" + queId
+				+ ", question=" + question + ", date=" + date + ", actualAns=" + actualAns + ", isUsed=" + isUsed
+				+ ", status=" + status + "]";
 	}
 
 }

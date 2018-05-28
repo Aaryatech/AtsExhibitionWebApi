@@ -1,47 +1,70 @@
 package com.ats.exhibition.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 @Entity
 public class SpinQueHeaderWithName {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "que_id")
-	private int queId;
+	@Column(name = "t_que_id")
+	private int tQueId;
+
+	@Column(name = "emp_id")
+	private int empId;
+
+	private String empName;
 
 	@Column(name = "exh_id")
 	private int exhId;
 
 	private String exhName;
 
-	@Column(name = "question")
-	private String question;
+	@Column(name = "visitor_id")
+	private int visitorId;
 
-	@Column(name = "que_desc")
-	private String queDesc;
+	private String visitorName;
 
 	@Column(name = "date")
-	private String date;
+	private Date date;
 
-	@Column(name = "is_active")
-	private int isActive;
+	@Column(name = "date_time")
+	private String dateTime;
 
 	@Column(name = "is_used")
 	private int isUsed;
 
-	public int getQueId() {
-		return queId;
+	@Column(name = "status")
+	private int status;
+
+	public int gettQueId() {
+		return tQueId;
 	}
 
-	public void setQueId(int queId) {
-		this.queId = queId;
+	public void settQueId(int tQueId) {
+		this.tQueId = tQueId;
+	}
+
+	public int getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(int empId) {
+		this.empId = empId;
+	}
+
+	public String getEmpName() {
+		return empName;
+	}
+
+	public void setEmpName(String empName) {
+		this.empName = empName;
 	}
 
 	public int getExhId() {
@@ -60,38 +83,36 @@ public class SpinQueHeaderWithName {
 		this.exhName = exhName;
 	}
 
-	public String getQuestion() {
-		return question;
+	public int getVisitorId() {
+		return visitorId;
 	}
 
-	public void setQuestion(String question) {
-		this.question = question;
+	public void setVisitorId(int visitorId) {
+		this.visitorId = visitorId;
 	}
 
-	public String getQueDesc() {
-		return queDesc;
+	public String getVisitorName() {
+		return visitorName;
 	}
 
-	public void setQueDesc(String queDesc) {
-		this.queDesc = queDesc;
+	public void setVisitorName(String visitorName) {
+		this.visitorName = visitorName;
 	}
 
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-
-	@JsonFormat(locale = "hi", timezone = "Asia/Kolkata", pattern = "dd-MM-yyyy")
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
-	public int getIsActive() {
-		return isActive;
+	public String getDateTime() {
+		return dateTime;
 	}
 
-	public void setIsActive(int isActive) {
-		this.isActive = isActive;
+	public void setDateTime(String dateTime) {
+		this.dateTime = dateTime;
 	}
 
 	public int getIsUsed() {
@@ -102,11 +123,19 @@ public class SpinQueHeaderWithName {
 		this.isUsed = isUsed;
 	}
 
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
-		return "SpinQueHeaderWithName [queId=" + queId + ", exhId=" + exhId + ", exhName=" + exhName + ", question="
-				+ question + ", queDesc=" + queDesc + ", date=" + date + ", isActive=" + isActive + ", isUsed=" + isUsed
-				+ "]";
+		return "SpinQueHeaderWithName [tQueId=" + tQueId + ", empId=" + empId + ", empName=" + empName + ", exhId="
+				+ exhId + ", exhName=" + exhName + ", visitorId=" + visitorId + ", visitorName=" + visitorName
+				+ ", date=" + date + ", dateTime=" + dateTime + ", isUsed=" + isUsed + ", status=" + status + "]";
 	}
 
 }

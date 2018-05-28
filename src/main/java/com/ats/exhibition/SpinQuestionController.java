@@ -13,58 +13,66 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ats.exhibition.model.ErrorMessage;
 import com.ats.exhibition.model.SpinQueDetail;
-import com.ats.exhibition.model.SpinQueDetailWithName;
+import com.ats.exhibition.model.SpinQueDetailWithQue;
+import com.ats.exhibition.model.SpinQueHeader;
 import com.ats.exhibition.model.SpinQueHeaderWithName;
-import com.ats.exhibition.model.SpinQuestionHeader;
-import com.ats.exhibition.repository.SpinQueDetailRepo;
-import com.ats.exhibition.repository.SpinQueDetailWithNameRepo;
+import com.ats.exhibition.model.SpinQueMasterWithName;
+import com.ats.exhibition.model.SpinQuestionMaster;
+import com.ats.exhibition.repository.SpinQueDetailRepository;
+import com.ats.exhibition.repository.SpinQueDetailWithQueRepo;
 import com.ats.exhibition.repository.SpinQueHeaderRepo;
 import com.ats.exhibition.repository.SpinQueHeaderWithNameRepo;
+import com.ats.exhibition.repository.SpinQueMasterRepo;
+import com.ats.exhibition.repository.SpinQueMasterWithNameRepo;
 
 @RestController
 public class SpinQuestionController {
 
 	@Autowired
-	SpinQueDetailRepo spinQueDetailRepo;
-
-	@Autowired
 	SpinQueHeaderRepo spinQueHeaderRepo;
 
 	@Autowired
-	SpinQueHeaderWithNameRepo spinQueHeaderWithNameRepo;
-	
-	@Autowired
-	SpinQueDetailWithNameRepo spinQueDetailWithNameRepo;
+	SpinQueMasterRepo spinQueMasterRepo;
 
+	@Autowired
+	SpinQueMasterWithNameRepo spinQueMasterWithNameRepo;
+
+	@Autowired
+	SpinQueHeaderWithNameRepo spinQueHeaderWithNameRepo;
+
+	@Autowired
+	SpinQueDetailRepository spinQueDetailRepository;
+
+	@Autowired
+	SpinQueDetailWithQueRepo spinQueDetailWithQueRepo;
 	// ----------Spin Question Header------------------
 
-	@RequestMapping(value = { "/saveSpinQueHeader" }, method = RequestMethod.POST)
-	public @ResponseBody SpinQuestionHeader saveSpinQueHeader(@RequestBody SpinQuestionHeader SpinQuestionHeader) {
+	@RequestMapping(value = { "/saveSpinQueMaster" }, method = RequestMethod.POST)
+	public @ResponseBody SpinQuestionMaster saveSpinQueMaster(@RequestBody SpinQuestionMaster SpinQuestion) {
 
-		SpinQuestionHeader spinQuestionHeader = new SpinQuestionHeader();
+		SpinQuestionMaster spinQuestion = new SpinQuestionMaster();
 
 		try {
 
-			spinQuestionHeader = spinQueHeaderRepo.saveAndFlush(SpinQuestionHeader);
+			spinQuestion = spinQueMasterRepo.saveAndFlush(SpinQuestion);
 
 		} catch (Exception e) {
 
 			e.printStackTrace();
 
 		}
-		return spinQuestionHeader;
+		return spinQuestion;
 
 	}
-	
-	
-	@RequestMapping(value = { "/getAllSpinQueHeaderByExhId" }, method = RequestMethod.POST)
-	public @ResponseBody List<SpinQueHeaderWithName> getAllSpinQueHeaderByExhId(@RequestParam("exhId") int exhId) {
 
-		List<SpinQueHeaderWithName> spinQueHeaderWithNameList = new ArrayList<SpinQueHeaderWithName>();
+	@RequestMapping(value = { "/getAllSpinQueByExhId" }, method = RequestMethod.POST)
+	public @ResponseBody List<SpinQueMasterWithName> getAllSpinQueByExhId(@RequestParam("exhId") int exhId) {
+
+		List<SpinQueMasterWithName> spinQueHeaderWithNameList = new ArrayList<SpinQueMasterWithName>();
 
 		try {
 
-			spinQueHeaderWithNameList = spinQueHeaderWithNameRepo.findByExhId(exhId);
+			spinQueHeaderWithNameList = spinQueMasterWithNameRepo.findByExhId(exhId);
 
 		} catch (Exception e) {
 
@@ -74,16 +82,15 @@ public class SpinQuestionController {
 		return spinQueHeaderWithNameList;
 
 	}
-	
 
-	@RequestMapping(value = { "/getAllSpinQueHeaderByQueId" }, method = RequestMethod.POST)
-	public @ResponseBody SpinQueHeaderWithName getAllSpinQueHeaderByQueId(@RequestParam("queId") int queId) {
+	@RequestMapping(value = { "/getAllSpinQueByQueId" }, method = RequestMethod.POST)
+	public @ResponseBody SpinQueMasterWithName getAllSpinQueByQueId(@RequestParam("queId") int queId) {
 
-		SpinQueHeaderWithName spinQueHeaderWithName = new SpinQueHeaderWithName();
+		SpinQueMasterWithName spinQueHeaderWithName = new SpinQueMasterWithName();
 
 		try {
 
-			spinQueHeaderWithName = spinQueHeaderWithNameRepo.findByQueId(queId);
+			spinQueHeaderWithName = spinQueMasterWithNameRepo.findByQueId(queId);
 
 		} catch (Exception e) {
 
@@ -94,14 +101,14 @@ public class SpinQuestionController {
 
 	}
 
-	@RequestMapping(value = { "/getAllSpinQueHeaderByIsUsed" }, method = RequestMethod.GET)
-	public @ResponseBody List<SpinQueHeaderWithName> getAllSpinQueHeaderByIsUsed() {
+	@RequestMapping(value = { "/getAllSpinQueByIsUsed" }, method = RequestMethod.GET)
+	public @ResponseBody List<SpinQueMasterWithName> getAllSpinQueByIsUsed() {
 
-		List<SpinQueHeaderWithName> spinQueHeaderWithNameList = new ArrayList<SpinQueHeaderWithName>();
+		List<SpinQueMasterWithName> spinQueHeaderWithNameList = new ArrayList<SpinQueMasterWithName>();
 
 		try {
 
-			spinQueHeaderWithNameList = spinQueHeaderWithNameRepo.findByIsUsed();
+			spinQueHeaderWithNameList = spinQueMasterWithNameRepo.findByIsUsed();
 
 		} catch (Exception e) {
 
@@ -112,13 +119,13 @@ public class SpinQuestionController {
 
 	}
 
-	@RequestMapping(value = { "/deleteSpinQueHeader" }, method = RequestMethod.POST)
-	public @ResponseBody ErrorMessage deleteSpinQueHeader(@RequestParam("queId") int queId) {
+	@RequestMapping(value = { "/deleteSpinQueMaster" }, method = RequestMethod.POST)
+	public @ResponseBody ErrorMessage deleteSpinQueMaster(@RequestParam("queId") int queId) {
 
 		ErrorMessage errorMessage = new ErrorMessage();
 
 		try {
-			int delete = spinQueHeaderRepo.deleteSpinQueHeader(queId);
+			int delete = spinQueMasterRepo.deleteSpinQueMaster(queId);
 
 			if (delete == 1) {
 				errorMessage.setError(false);
@@ -140,31 +147,31 @@ public class SpinQuestionController {
 
 	// ----------Spin Question Header------------------
 
-	@RequestMapping(value = { "/saveSpinQueDetail" }, method = RequestMethod.POST)
-	public @ResponseBody SpinQueDetail saveSpinQueDetail(@RequestBody SpinQueDetail SpinQueDetail) {
+	@RequestMapping(value = { "/saveSpinQueHeader" }, method = RequestMethod.POST)
+	public @ResponseBody SpinQueHeader saveSpinQueHeader(@RequestBody SpinQueHeader SpinQueHeader) {
 
-		SpinQueDetail spinQueDetail = new SpinQueDetail();
+		SpinQueHeader spinQueHeader = new SpinQueHeader();
 
 		try {
 
-			spinQueDetail = spinQueDetailRepo.saveAndFlush(SpinQueDetail);
+			spinQueHeader = spinQueHeaderRepo.saveAndFlush(SpinQueHeader);
 
 		} catch (Exception e) {
 
 			e.printStackTrace();
 
 		}
-		return spinQueDetail;
+		return spinQueHeader;
 
 	}
 
-	@RequestMapping(value = { "/deleteSpinQueDetail" }, method = RequestMethod.POST)
-	public @ResponseBody ErrorMessage deleteSpinQueDetail(@RequestParam("tQueId") int tQueId) {
+	@RequestMapping(value = { "/deleteSpinQueHeader" }, method = RequestMethod.POST)
+	public @ResponseBody ErrorMessage deleteSpinQueHeader(@RequestParam("tQueId") int tQueId) {
 
 		ErrorMessage errorMessage = new ErrorMessage();
 
 		try {
-			int delete = spinQueDetailRepo.deleteSpinQueDetail(tQueId);
+			int delete = spinQueHeaderRepo.deleteSpinQueHeader(tQueId);
 
 			if (delete == 1) {
 				errorMessage.setError(false);
@@ -183,15 +190,15 @@ public class SpinQuestionController {
 		}
 		return errorMessage;
 	}
-	
-	@RequestMapping(value = { "/getAllSpinQueDetailByIsUsed" }, method = RequestMethod.GET)
-	public @ResponseBody List<SpinQueDetailWithName> getAllSpinQueDetailByIsUsed() {
 
-		List<SpinQueDetailWithName> spinQueDetailWithNameList = new ArrayList<SpinQueDetailWithName>();
+	@RequestMapping(value = { "/getAllSpinQueHeaderByIsUsed" }, method = RequestMethod.GET)
+	public @ResponseBody List<SpinQueHeaderWithName> getAllSpinQueHeaderByIsUsed() {
+
+		List<SpinQueHeaderWithName> spinQueDetailWithNameList = new ArrayList<SpinQueHeaderWithName>();
 
 		try {
 
-			spinQueDetailWithNameList = spinQueDetailWithNameRepo.findByIsUsed();
+			spinQueDetailWithNameList = spinQueHeaderWithNameRepo.findByIsUsed();
 
 		} catch (Exception e) {
 
@@ -202,5 +209,67 @@ public class SpinQuestionController {
 
 	}
 
+	// ----------Spin Question Header------------------
 
+	@RequestMapping(value = { "/saveSpinQueDetail" }, method = RequestMethod.POST)
+	public @ResponseBody SpinQueDetail saveSpinQueDetail(@RequestBody SpinQueDetail SpinQueDetail) {
+
+		SpinQueDetail spinQuestion = new SpinQueDetail();
+
+		try {
+
+			spinQuestion = spinQueDetailRepository.saveAndFlush(SpinQueDetail);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return spinQuestion;
+
+	}
+
+	@RequestMapping(value = { "/deleteSpinQueDetail" }, method = RequestMethod.POST)
+	public @ResponseBody ErrorMessage deleteSpinQueDetail(@RequestParam("tQueDetailId") int tQueDetailId) {
+
+		ErrorMessage errorMessage = new ErrorMessage();
+
+		try {
+			int delete = spinQueDetailRepository.deleteSpinQueDetail(tQueDetailId);
+
+			if (delete == 1) {
+				errorMessage.setError(false);
+				errorMessage.setMessage("Enquiry Deleted Successfully");
+			} else {
+				errorMessage.setError(true);
+				errorMessage.setMessage("Enquiry Deletion Failed");
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			errorMessage.setError(true);
+			errorMessage.setMessage("Enquiry Deletion Failed :EXC");
+
+		}
+		return errorMessage;
+	}
+
+	@RequestMapping(value = { "/getAllSpinQueDetailByIsUsed" }, method = RequestMethod.GET)
+	public @ResponseBody List<SpinQueDetailWithQue> getAllSpinQueDetailByIsUsed() {
+
+		List<SpinQueDetailWithQue> spinQueDetailWithQue = new ArrayList<SpinQueDetailWithQue>();
+
+		try {
+
+			spinQueDetailWithQue = spinQueDetailWithQueRepo.findByIsUsed();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return spinQueDetailWithQue;
+
+	}
 }

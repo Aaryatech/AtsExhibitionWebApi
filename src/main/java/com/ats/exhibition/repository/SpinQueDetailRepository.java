@@ -6,14 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ats.exhibition.model.SpinQueHeader;
+import com.ats.exhibition.model.SpinQueDetail;
 
-public interface SpinQueHeaderRepo extends JpaRepository<SpinQueHeader, Integer> {
-	
+public interface SpinQueDetailRepository extends JpaRepository<SpinQueDetail, Integer> {
+
 	@Transactional
 	@Modifying
-	@Query("UPDATE SpinQueHeader SET isUsed=0  WHERE t_que_id=:tQueId")
-	int deleteSpinQueHeader(@Param("tQueId") int tQueId);
-	
+	@Query("UPDATE SpinQueDetail SET isUsed=0  WHERE t_que_detail_id=:tQueDetailId")
+	int deleteSpinQueDetail(@Param("tQueDetailId") int tQueDetailId);
 
 }

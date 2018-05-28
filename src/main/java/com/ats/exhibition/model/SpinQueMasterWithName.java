@@ -5,11 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-@Table(name = "m_spin_que")
-public class SpinQuestionHeader {
+public class SpinQueMasterWithName {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,18 +19,20 @@ public class SpinQuestionHeader {
 	@Column(name = "exh_id")
 	private int exhId;
 
+	private String exhName;
+
 	@Column(name = "question")
 	private String question;
 
 	@Column(name = "que_desc")
 	private String queDesc;
-	
+
 	@Column(name = "date")
 	private String date;
-	
+
 	@Column(name = "is_active")
 	private int isActive;
-	
+
 	@Column(name = "is_used")
 	private int isUsed;
 
@@ -48,6 +50,14 @@ public class SpinQuestionHeader {
 
 	public void setExhId(int exhId) {
 		this.exhId = exhId;
+	}
+
+	public String getExhName() {
+		return exhName;
+	}
+
+	public void setExhName(String exhName) {
+		this.exhName = exhName;
 	}
 
 	public String getQuestion() {
@@ -70,6 +80,8 @@ public class SpinQuestionHeader {
 		return date;
 	}
 
+
+	@JsonFormat(locale = "hi", timezone = "Asia/Kolkata", pattern = "dd-MM-yyyy")
 	public void setDate(String date) {
 		this.date = date;
 	}
@@ -92,14 +104,9 @@ public class SpinQuestionHeader {
 
 	@Override
 	public String toString() {
-		return "SpinQuestionHeader [queId=" + queId + ", exhId=" + exhId + ", question=" + question + ", queDesc="
-				+ queDesc + ", date=" + date + ", isActive=" + isActive + ", isUsed=" + isUsed + "]";
+		return "SpinQueHeaderWithName [queId=" + queId + ", exhId=" + exhId + ", exhName=" + exhName + ", question="
+				+ question + ", queDesc=" + queDesc + ", date=" + date + ", isActive=" + isActive + ", isUsed=" + isUsed
+				+ "]";
 	}
-	
-	
-	
-	
-	
-	
 
 }

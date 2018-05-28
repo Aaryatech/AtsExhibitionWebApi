@@ -1,40 +1,50 @@
 package com.ats.exhibition.model;
 
+import java.util.Date;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
-public class SpinQueDetailWithName {
+@Table(name = "t_spin_que")
+public class SpinQueHeader {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "t_que_id")
 	private int tQueId;
 
-	@Column(name = "que_id")
+	@Column(name = "emp_id")
 	private int queId;
 
 	@Column(name = "exh_id")
 	private int exhId;
 
-	private String exhName;
-
 	@Column(name = "visitor_id")
 	private int visitorId;
 
-	private String visitorName;
-
-	@Column(name = "actual_ans")
-	private String actualAns;
+	@Column(name = "date")
+	private Date date;
 
 	@Column(name = "date_time")
 	private String dateTime;
 
 	@Column(name = "is_used")
 	private int isUsed;
+
+	@Column(name = "status")
+	private int status;
+	
+	@Transient
+	List<SpinQueDetail> spinQueDetailList;
+	
+	
 
 	public int gettQueId() {
 		return tQueId;
@@ -60,14 +70,6 @@ public class SpinQueDetailWithName {
 		this.exhId = exhId;
 	}
 
-	public String getExhName() {
-		return exhName;
-	}
-
-	public void setExhName(String exhName) {
-		this.exhName = exhName;
-	}
-
 	public int getVisitorId() {
 		return visitorId;
 	}
@@ -76,20 +78,12 @@ public class SpinQueDetailWithName {
 		this.visitorId = visitorId;
 	}
 
-	public String getVisitorName() {
-		return visitorName;
+	public Date getDate() {
+		return date;
 	}
 
-	public void setVisitorName(String visitorName) {
-		this.visitorName = visitorName;
-	}
-
-	public String getActualAns() {
-		return actualAns;
-	}
-
-	public void setActualAns(String actualAns) {
-		this.actualAns = actualAns;
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	public String getDateTime() {
@@ -108,11 +102,28 @@ public class SpinQueDetailWithName {
 		this.isUsed = isUsed;
 	}
 
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	
+	public List<SpinQueDetail> getSpinQueDetailList() {
+		return spinQueDetailList;
+	}
+
+	public void setSpinQueDetailList(List<SpinQueDetail> spinQueDetailList) {
+		this.spinQueDetailList = spinQueDetailList;
+	}
+
 	@Override
 	public String toString() {
-		return "SpinQueDetailWithName [tQueId=" + tQueId + ", queId=" + queId + ", exhId=" + exhId + ", exhName="
-				+ exhName + ", visitorId=" + visitorId + ", visitorName=" + visitorName + ", actualAns=" + actualAns
-				+ ", dateTime=" + dateTime + ", isUsed=" + isUsed + "]";
+		return "SpinQueHeader [tQueId=" + tQueId + ", queId=" + queId + ", exhId=" + exhId + ", visitorId=" + visitorId
+				+ ", date=" + date + ", dateTime=" + dateTime + ", isUsed=" + isUsed + ", status=" + status
+				+ ", spinQueDetailList=" + spinQueDetailList + "]";
 	}
 
 }

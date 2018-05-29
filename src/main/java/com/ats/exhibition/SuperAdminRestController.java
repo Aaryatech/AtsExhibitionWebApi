@@ -18,10 +18,12 @@ import com.ats.exhibition.model.GetEventSheduleHeader;
 import com.ats.exhibition.model.Package1;
 import com.ats.exhibition.model.SortedExhibitor;
 import com.ats.exhibition.model.SortedVisitor;
+import com.ats.exhibition.model.VisitorWithOrgEventName;
 import com.ats.exhibition.repository.OrganiserRepository;
 import com.ats.exhibition.repository.Package1Repository;
 import com.ats.exhibition.repository.SortedExhibitorRepository;
 import com.ats.exhibition.repository.SortedVisitorRepository;
+import com.ats.exhibition.repository.VisitorWithOrgEventNameRepo;
 import com.ats.exhibition.repository.EventWithOrgNameRepository;
 import com.ats.exhibition.repository.ExhibitorWithOrgNameRepo;
 import com.ats.exhibition.repository.GetEventSheduleDetailRepository;
@@ -51,6 +53,9 @@ public class SuperAdminRestController {
 	
 	@Autowired
 	GetEventSheduleDetailRepository getEventSheduleDetailRepository;
+	
+	@Autowired
+	VisitorWithOrgEventNameRepo visitorWithOrgEventNameRepo;
 	
 	
 	@RequestMapping(value = { "/sortedExhibitorByLocationAndCompanyType" }, method = RequestMethod.POST)
@@ -222,22 +227,22 @@ public class SuperAdminRestController {
 
 	}
 	
-	/*@RequestMapping(value = { "/getPackageById" }, method = RequestMethod.POST)
-	public @ResponseBody Package1 getPackageById(@RequestParam("pkgId") int pkgId) {
+	@RequestMapping(value = { "/getAllVisitorsByOrgId" }, method = RequestMethod.POST)
+	public @ResponseBody List<VisitorWithOrgEventName> getAllVisitorsByOrgId(@RequestParam("orgId") int orgId) {
 
-		 Package1  package1 = new  Package1();
+		List<VisitorWithOrgEventName> visitorList = new ArrayList<VisitorWithOrgEventName>();
 
 		try {
 
-			package1 = package1Repository.findByPkgId(pkgId);
+			visitorList = visitorWithOrgEventNameRepo.getAllVisitorsByOrgId(orgId);
 
 		} catch (Exception e) {
 
 			e.printStackTrace();
 
 		}
-		return package1;
+		return visitorList;
 
-	}*/
+	}
 
 }

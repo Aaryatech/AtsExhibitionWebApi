@@ -41,7 +41,7 @@ public class SpinQueHeaderWithName {
 	private int isUsed;
 
 	@Column(name = "status")
-	private int status;
+	private String status;
 
 	public int gettQueId() {
 		return tQueId;
@@ -123,11 +123,11 @@ public class SpinQueHeaderWithName {
 		this.isUsed = isUsed;
 	}
 
-	public int getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 

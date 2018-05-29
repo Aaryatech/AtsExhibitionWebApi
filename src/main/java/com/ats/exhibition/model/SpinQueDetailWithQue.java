@@ -34,7 +34,7 @@ public class SpinQueDetailWithQue {
 	private int isUsed;
 
 	@Column(name = "status")
-	private int status;
+	private String status;
 
 	public int gettQueDetailId() {
 		return tQueDetailId;
@@ -92,11 +92,11 @@ public class SpinQueDetailWithQue {
 		this.isUsed = isUsed;
 	}
 
-	public int getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 

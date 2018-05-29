@@ -1,19 +1,15 @@
 package com.ats.exhibition.model;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
-@Table(name = "t_spin_que")
-public class SpinQueHeader {
+public class SpinWithVisitorInfo {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,13 +17,19 @@ public class SpinQueHeader {
 	private int tQueId;
 
 	@Column(name = "emp_id")
-	private int queId;
+	private int empId;
+
+	private String empName;
 
 	@Column(name = "exh_id")
 	private int exhId;
 
+	private String exhName;
+
 	@Column(name = "visitor_id")
 	private int visitorId;
+
+	private String visitorName;
 
 	@Column(name = "date")
 	private Date date;
@@ -41,8 +43,8 @@ public class SpinQueHeader {
 	@Column(name = "status")
 	private String status;
 
-	@Transient
-	List<SpinQueDetail> spinQueDetailList;
+	private String visitorMobile;
+	private String visitorEmail;
 
 	public int gettQueId() {
 		return tQueId;
@@ -52,12 +54,20 @@ public class SpinQueHeader {
 		this.tQueId = tQueId;
 	}
 
-	public int getQueId() {
-		return queId;
+	public int getEmpId() {
+		return empId;
 	}
 
-	public void setQueId(int queId) {
-		this.queId = queId;
+	public void setEmpId(int empId) {
+		this.empId = empId;
+	}
+
+	public String getEmpName() {
+		return empName;
+	}
+
+	public void setEmpName(String empName) {
+		this.empName = empName;
 	}
 
 	public int getExhId() {
@@ -68,12 +78,28 @@ public class SpinQueHeader {
 		this.exhId = exhId;
 	}
 
+	public String getExhName() {
+		return exhName;
+	}
+
+	public void setExhName(String exhName) {
+		this.exhName = exhName;
+	}
+
 	public int getVisitorId() {
 		return visitorId;
 	}
 
 	public void setVisitorId(int visitorId) {
 		this.visitorId = visitorId;
+	}
+
+	public String getVisitorName() {
+		return visitorName;
+	}
+
+	public void setVisitorName(String visitorName) {
+		this.visitorName = visitorName;
 	}
 
 	public Date getDate() {
@@ -100,14 +126,6 @@ public class SpinQueHeader {
 		this.isUsed = isUsed;
 	}
 
-	public List<SpinQueDetail> getSpinQueDetailList() {
-		return spinQueDetailList;
-	}
-
-	public void setSpinQueDetailList(List<SpinQueDetail> spinQueDetailList) {
-		this.spinQueDetailList = spinQueDetailList;
-	}
-
 	public String getStatus() {
 		return status;
 	}
@@ -116,11 +134,28 @@ public class SpinQueHeader {
 		this.status = status;
 	}
 
+	public String getVisitorMobile() {
+		return visitorMobile;
+	}
+
+	public void setVisitorMobile(String visitorMobile) {
+		this.visitorMobile = visitorMobile;
+	}
+
+	public String getVisitorEmail() {
+		return visitorEmail;
+	}
+
+	public void setVisitorEmail(String visitorEmail) {
+		this.visitorEmail = visitorEmail;
+	}
+
 	@Override
 	public String toString() {
-		return "SpinQueHeader [tQueId=" + tQueId + ", queId=" + queId + ", exhId=" + exhId + ", visitorId=" + visitorId
+		return "SpinWithVisitorInfo [tQueId=" + tQueId + ", empId=" + empId + ", empName=" + empName + ", exhId="
+				+ exhId + ", exhName=" + exhName + ", visitorId=" + visitorId + ", visitorName=" + visitorName
 				+ ", date=" + date + ", dateTime=" + dateTime + ", isUsed=" + isUsed + ", status=" + status
-				+ ", spinQueDetailList=" + spinQueDetailList + "]";
+				+ ", visitorMobile=" + visitorMobile + ", visitorEmail=" + visitorEmail + "]";
 	}
 
 }

@@ -107,7 +107,7 @@ public class MasterController {
 
 	@Autowired
 	GetScheduleHeaderRepository getScheduleHeaderRepository;
-	
+
 	@Autowired
 	EventPhotoRepository eventPhotoRepository;
 
@@ -160,8 +160,8 @@ public class MasterController {
 		return flourMapRes;
 
 	}
-	
-	//sachin get Event 
+
+	// sachin get Event
 	@RequestMapping(value = { "/getEventByEId" }, method = RequestMethod.POST)
 	public @ResponseBody Events getEventByEId(@RequestParam("eventId") int eventId) {
 
@@ -170,7 +170,7 @@ public class MasterController {
 			eventResponse = eventsRepository.findByEventId(eventId);
 
 		} catch (Exception e) {
-			System.err.println("Exception in getting /getEventByEId @MasterController "+e.getMessage());
+			System.err.println("Exception in getting /getEventByEId @MasterController " + e.getMessage());
 			e.printStackTrace();
 
 		}
@@ -286,13 +286,13 @@ public class MasterController {
 
 		List<GetSchedule> scheduleHeaderRes = null;
 		try {
-			scheduleHeaderRes = getScheduleHeaderRepository.findByEventIdAndIsUsed(eventId,1);
+			scheduleHeaderRes = getScheduleHeaderRepository.findByEventIdAndIsUsed(eventId, 1);
 
-			for(int i=0;i<scheduleHeaderRes.size();i++)
-			{
-			List<ScheduleDetail> scheduleDetails = scheduleDetailRepository.findByScheduleIdAndIsUsed(scheduleHeaderRes.get(i).getScheduleId(),1);
+			for (int i = 0; i < scheduleHeaderRes.size(); i++) {
+				List<ScheduleDetail> scheduleDetails = scheduleDetailRepository
+						.findByScheduleIdAndIsUsed(scheduleHeaderRes.get(i).getScheduleId(), 1);
 
-			scheduleHeaderRes.get(i).setScheduleDetailList(scheduleDetails);
+				scheduleHeaderRes.get(i).setScheduleDetailList(scheduleDetails);
 			}
 
 		} catch (Exception e) {
@@ -311,7 +311,7 @@ public class MasterController {
 		try {
 			scheduleHeaderRes = getScheduleHeaderRepository.findByScheduleId(scheduleId);
 
-			List<ScheduleDetail> scheduleDetails = scheduleDetailRepository.findByScheduleIdAndIsUsed(scheduleId,1);
+			List<ScheduleDetail> scheduleDetails = scheduleDetailRepository.findByScheduleIdAndIsUsed(scheduleId, 1);
 
 			scheduleHeaderRes.setScheduleDetailList(scheduleDetails);
 
@@ -329,11 +329,11 @@ public class MasterController {
 
 		List<GetSchedule> scheduleHeaderRes = null;
 		try {
-			scheduleHeaderRes = getScheduleHeaderRepository.findByOrgId(orgId,1);
+			scheduleHeaderRes = getScheduleHeaderRepository.findByOrgId(orgId, 1);
 
 			for (int i = 0; i < scheduleHeaderRes.size(); i++) {
 				List<ScheduleDetail> scheduleDetails = scheduleDetailRepository
-						.findByScheduleIdAndIsUsed(scheduleHeaderRes.get(i).getScheduleId(),1);
+						.findByScheduleIdAndIsUsed(scheduleHeaderRes.get(i).getScheduleId(), 1);
 				scheduleHeaderRes.get(i).setScheduleDetailList(scheduleDetails);
 			}
 
@@ -359,7 +359,7 @@ public class MasterController {
 		return sponsorRes;
 
 	}
-    
+
 	@RequestMapping(value = { "/deleteSponsor" }, method = RequestMethod.POST)
 	public @ResponseBody ErrorMessage deleteSponsor(@RequestParam("sponsorId") int sponsorId) {
 
@@ -842,9 +842,9 @@ public class MasterController {
 		return organiser;
 
 	}
-	
+
 	@RequestMapping(value = { "/getSubHeaderById" }, method = RequestMethod.POST)
-	public @ResponseBody OrgSubscription getSubHeaderById(@RequestParam("subId") int subId ) {
+	public @ResponseBody OrgSubscription getSubHeaderById(@RequestParam("subId") int subId) {
 
 		OrgSubscription organiser = new OrgSubscription();
 
@@ -992,10 +992,11 @@ public class MasterController {
 		return errorMessage;
 
 	}
-	@RequestMapping(value = { "/getGallaryCount" }, method = RequestMethod.POST)
-	public @ResponseBody int getGallaryCount(@RequestParam("eventId")int eventId) {
 
-      int count = 0;
+	@RequestMapping(value = { "/getGallaryCount" }, method = RequestMethod.POST)
+	public @ResponseBody int getGallaryCount(@RequestParam("eventId") int eventId) {
+
+		int count = 0;
 		try {
 
 			count = eventPhotoRepository.getGallaryCount(eventId);
@@ -1008,6 +1009,7 @@ public class MasterController {
 		return count;
 
 	}
+
 	@RequestMapping(value = { "/getAllExhibotorsByorgIdAndIsUsed" }, method = RequestMethod.POST)
 	public @ResponseBody List<ExhibitorWithOrgName> getAllExhibotorsByorgIdAndIsUsed(@RequestParam("orgId") int orgId) {
 
@@ -1167,23 +1169,21 @@ public class MasterController {
 		return errorMessage;
 
 	}
-	@RequestMapping(value = { "/getExhibitorsByParam" }, method = RequestMethod.POST)
-	public @ResponseBody List<ExhibitorWithOrgName> getExhibitorsByParam(@RequestParam("parameter") String parameter,@RequestParam("status") int status) {
 
-		List<ExhibitorWithOrgName> exhibitorList=null;
+	@RequestMapping(value = { "/getExhibitorsByParam" }, method = RequestMethod.POST)
+	public @ResponseBody List<ExhibitorWithOrgName> getExhibitorsByParam(@RequestParam("parameter") String parameter,
+			@RequestParam("status") int status) {
+
+		List<ExhibitorWithOrgName> exhibitorList = null;
 
 		try {
 
-			if(status==1)
-			{
-			exhibitorList = exhibitorWithOrgNameRepo.getExhibitorsByParam1(parameter);
-			}
-			else if(status==2)
-			{
+			if (status == 1) {
+				exhibitorList = exhibitorWithOrgNameRepo.getExhibitorsByParam1(parameter);
+			} else if (status == 2) {
 				exhibitorList = exhibitorWithOrgNameRepo.getExhibitorsByParam2(parameter);
 
-			}else if(status==3)
-			{
+			} else if (status == 3) {
 				exhibitorList = exhibitorWithOrgNameRepo.getExhibitorsByParam3(parameter);
 
 			}

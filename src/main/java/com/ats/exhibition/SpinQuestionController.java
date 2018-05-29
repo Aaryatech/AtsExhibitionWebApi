@@ -18,18 +18,23 @@ import com.ats.exhibition.model.SpinQueHeader;
 import com.ats.exhibition.model.SpinQueHeaderWithName;
 import com.ats.exhibition.model.SpinQueMasterWithName;
 import com.ats.exhibition.model.SpinQuestionMaster;
+import com.ats.exhibition.model.SpinWithVisitorInfo;
 import com.ats.exhibition.repository.SpinQueDetailRepository;
 import com.ats.exhibition.repository.SpinQueDetailWithQueRepo;
 import com.ats.exhibition.repository.SpinQueHeaderRepo;
 import com.ats.exhibition.repository.SpinQueHeaderWithNameRepo;
 import com.ats.exhibition.repository.SpinQueMasterRepo;
 import com.ats.exhibition.repository.SpinQueMasterWithNameRepo;
+import com.ats.exhibition.repository.SpinWithVisitorInfoRepo;
 
 @RestController
 public class SpinQuestionController {
 
 	@Autowired
 	SpinQueHeaderRepo spinQueHeaderRepo;
+	
+	@Autowired
+	SpinWithVisitorInfoRepo spinWithVisitorInfoRepo;
 
 	@Autowired
 	SpinQueMasterRepo spinQueMasterRepo;
@@ -209,6 +214,43 @@ public class SpinQuestionController {
 
 	}
 
+	@RequestMapping(value = { "/getAllQuestionsBetweenDates" }, method = RequestMethod.POST)
+	public @ResponseBody List<SpinQueHeaderWithName> getAllQuestionsBetweenDates(@RequestParam("fromDate") String fromDate,
+			@RequestParam("toDate") String toDate) {
+
+		List<SpinQueHeaderWithName> spinQueDetailWithNameList = new ArrayList<SpinQueHeaderWithName>();
+
+		try {
+
+			spinQueDetailWithNameList = spinQueHeaderWithNameRepo.getQuestionsBetweenDates(fromDate,toDate);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return spinQueDetailWithNameList;
+
+	}
+
+	@RequestMapping(value = { "/getSpinQueWithVisitorInfoBetDates" }, method = RequestMethod.POST)
+	public @ResponseBody List<SpinWithVisitorInfo> getSpinQueWithVisitorInfoBetDates(@RequestParam("fromDate") String fromDate,
+			@RequestParam("toDate") String toDate) {
+
+		List<SpinWithVisitorInfo> spinQueDetailWithNameList = new ArrayList<SpinWithVisitorInfo>();
+
+		try {
+
+			spinQueDetailWithNameList = spinWithVisitorInfoRepo.getSpinQueWithVisitorInfoBetDates(fromDate,toDate);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return spinQueDetailWithNameList;
+
+	}
 	// ----------Spin Question Header------------------
 
 	@RequestMapping(value = { "/saveSpinQueDetail" }, method = RequestMethod.POST)

@@ -22,17 +22,15 @@ import com.ats.exhibition.repository.EnquiryHeaderWithNameRepo;
 
 @RestController
 public class EnquiryController {
-	
+
 	@Autowired
 	EnquiryHeaderRepository enquiryHeaderRepository;
-	
+
 	@Autowired
 	EnquiryDetailRepository enquiryDetailRepository;
-	
+
 	@Autowired
 	EnquiryHeaderWithNameRepo enquiryHeaderWithNameRepo;
-	
-	
 
 	// ----------Enquiry Header------------------
 
@@ -53,7 +51,7 @@ public class EnquiryController {
 		return enquiryHeader;
 
 	}
-	
+
 	@RequestMapping(value = { "/getAllEnquiryByEventId" }, method = RequestMethod.POST)
 	public @ResponseBody List<EnquiryHeaderWithName> getAllEnquiryByEventId(@RequestParam("eventId") int eventId) {
 
@@ -71,7 +69,44 @@ public class EnquiryController {
 		return enquiryHeaderWithNameList;
 
 	}
-	
+
+	@RequestMapping(value = { "/getEnquiryByEnqId" }, method = RequestMethod.POST)
+	public @ResponseBody EnquiryHeaderWithName getEnquiryByEnqId(@RequestParam("enqId") int enqId) {
+
+		EnquiryHeaderWithName enquiryHeaderWithName = new EnquiryHeaderWithName();
+
+		try {
+
+			enquiryHeaderWithName = enquiryHeaderWithNameRepo.getEnquiryByEnqId(enqId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return enquiryHeaderWithName;
+
+	}
+
+	@RequestMapping(value = { "/getAllEnquiryBetweenDates" }, method = RequestMethod.POST)
+	public @ResponseBody List<EnquiryHeaderWithName> getAllEnquiryBetweenDates(
+			@RequestParam("fromDate") String fromDate, @RequestParam("toDate") String toDate) {
+
+		List<EnquiryHeaderWithName> enquiryHeaderWithNameList = new ArrayList<EnquiryHeaderWithName>();
+
+		try {
+
+			enquiryHeaderWithNameList = enquiryHeaderWithNameRepo.getAllEnquiryBetweenDates(fromDate, toDate);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return enquiryHeaderWithNameList;
+
+	}
+
 	@RequestMapping(value = { "/getAllEnquiryByIsUsed" }, method = RequestMethod.GET)
 	public @ResponseBody List<EnquiryHeaderWithName> getAllEnquiryByIsUsed() {
 
@@ -90,8 +125,6 @@ public class EnquiryController {
 
 	}
 
-	
-	
 	@RequestMapping(value = { "/deleteEnquiryHeader" }, method = RequestMethod.POST)
 	public @ResponseBody ErrorMessage deleteEnquiryHeader(@RequestParam("enqId") int enqId) {
 
@@ -117,82 +150,105 @@ public class EnquiryController {
 		}
 		return errorMessage;
 	}
-	
-	
-	
-	
-	
-	
 
-	
 	// ----------Enquiry Header------------------
 
-		@RequestMapping(value = { "/saveEnqDetail" }, method = RequestMethod.POST)
-		public @ResponseBody EnquiryDetail saveEnqDetail(@RequestBody EnquiryDetail EnquiryDetail) {
+	@RequestMapping(value = { "/saveEnqDetail" }, method = RequestMethod.POST)
+	public @ResponseBody EnquiryDetail saveEnqDetail(@RequestBody EnquiryDetail EnquiryDetail) {
 
-			EnquiryDetail enquiryDetail = new EnquiryDetail();
+		EnquiryDetail enquiryDetail = new EnquiryDetail();
 
-			try {
+		try {
 
-				enquiryDetail = enquiryDetailRepository.saveAndFlush(EnquiryDetail);
+			enquiryDetail = enquiryDetailRepository.saveAndFlush(EnquiryDetail);
 
-			} catch (Exception e) {
+		} catch (Exception e) {
 
-				e.printStackTrace();
-
-			}
-			return enquiryDetail;
+			e.printStackTrace();
 
 		}
-		
-		
-		
-		@RequestMapping(value = { "/deleteEnquiryDetail"}, method = RequestMethod.POST)
-		public @ResponseBody ErrorMessage deleteEnquiryDetail(@RequestParam("enqDetailId") int enqDetailId) {
+		return enquiryDetail;
 
-			ErrorMessage errorMessage = new ErrorMessage();
+	}
 
-			try {
-				int delete = enquiryDetailRepository.deleteEnquiryDetail(enqDetailId);
+	@RequestMapping(value = { "/deleteEnquiryDetail" }, method = RequestMethod.POST)
+	public @ResponseBody ErrorMessage deleteEnquiryDetail(@RequestParam("enqDetailId") int enqDetailId) {
 
-				if (delete == 1) {
-					errorMessage.setError(false);
-					errorMessage.setMessage("Enquiry Deleted Successfully");
-				} else {
-					errorMessage.setError(true);
-					errorMessage.setMessage("Enquiry Deletion Failed");
-				}
+		ErrorMessage errorMessage = new ErrorMessage();
 
-			} catch (Exception e) {
+		try {
+			int delete = enquiryDetailRepository.deleteEnquiryDetail(enqDetailId);
 
-				e.printStackTrace();
+			if (delete == 1) {
+				errorMessage.setError(false);
+				errorMessage.setMessage("Enquiry Deleted Successfully");
+			} else {
 				errorMessage.setError(true);
-				errorMessage.setMessage("Enquiry Deletion Failed :EXC");
-
+				errorMessage.setMessage("Enquiry Deletion Failed");
 			}
-			return errorMessage;
-		}
 
-		
-		
-		@RequestMapping(value = { "/getAllEnquiryDetailByIsUsed" }, method = RequestMethod.GET)
-		public @ResponseBody List<EnquiryDetail> getAllEnquiryDetailByIsUsed() {
+		} catch (Exception e) {
 
-			List<EnquiryDetail> enquiryDetailList = new ArrayList<EnquiryDetail>();
-
-			try {
-
-				enquiryDetailList = enquiryDetailRepository.getAllEnquiryDetailByIsUsed(1);
-
-			} catch (Exception e) {
-
-				e.printStackTrace();
-
-			}
-			return enquiryDetailList;
+			e.printStackTrace();
+			errorMessage.setError(true);
+			errorMessage.setMessage("Enquiry Deletion Failed :EXC");
 
 		}
+		return errorMessage;
+	}
 
+	@RequestMapping(value = { "/getAllEnquiryDetailByIsUsed" }, method = RequestMethod.GET)
+	public @ResponseBody List<EnquiryDetail> getAllEnquiryDetailByIsUsed() {
 
+		List<EnquiryDetail> enquiryDetailList = new ArrayList<EnquiryDetail>();
+
+		try {
+
+			enquiryDetailList = enquiryDetailRepository.getAllEnquiryDetailByIsUsed(1);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return enquiryDetailList;
+
+	}
+
+	@RequestMapping(value = { "/getEnquiryDetailEnqId" }, method = RequestMethod.GET)
+	public @ResponseBody List<EnquiryDetail> getEnquiryDetailEnqId() {
+
+		List<EnquiryDetail> enquiryDetailList = new ArrayList<EnquiryDetail>();
+
+		try {
+
+			enquiryDetailList = enquiryDetailRepository.getAllEnquiryDetailByIsUsed(1);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return enquiryDetailList;
+
+	}
+
+	@RequestMapping(value = { "/getAllEnquiryDetailByEnqId" }, method = RequestMethod.POST)
+	public @ResponseBody List<EnquiryDetail> getAllEnquiryDetailByEnqId(@RequestParam("enqId") int enqId) {
+
+		List<EnquiryDetail> enquiryDetailList = new ArrayList<EnquiryDetail>();
+
+		try {
+
+			enquiryDetailList = enquiryDetailRepository.findByEnqId(enqId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return enquiryDetailList;
+
+	}
 
 }

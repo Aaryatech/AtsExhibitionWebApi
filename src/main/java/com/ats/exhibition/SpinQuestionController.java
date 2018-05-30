@@ -32,7 +32,7 @@ public class SpinQuestionController {
 
 	@Autowired
 	SpinQueHeaderRepo spinQueHeaderRepo;
-	
+
 	@Autowired
 	SpinWithVisitorInfoRepo spinWithVisitorInfoRepo;
 
@@ -214,34 +214,33 @@ public class SpinQuestionController {
 
 	}
 
-	@RequestMapping(value = { "/getAllQuestionsBetweenDates" }, method = RequestMethod.POST)
-	public @ResponseBody List<SpinQueHeaderWithName> getAllQuestionsBetweenDates(@RequestParam("fromDate") String fromDate,
-			@RequestParam("toDate") String toDate) {
+	@RequestMapping(value = { "/getAllQuestionsByTQueId" }, method = RequestMethod.POST)
+	public @ResponseBody List<SpinQueDetailWithQue> getAllQuestionsBetweenDates(@RequestParam("tQueId") int tQueId) {
 
-		List<SpinQueHeaderWithName> spinQueDetailWithNameList = new ArrayList<SpinQueHeaderWithName>();
+		List<SpinQueDetailWithQue> spinQueDetailWithQueList = new ArrayList<SpinQueDetailWithQue>();
 
 		try {
 
-			spinQueDetailWithNameList = spinQueHeaderWithNameRepo.getQuestionsBetweenDates(fromDate,toDate);
+			spinQueDetailWithQueList = spinQueDetailWithQueRepo.getAllQuestionsByTQueId(tQueId);
 
 		} catch (Exception e) {
 
 			e.printStackTrace();
 
 		}
-		return spinQueDetailWithNameList;
+		return spinQueDetailWithQueList;
 
 	}
 
 	@RequestMapping(value = { "/getSpinQueWithVisitorInfoBetDates" }, method = RequestMethod.POST)
-	public @ResponseBody List<SpinWithVisitorInfo> getSpinQueWithVisitorInfoBetDates(@RequestParam("fromDate") String fromDate,
-			@RequestParam("toDate") String toDate) {
+	public @ResponseBody List<SpinWithVisitorInfo> getSpinQueWithVisitorInfoBetDates(
+			@RequestParam("fromDate") String fromDate, @RequestParam("toDate") String toDate) {
 
 		List<SpinWithVisitorInfo> spinQueDetailWithNameList = new ArrayList<SpinWithVisitorInfo>();
 
 		try {
 
-			spinQueDetailWithNameList = spinWithVisitorInfoRepo.getSpinQueWithVisitorInfoBetDates(fromDate,toDate);
+			spinQueDetailWithNameList = spinWithVisitorInfoRepo.getSpinQueWithVisitorInfoBetDates(fromDate, toDate);
 
 		} catch (Exception e) {
 
@@ -251,6 +250,28 @@ public class SpinQuestionController {
 		return spinQueDetailWithNameList;
 
 	}
+	
+	@RequestMapping(value = { "/getVisitorInfoByTQueId" }, method = RequestMethod.POST)
+	public @ResponseBody SpinWithVisitorInfo getVisitorInfoByTQueId(
+		 @RequestParam("tQueId") int tQueId) {
+
+		SpinWithVisitorInfo spinQueDetailWithNameList = new SpinWithVisitorInfo();
+
+		try {
+
+			spinQueDetailWithNameList = spinWithVisitorInfoRepo.getVisitorInfoByTQueId(tQueId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return spinQueDetailWithNameList;
+
+	}
+	
+	
+	
 	// ----------Spin Question Header------------------
 
 	@RequestMapping(value = { "/saveSpinQueDetail" }, method = RequestMethod.POST)

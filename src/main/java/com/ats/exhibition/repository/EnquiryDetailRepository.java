@@ -11,12 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ats.exhibition.model.EnquiryDetail;
 
 public interface EnquiryDetailRepository extends JpaRepository<EnquiryDetail, Integer> {
-	
+
 	@Transactional
 	@Modifying
 	@Query("UPDATE EnquiryDetail SET isUsed=0  WHERE enq_detail_id=:enqDetailId")
 	int deleteEnquiryDetail(@Param("enqDetailId") int enqDetailId);
 
 	List<EnquiryDetail> getAllEnquiryDetailByIsUsed(int i);
+
+	List<EnquiryDetail> findByEnqId(int enqId);
 
 }

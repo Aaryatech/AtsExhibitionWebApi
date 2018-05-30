@@ -31,7 +31,7 @@ public class EnquiryDetail {
 	private String venue;
 
 	@Column(name = "approximate_time")
-	private String approximate_time;
+	private String approximateTime;
 
 	@Column(name = "remark")
 	private String remark;
@@ -82,12 +82,13 @@ public class EnquiryDetail {
 		this.venue = venue;
 	}
 
-	public String getApproximate_time() {
-		return approximate_time;
+	
+	public String getApproximateTime() {
+		return approximateTime;
 	}
 
-	public void setApproximate_time(String approximate_time) {
-		this.approximate_time = approximate_time;
+	public void setApproximateTime(String approximateTime) {
+		this.approximateTime = approximateTime;
 	}
 
 	public String getRemark() {
@@ -117,7 +118,7 @@ public class EnquiryDetail {
 	@Override
 	public String toString() {
 		return "EnquiryDetail [enqDetailId=" + enqDetailId + ", enqId=" + enqId + ", empId=" + empId + ", date=" + date
-				+ ", venue=" + venue + ", approximate_time=" + approximate_time + ", remark=" + remark + ", status="
+				+ ", venue=" + venue + ", approximateTime=" + approximateTime + ", remark=" + remark + ", status="
 				+ status + ", isUsed=" + isUsed + "]";
 	}
 	

@@ -20,6 +20,8 @@ public class EnquiryHeaderWithName {
 	private int visitorId;
 
 	private String visitorName;
+	
+	private String visitorMobile;
 
 	@Column(name = "exh_id")
 	private int exhId;
@@ -43,7 +45,7 @@ public class EnquiryHeaderWithName {
 	private Date nextMeetDate;
 
 	@Column(name = "approximate_time")
-	private String approximate_time;
+	private String approximateTime;
 
 	@Column(name = "remark")
 	private String remark;
@@ -142,12 +144,13 @@ public class EnquiryHeaderWithName {
 		this.nextMeetDate = nextMeetDate;
 	}
 
-	public String getApproximate_time() {
-		return approximate_time;
+	
+	public String getApproximateTime() {
+		return approximateTime;
 	}
 
-	public void setApproximate_time(String approximate_time) {
-		this.approximate_time = approximate_time;
+	public void setApproximateTime(String approximateTime) {
+		this.approximateTime = approximateTime;
 	}
 
 	public String getRemark() {
@@ -173,14 +176,24 @@ public class EnquiryHeaderWithName {
 	public void setIsUsed(int isUsed) {
 		this.isUsed = isUsed;
 	}
+	
+	
+
+	public String getVisitorMobile() {
+		return visitorMobile;
+	}
+
+	public void setVisitorMobile(String visitorMobile) {
+		this.visitorMobile = visitorMobile;
+	}
 
 	@Override
 	public String toString() {
 		return "EnquiryHeaderWithName [enqId=" + enqId + ", visitorId=" + visitorId + ", visitorName=" + visitorName
-				+ ", exhId=" + exhId + ", exhName=" + exhName + ", eventId=" + eventId + ", eventName=" + eventName
-				+ ", empId=" + empId + ", empName=" + empName + ", date=" + date + ", nextMeetDate=" + nextMeetDate
-				+ ", approximate_time=" + approximate_time + ", remark=" + remark + ", status=" + status + ", isUsed="
-				+ isUsed + "]";
+				+ ", visitorMobile=" + visitorMobile + ", exhId=" + exhId + ", exhName=" + exhName + ", eventId="
+				+ eventId + ", eventName=" + eventName + ", empId=" + empId + ", empName=" + empName + ", date=" + date
+				+ ", nextMeetDate=" + nextMeetDate + ", approximateTime=" + approximateTime + ", remark=" + remark
+				+ ", status=" + status + ", isUsed=" + isUsed + "]";
 	}
 
 }

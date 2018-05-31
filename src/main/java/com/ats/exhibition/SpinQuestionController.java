@@ -1,3 +1,4 @@
+
 package com.ats.exhibition;
 
 import java.util.ArrayList;
@@ -250,10 +251,9 @@ public class SpinQuestionController {
 		return spinQueDetailWithNameList;
 
 	}
-	
+
 	@RequestMapping(value = { "/getVisitorInfoByTQueId" }, method = RequestMethod.POST)
-	public @ResponseBody SpinWithVisitorInfo getVisitorInfoByTQueId(
-		 @RequestParam("tQueId") int tQueId) {
+	public @ResponseBody SpinWithVisitorInfo getVisitorInfoByTQueId(@RequestParam("tQueId") int tQueId) {
 
 		SpinWithVisitorInfo spinQueDetailWithNameList = new SpinWithVisitorInfo();
 
@@ -269,9 +269,7 @@ public class SpinQuestionController {
 		return spinQueDetailWithNameList;
 
 	}
-	
-	
-	
+
 	// ----------Spin Question Header------------------
 
 	@RequestMapping(value = { "/saveSpinQueDetail" }, method = RequestMethod.POST)

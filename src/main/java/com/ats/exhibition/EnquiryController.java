@@ -1,7 +1,9 @@
 package com.ats.exhibition;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +20,21 @@ import com.ats.exhibition.model.EnquiryHeaderWithName;
 import com.ats.exhibition.model.ErrorMessage;
 
 import com.ats.exhibition.model.GetEnqList;
+import com.ats.exhibition.model.Task;
 import com.ats.exhibition.repository.EnquiryDetailRepository;
 import com.ats.exhibition.repository.EnquiryHeaderRepository;
 import com.ats.exhibition.repository.EnquiryHeaderWithNameRepo;
 import com.ats.exhibition.repository.GetEnqListRepository;
+import com.ats.exhibition.repository.TaskRepository;
 
 @RestController
 public class EnquiryController {
 
 	@Autowired
 	EnquiryHeaderRepository enquiryHeaderRepository;
+
+	@Autowired
+	TaskRepository taskRepository;
 
 	@Autowired
 	EnquiryDetailRepository enquiryDetailRepository;
@@ -348,6 +355,47 @@ public class EnquiryController {
 		}
 		return enquiryDetail;
 
+	}
+
+	@RequestMapping(value = { "/getTaskListById" }, method = RequestMethod.POST)
+	public @ResponseBody List<Task> getTaskListById(@RequestParam("empId") int empId, @RequestParam("exhId") int exhId,
+			@RequestParam("date") String date) {
+
+		List<Task> taskList = new ArrayList<Task>();
+
+		try {
+
+			taskList = taskRepository.findByEmpIdAndExhIdAndDate(empId, exhId, date);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return taskList;
+
+	}
+
+	@RequestMapping(value = { "/currentDate" }, method = RequestMethod.POST)
+	public @ResponseBody ErrorMessage currentDate() {
+
+		ErrorMessage errorMessage = new ErrorMessage();
+
+		try {
+
+			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+			Date now = new Date();
+			String strDate = originalFormat.format(now);
+			errorMessage.setError(false);
+			errorMessage.setMessage(strDate);
+
+		} catch (Exception e) {
+			errorMessage.setError(true);
+			errorMessage.setMessage("Error");
+			e.printStackTrace();
+
+		}
+		return errorMessage;
 	}
 
 }

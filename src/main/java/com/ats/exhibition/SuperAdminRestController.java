@@ -359,5 +359,23 @@ public class SuperAdminRestController {
 		return headerList;
 
 	}
+	
+	@RequestMapping(value = { "/equiryListWithStatus" }, method = RequestMethod.POST)
+	public @ResponseBody List<EnquiryHeaderWithName> equiryListWithStatus(@RequestParam("exhId") int exhId,@RequestParam("status") int status) {
+
+		List<EnquiryHeaderWithName> equiryListWithStatus = new ArrayList<EnquiryHeaderWithName>();
+
+		try {
+
+			equiryListWithStatus = enquiryHeaderWithNameRepo.equiryListWithStatus(exhId,status);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return equiryListWithStatus;
+
+	}
 
 }

@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ats.exhibition.model.EventExhMapping;
+import com.ats.exhibition.model.EnquiryHeaderWithName; 
+import com.ats.exhibition.model.EventExhMappingWithExhName;
 import com.ats.exhibition.model.EventWithOrgName;
 import com.ats.exhibition.model.ExhibitorWithOrgName;
 import com.ats.exhibition.model.GetEventSheduleDetail;
@@ -18,12 +19,18 @@ import com.ats.exhibition.model.GetEventSheduleHeader;
 import com.ats.exhibition.model.Package1;
 import com.ats.exhibition.model.SortedExhibitor;
 import com.ats.exhibition.model.SortedVisitor;
+import com.ats.exhibition.model.VisitorByExhiId;
 import com.ats.exhibition.model.VisitorWithOrgEventName;
-import com.ats.exhibition.repository.OrganiserRepository;
+import com.ats.exhibition.model.feedback.FeedbackTxn;
+import com.ats.exhibition.model.feedback.GetFbQueTxn; 
 import com.ats.exhibition.repository.Package1Repository;
 import com.ats.exhibition.repository.SortedExhibitorRepository;
 import com.ats.exhibition.repository.SortedVisitorRepository;
+import com.ats.exhibition.repository.VisitorByExhiIdRepo;
 import com.ats.exhibition.repository.VisitorWithOrgEventNameRepo;
+import com.ats.exhibition.repository.feedback.FeedbackTxnRepo; 
+import com.ats.exhibition.repository.EnquiryHeaderWithNameRepo;
+import com.ats.exhibition.repository.EventExhMappingWithExhNameRepo;
 import com.ats.exhibition.repository.EventWithOrgNameRepository;
 import com.ats.exhibition.repository.ExhibitorWithOrgNameRepo;
 import com.ats.exhibition.repository.GetEventSheduleDetailRepository;
@@ -56,6 +63,18 @@ public class SuperAdminRestController {
 	
 	@Autowired
 	VisitorWithOrgEventNameRepo visitorWithOrgEventNameRepo;
+	
+	@Autowired
+	EventExhMappingWithExhNameRepo eventExhMappingWithExhNameRepo;
+	
+	@Autowired
+	VisitorByExhiIdRepo visitorByExhiIdRepo;
+	
+	@Autowired
+	EnquiryHeaderWithNameRepo enquiryHeaderWithNameRepo;
+	
+	@Autowired
+	FeedbackTxnRepo feedbackTxnRepo;
 	
 	
 	@RequestMapping(value = { "/sortedExhibitorByLocationAndCompanyType" }, method = RequestMethod.POST)
@@ -242,6 +261,102 @@ public class SuperAdminRestController {
 
 		}
 		return visitorList;
+
+	}
+	
+	@RequestMapping(value = { "/eventListByExhIdBetweenDate" }, method = RequestMethod.POST)
+	public @ResponseBody List<EventExhMappingWithExhName> eventListByExhIdBetweenDate(@RequestParam("exhId") int exhId, @RequestParam("fromDate") String fromDate,
+			@RequestParam("toDate") String toDate) {
+
+		List<EventExhMappingWithExhName> eventList = new ArrayList<EventExhMappingWithExhName>();
+
+		try {
+
+			eventList = eventExhMappingWithExhNameRepo.eventListByExhIdBetweenDate(exhId,fromDate,toDate);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return eventList;
+
+	}
+	
+	@RequestMapping(value = { "/visitorListByExhibitorId" }, method = RequestMethod.POST)
+	public @ResponseBody List<VisitorByExhiId> visitorListByExhibitorId(@RequestParam("exhId") int exhId, @RequestParam("fromDate") String fromDate,
+			@RequestParam("toDate") String toDate) {
+
+		List<VisitorByExhiId> visitorList = new ArrayList<VisitorByExhiId>();
+
+		try {
+
+			visitorList = visitorByExhiIdRepo.visitorListByExhibitorIdBetweenDate(exhId,fromDate,toDate);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return visitorList;
+
+	}
+	
+	@RequestMapping(value = { "/enquiryBetweenDateByExhibitorId" }, method = RequestMethod.POST)
+	public @ResponseBody List<EnquiryHeaderWithName> enquiryBetweenDateByExhibitorId(@RequestParam("exhId") int exhId, @RequestParam("fromDate") String fromDate,
+			@RequestParam("toDate") String toDate) {
+
+		List<EnquiryHeaderWithName> headerList = new ArrayList<EnquiryHeaderWithName>();
+
+		try {
+
+			headerList = enquiryHeaderWithNameRepo.enquiryBetweenDateByExhibitorId(exhId,fromDate,toDate);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return headerList;
+
+	}
+	
+	@RequestMapping(value = { "/feedbackbetweenDate" }, method = RequestMethod.POST)
+	public @ResponseBody List<FeedbackTxn> feedbackbetweenDate(@RequestParam("exhId") int exhId, @RequestParam("fromDate") String fromDate,
+			@RequestParam("toDate") String toDate) {
+
+		List<FeedbackTxn> feedbackList = new ArrayList<FeedbackTxn>();
+
+		try {
+
+			feedbackList = feedbackTxnRepo.feedbackbetweenDate(exhId,fromDate,toDate);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return feedbackList;
+
+	}
+	
+	
+	@RequestMapping(value = { "/enquiryNotBetweenDateWithStatus" }, method = RequestMethod.POST)
+	public @ResponseBody List<EnquiryHeaderWithName> enquiryNotBetweenDateWithStatus(@RequestParam("exhId") int exhId, @RequestParam("fromDate") String fromDate,
+			@RequestParam("toDate") String toDate,@RequestParam("status") int status) {
+
+		List<EnquiryHeaderWithName> headerList = new ArrayList<EnquiryHeaderWithName>();
+
+		try {
+
+			headerList = enquiryHeaderWithNameRepo.enquiryNotBetweenDateWithStatus(exhId,fromDate,toDate,status);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return headerList;
 
 	}
 

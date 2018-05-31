@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 public class EnquiryHeaderWithName {
 
@@ -127,7 +129,7 @@ public class EnquiryHeaderWithName {
 	public void setEmpName(String empName) {
 		this.empName = empName;
 	}
-
+	@JsonFormat(locale = "hi", timezone = "Asia/Kolkata", pattern = "dd-MM-yyyy")
 	public Date getDate() {
 		return date;
 	}
@@ -135,7 +137,7 @@ public class EnquiryHeaderWithName {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-
+	@JsonFormat(locale = "hi", timezone = "Asia/Kolkata", pattern = "dd-MM-yyyy")
 	public Date getNextMeetDate() {
 		return nextMeetDate;
 	}

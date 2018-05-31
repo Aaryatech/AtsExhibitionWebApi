@@ -20,6 +20,15 @@ public interface VisitorWithOrgEventNameRepo extends JpaRepository<VisitorWithOr
 			+ " AND v.org_id=o.org_id AND v.event_id=e.event_id AND e.is_used=1", nativeQuery = true)
 	VisitorWithOrgEventName getVisitorByVisitorId(@Param("visitorId") int visitorId);
 	
+	@Query(value = "SELECT v.*, e.event_name, o.org_name FROM m_visitor v,m_organiser o,m_events e WHERE v.visitor_name=:visitorName"
+			+ " AND v.org_id=o.org_id AND v.event_id=e.event_id AND e.is_used=1", nativeQuery = true)
+	VisitorWithOrgEventName getVisitorByVisitorName(@Param("visitorName") String visitorName);
+	
+	
+	@Query(value = "SELECT v.*, e.event_name, o.org_name FROM m_visitor v,m_organiser o,m_events e WHERE v.visitor_mobile=:visitorMobile"
+			+ " AND v.org_id=o.org_id AND v.event_id=e.event_id AND e.is_used=1", nativeQuery = true)
+	VisitorWithOrgEventName getVisitorByVisitorMobile(@Param("visitorMobile") String visitorMobile);
+	
 	@Query(value = "SELECT v.*, e.event_name, o.org_name FROM m_visitor v,m_organiser o,m_events e WHERE v.org_id=o.org_id "
 			+ "AND v.event_id=e.event_id AND v.is_used=1", nativeQuery = true)
 	List<VisitorWithOrgEventName> getAllVisitorsByIsUsed();

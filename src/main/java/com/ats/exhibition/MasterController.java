@@ -160,6 +160,23 @@ public class MasterController {
 		return flourMapRes;
 
 	}
+	
+	
+	@RequestMapping(value = { "/getFloarMapByEventId" }, method = RequestMethod.POST)
+	public @ResponseBody List<GetFloarMap> getFloarMapByEventId(@RequestParam("eventId") int eventId) {
+
+		List<GetFloarMap> flourMapRes = null;
+		try {
+			flourMapRes = getFloarMapRepository.findFloarMapByEventId(eventId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return flourMapRes;
+
+	}
 
 	// sachin get Event
 	@RequestMapping(value = { "/getEventByEId" }, method = RequestMethod.POST)
@@ -1132,6 +1149,7 @@ public class MasterController {
 
 		try {
 
+			
 			productList = productWithExhNameRepository.findByExhId(exhId);
 
 		} catch (Exception e) {

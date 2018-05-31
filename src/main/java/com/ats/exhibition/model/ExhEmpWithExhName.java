@@ -8,7 +8,7 @@ import javax.persistence.Id;
 
 @Entity
 public class ExhEmpWithExhName {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "emp_id")
@@ -16,7 +16,7 @@ public class ExhEmpWithExhName {
 
 	@Column(name = "exh_id")
 	private int exhId;
-	
+
 	@Column(name = "exh_name")
 	private String exhName;
 
@@ -40,6 +40,12 @@ public class ExhEmpWithExhName {
 
 	@Column(name = "is_used")
 	private int isUsed;
+
+	@Column(name = "password")
+	private String password;
+
+	@Column(name = "token")
+	private String token;
 
 	public int getEmpId() {
 		return empId;
@@ -121,12 +127,28 @@ public class ExhEmpWithExhName {
 		this.isUsed = isUsed;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 	@Override
 	public String toString() {
 		return "ExhEmpWithExhName [empId=" + empId + ", exhId=" + exhId + ", exhName=" + exhName + ", empName="
 				+ empName + ", empDesignation=" + empDesignation + ", empMobile=" + empMobile + ", empEmail=" + empEmail
-				+ ", empPhoto=" + empPhoto + ", empEducation=" + empEducation + ", isUsed=" + isUsed + "]";
+				+ ", empPhoto=" + empPhoto + ", empEducation=" + empEducation + ", isUsed=" + isUsed + ", password="
+				+ password + ", token=" + token + "]";
 	}
-
 
 }

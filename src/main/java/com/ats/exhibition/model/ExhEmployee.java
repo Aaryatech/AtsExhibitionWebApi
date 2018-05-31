@@ -40,6 +40,12 @@ public class ExhEmployee {
 	@Column(name = "is_used")
 	private int isUsed;
 
+	@Column(name = "password")
+	private String password;
+
+	@Column(name = "token")
+	private String token;
+
 	public int getEmpId() {
 		return empId;
 	}
@@ -112,11 +118,28 @@ public class ExhEmployee {
 		this.isUsed = isUsed;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 	@Override
 	public String toString() {
 		return "ExhEmployee [empId=" + empId + ", exhId=" + exhId + ", empName=" + empName + ", empDesignation="
 				+ empDesignation + ", empMobile=" + empMobile + ", empEmail=" + empEmail + ", empPhoto=" + empPhoto
-				+ ", empEducation=" + empEducation + ", isUsed=" + isUsed + "]";
+				+ ", empEducation=" + empEducation + ", isUsed=" + isUsed + ", password=" + password + ", token="
+				+ token + "]";
 	}
 
 }

@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ats.exhibition.model.ComMemWithOrgName;
-import com.ats.exhibition.model.CompanyType;
 import com.ats.exhibition.model.ErrorMessage;
 import com.ats.exhibition.model.EventExhMapping;
 import com.ats.exhibition.model.EventExhMappingWithExhName;
@@ -34,6 +32,8 @@ import com.ats.exhibition.model.Exhibitor;
 import com.ats.exhibition.model.Location;
 import com.ats.exhibition.model.LoginResponse;
 import com.ats.exhibition.model.LoginResponseExh;
+import com.ats.exhibition.model.LoginResponseExhEmp;
+import com.ats.exhibition.model.LoginResponseVisitor;
 import com.ats.exhibition.model.MapEventEmp;
 import com.ats.exhibition.model.MktMaterial;
 import com.ats.exhibition.model.OrgSubscription;
@@ -42,6 +42,7 @@ import com.ats.exhibition.model.OrgSubscriptionWithName;
 import com.ats.exhibition.model.Organiser;
 import com.ats.exhibition.model.Package1;
 import com.ats.exhibition.model.Visitor;
+import com.ats.exhibition.model.VisitorMobileResponse;
 import com.ats.exhibition.model.VisitorWithOrgEventName;
 import com.ats.exhibition.repository.CompanyTypeRepository;
 import com.ats.exhibition.repository.EventExhMappingRepository;
@@ -69,6 +70,8 @@ import com.ats.exhibition.repository.OrganiserRepository;
 import com.ats.exhibition.repository.Package1Repository;
 import com.ats.exhibition.repository.VisitorRepository;
 import com.ats.exhibition.repository.VisitorWithOrgEventNameRepo;
+
+import ch.qos.logback.core.net.SyslogOutputStream;
 
 @RestController
 public class TestController {
@@ -120,7 +123,7 @@ public class TestController {
 
 	@Autowired
 	ExhSubDetailWithDateRepo exhSubDetailWithDateRepo;
-	
+
 	@Autowired
 	EventPhotoWithEventNameRepo eventPhotoWithEventNameRepo;
 
@@ -135,21 +138,16 @@ public class TestController {
 
 	@Autowired
 	EventExhMappingWithExhNameRepo eventExhMappingWithExhNameRepo;
-	
+
 	@Autowired
 	Package1Repository package1Repository;
-	
+
 	@Autowired
 	OrgSubscriptionRepository orgSubscriptionRepository;
-	
 
 	@Autowired
 	OrgSubscriptionWithNameRepo orgSubscriptionWithNameRepo;
 
-	
-	
-	
-	
 	// ---------------------------OrganiserLogin---------------------------------------------
 	@RequestMapping(value = { "/loginResponse" }, method = RequestMethod.POST)
 	public @ResponseBody LoginResponse loginResponse(@RequestParam("userMob") String userMob,
@@ -215,9 +213,6 @@ public class TestController {
 
 		try {
 
-	
-			
-			
 			eventExhMapping = eventExhMappingRepository.saveAll(EventExhMapping);
 
 		} catch (Exception e) {
@@ -327,6 +322,34 @@ public class TestController {
 		}
 		return exhEmployeeMapping;
 
+	}
+
+	// ------------------------Exhibitor Login------------------------------
+	@RequestMapping(value = { "/loginEmpExhibitor" }, method = RequestMethod.POST)
+	public @ResponseBody LoginResponseExhEmp loginEmpExhibitor(@RequestParam("empMobile") String empMobile,
+			@RequestParam("password") String password) {
+
+		LoginResponseExhEmp loginResponse = new LoginResponseExhEmp();
+		try {
+
+			ExhEmployee exhEmployee = exhEmployeeRepository.findByEmpMobileAndPasswordAndIsUsed(empMobile, password, 1);
+			if (exhEmployee == null) {
+				loginResponse.setError(true);
+				loginResponse.setMsg("login Failed");
+			} else {
+				loginResponse.setError(false);
+				loginResponse.setMsg("login successfully");
+				loginResponse.setExhEmployee(exhEmployee);
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			loginResponse.setError(true);
+			loginResponse.setMsg("login Failed");
+		}
+
+		return loginResponse;
 	}
 
 	@RequestMapping(value = { "/getAllEmployeeByEmpIdAndIsUsed" }, method = RequestMethod.POST)
@@ -447,8 +470,8 @@ public class TestController {
 		return materialList;
 
 	}
-	
-	//-----------------Portfolio-------------------------------------------------
+
+	// -----------------Portfolio-------------------------------------------------
 
 	@RequestMapping(value = { "/getAllMaterialByExhIdAndIsUsed" }, method = RequestMethod.POST)
 	public @ResponseBody List<ExhMatWithExhName> getAllMaterialByExhIdAndIsUsed(@RequestParam("exhId") int exhId) {
@@ -523,6 +546,96 @@ public class TestController {
 		try {
 
 			visitor = visitorWithOrgEventNameRepo.getVisitorByVisitorId(visitorId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return visitor;
+
+	}
+
+	@RequestMapping(value = { "/addNewVisitor" }, method = RequestMethod.POST)
+	public @ResponseBody VisitorMobileResponse addNewVisitor(@RequestParam("visitorName") String visitorName,
+			@RequestParam("visitorMobile") String visitorMobile, @RequestParam("visitorEmail") String visitorEmail,
+			@RequestParam("eventId") int eventId, @RequestParam("orgId") int orgId,
+			@RequestParam("locationId") int locationId, @RequestParam("companyTypeId") int companyTypeId,
+			@RequestParam("token") String token, @RequestParam("visitorRepresent") String visitorRepresent) {
+
+		VisitorMobileResponse loginResponseVisitor = new VisitorMobileResponse();
+		VisitorWithOrgEventName visitorWithOrgEventName = new VisitorWithOrgEventName();
+
+		try {
+
+			visitorWithOrgEventName = visitorWithOrgEventNameRepo.getVisitorByVisitorMobile(visitorMobile);
+
+			if (visitorWithOrgEventName != null) {
+				loginResponseVisitor.setError(true);
+				loginResponseVisitor.setMsg("Mobile Number Already Exist");
+			} else {
+				loginResponseVisitor.setError(false);
+				loginResponseVisitor.setMsg("Add Visitor  successfully");
+
+				loginResponseVisitor.setVisitorWithOrgEventName(visitorWithOrgEventName);
+				
+				Visitor visitor=new Visitor();
+				visitor.setCompanyTypeId(companyTypeId);
+				visitor.setEventId(eventId);
+				visitor.setIsActive(1);
+				visitor.setIsUsed(1);
+				visitor.setLocationId(locationId);
+				visitor.setOrgId(orgId);
+				visitor.setToken(token);
+				visitor.setVisitorEmail(visitorEmail);
+				visitor.setVisitorMobile(visitorMobile);
+				visitor.setVisitorName(visitorName);
+				visitor.setVisitorRepresent(visitorRepresent);
+				
+				
+				Visitor visitorRes=visitorRepository.saveAndFlush(visitor);
+				
+				System.out.println("visitorRes"+visitorRes);
+				
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return loginResponseVisitor;
+
+	}
+
+	@RequestMapping(value = { "/getVisitorByVisNameAndIsUsed" }, method = RequestMethod.POST)
+	public @ResponseBody VisitorWithOrgEventName getVisitorByVisNameAndIsUsed(
+			@RequestParam("visitorName") String visitorName) {
+
+		VisitorWithOrgEventName visitor = new VisitorWithOrgEventName();
+
+		try {
+
+			visitor = visitorWithOrgEventNameRepo.getVisitorByVisitorName(visitorName);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return visitor;
+
+	}
+
+	@RequestMapping(value = { "/getVisitorByVisMobileAndIsUsed" }, method = RequestMethod.POST)
+	public @ResponseBody VisitorWithOrgEventName getVisitorByVisMobileAndIsUsed(
+			@RequestParam("visitorMobile") String visitorMobile) {
+
+		VisitorWithOrgEventName visitor = new VisitorWithOrgEventName();
+
+		try {
+
+			visitor = visitorWithOrgEventNameRepo.getVisitorByVisitorMobile(visitorMobile);
 
 		} catch (Exception e) {
 
@@ -615,8 +728,7 @@ public class TestController {
 		return eventPhoto;
 
 	}
-	
-	
+
 	@RequestMapping(value = { "/getAllPhotoByEventId" }, method = RequestMethod.POST)
 	public @ResponseBody List<EventPhotoWithEventName> getAllPhotoByEventId(@RequestParam("eventId") int eventId) {
 
@@ -652,6 +764,7 @@ public class TestController {
 		return photoList;
 
 	}
+
 	@RequestMapping(value = { "/getAllPhotoByOrgId" }, method = RequestMethod.POST)
 	public @ResponseBody List<EventPhotoWithEventName> getAllPhotoByOrgId(@Param("orgId") int orgId) {
 
@@ -669,7 +782,6 @@ public class TestController {
 		return photoList;
 
 	}
-
 
 	@RequestMapping(value = { "/deleteEventPhoto" }, method = RequestMethod.POST)
 	public @ResponseBody ErrorMessage deleteEventPhoto(@RequestParam("photoId") int photoId) {
@@ -1020,7 +1132,7 @@ public class TestController {
 		return orgSubscriptionDetail;
 
 	}
-	
+
 	@RequestMapping(value = { "/getDetailsBySubIdAndIsUsed" }, method = RequestMethod.POST)
 	public @ResponseBody List<OrgSubscriptionDetail> getDetailsBySubIdAndIsUsed(@RequestParam("subId") int subId) {
 
@@ -1028,7 +1140,7 @@ public class TestController {
 
 		try {
 
-			orgSubscriptionDetail = orgSubscriptionDetailRepo.findAllBySubIdAndIsUsed(subId,1);
+			orgSubscriptionDetail = orgSubscriptionDetailRepo.findAllBySubIdAndIsUsed(subId, 1);
 
 		} catch (Exception e) {
 
@@ -1038,7 +1150,6 @@ public class TestController {
 		return orgSubscriptionDetail;
 
 	}
-
 
 	@RequestMapping(value = { "/deleteOrgSubscriptionDetail" }, method = RequestMethod.POST)
 	public @ResponseBody ErrorMessage deleteOrgSubscriptionDetail(@RequestParam("orgSubDetailId") int orgSubDetailId) {
@@ -1065,104 +1176,101 @@ public class TestController {
 		}
 		return errorMessage;
 	}
-	
-	
-	
+
 	// ------------ Package 1------------------------------
 
+	@RequestMapping(value = { "/getPackageByPkgId" }, method = RequestMethod.POST)
+	public @ResponseBody Package1 getPackageByPkgId(@RequestParam("pkgId") int pkgId) {
 
+		Package1 package1 = new Package1();
 
-		@RequestMapping(value = { "/getPackageByPkgId" }, method = RequestMethod.POST)
-		public @ResponseBody Package1 getPackageByPkgId(@RequestParam("pkgId") int pkgId) {
+		try {
 
-			Package1 package1 = new Package1();
+			package1 = package1Repository.findByPkgId(pkgId);
 
-			try {
+		} catch (Exception e) {
 
-				package1 = package1Repository.findByPkgId(pkgId);
-
-			} catch (Exception e) {
-
-				e.printStackTrace();
-
-			}
-			return package1;
+			e.printStackTrace();
 
 		}
+		return package1;
 
-		@RequestMapping(value = { "/getAllSubscriptions" }, method = RequestMethod.GET)
-		public @ResponseBody List<OrgSubscriptionWithName> getAllSubscriptions() {
+	}
 
-			List<OrgSubscriptionWithName> subscriptionList = new ArrayList<OrgSubscriptionWithName>();
+	@RequestMapping(value = { "/getAllSubscriptions" }, method = RequestMethod.GET)
+	public @ResponseBody List<OrgSubscriptionWithName> getAllSubscriptions() {
 
-			try {
+		List<OrgSubscriptionWithName> subscriptionList = new ArrayList<OrgSubscriptionWithName>();
 
-				subscriptionList = orgSubscriptionWithNameRepo.getAllSubscriptions();
+		try {
 
-			} catch (Exception e) {
+			subscriptionList = orgSubscriptionWithNameRepo.getAllSubscriptions();
 
-				e.printStackTrace();
+		} catch (Exception e) {
 
-			}
-			return subscriptionList;
-
-		}
-
-		
-		@RequestMapping(value = { "/getSubDetailsBySubIdAndIsUSed" }, method = RequestMethod.POST)
-		public @ResponseBody OrgSubscriptionWithName getSubDetailsByOrgIdAndstatus(@RequestParam("subId") int subId) {
-
-			OrgSubscriptionWithName orgSubscriptionWithName = new OrgSubscriptionWithName();
-
-			try {
-
-				orgSubscriptionWithName  = orgSubscriptionWithNameRepo.getSubscriptionById(subId);
-
-			} catch (Exception e) {
-
-				e.printStackTrace();
-
-			}
-			return orgSubscriptionWithName;
+			e.printStackTrace();
 
 		}
-		
-		//sachin
-		@RequestMapping(value = { "/getEventsByExhbId" }, method = RequestMethod.POST)
-		public @ResponseBody List<EventExhMapping> getEventsByExhbId(@RequestParam("exhbId") int exhbId) {
+		return subscriptionList;
 
-			List<EventExhMapping> eventListByExhbId = new ArrayList<EventExhMapping>();
+	}
 
-			try {
+	@RequestMapping(value = { "/getSubDetailsBySubIdAndIsUSed" }, method = RequestMethod.POST)
+	public @ResponseBody OrgSubscriptionWithName getSubDetailsByOrgIdAndstatus(@RequestParam("subId") int subId) {
 
-				eventListByExhbId = eventExhMappingRepository.getAllEventByExhbId(exhbId);
+		OrgSubscriptionWithName orgSubscriptionWithName = new OrgSubscriptionWithName();
 
-			} catch (Exception e) {
-				
-				System.err.println("Exception in /getEventsByExhbId  @TestController" +e.getMessage());
+		try {
 
-				e.printStackTrace();
+			orgSubscriptionWithName = orgSubscriptionWithNameRepo.getSubscriptionById(subId);
 
-			}
-			return eventListByExhbId;
+		} catch (Exception e) {
+
+			e.printStackTrace();
 
 		}
-		@RequestMapping(value = { "/exhSubDetailBySubHeaderIdAndIsUsed" }, method = RequestMethod.POST)
-		public @ResponseBody List<ExhSubDetailWithDate> exhSubDetailBySubHeaderIdAndIsUsed(@RequestParam("subHeaderId") int subHeaderId) {
+		return orgSubscriptionWithName;
 
-			List<ExhSubDetailWithDate> exhSubDetailWithDateList = new ArrayList<ExhSubDetailWithDate>();
+	}
 
-			try {
+	// sachin
+	@RequestMapping(value = { "/getEventsByExhbId" }, method = RequestMethod.POST)
+	public @ResponseBody List<EventExhMapping> getEventsByExhbId(@RequestParam("exhbId") int exhbId) {
 
-				exhSubDetailWithDateList = exhSubDetailWithDateRepo.findBySubHeaderIdAndIsUsed(subHeaderId, 1);
+		List<EventExhMapping> eventListByExhbId = new ArrayList<EventExhMapping>();
 
-			} catch (Exception e) {
+		try {
 
-				e.printStackTrace();
+			eventListByExhbId = eventExhMappingRepository.getAllEventByExhbId(exhbId);
 
-			}
-			return exhSubDetailWithDateList;
+		} catch (Exception e) {
+
+			System.err.println("Exception in /getEventsByExhbId  @TestController" + e.getMessage());
+
+			e.printStackTrace();
 
 		}
+		return eventListByExhbId;
+
+	}
+
+	@RequestMapping(value = { "/exhSubDetailBySubHeaderIdAndIsUsed" }, method = RequestMethod.POST)
+	public @ResponseBody List<ExhSubDetailWithDate> exhSubDetailBySubHeaderIdAndIsUsed(
+			@RequestParam("subHeaderId") int subHeaderId) {
+
+		List<ExhSubDetailWithDate> exhSubDetailWithDateList = new ArrayList<ExhSubDetailWithDate>();
+
+		try {
+
+			exhSubDetailWithDateList = exhSubDetailWithDateRepo.findBySubHeaderIdAndIsUsed(subHeaderId, 1);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return exhSubDetailWithDateList;
+
+	}
 
 }

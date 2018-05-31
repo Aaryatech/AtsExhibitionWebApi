@@ -15,4 +15,6 @@ public interface ExhEmployeeRepository extends JpaRepository<ExhEmployee, Intege
 	@Query("UPDATE ExhEmployee SET isUsed=0  WHERE emp_id=:empId")
 	int deleteEmployee(@Param("empId") int empId);
 
+	ExhEmployee findByEmpMobileAndPasswordAndIsUsed(String empMobile, String password, int i);
+
 }

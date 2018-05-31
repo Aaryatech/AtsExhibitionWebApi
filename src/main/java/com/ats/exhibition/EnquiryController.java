@@ -16,9 +16,11 @@ import com.ats.exhibition.model.EnquiryHeader;
 import com.ats.exhibition.model.EnquiryHeaderWithName;
 import com.ats.exhibition.model.ErrorMessage;
 import com.ats.exhibition.model.EventWithOrgName;
+import com.ats.exhibition.model.GetEnqList;
 import com.ats.exhibition.repository.EnquiryDetailRepository;
 import com.ats.exhibition.repository.EnquiryHeaderRepository;
 import com.ats.exhibition.repository.EnquiryHeaderWithNameRepo;
+import com.ats.exhibition.repository.GetEnqListRepository;
 
 @RestController
 public class EnquiryController {
@@ -31,6 +33,9 @@ public class EnquiryController {
 
 	@Autowired
 	EnquiryHeaderWithNameRepo enquiryHeaderWithNameRepo;
+	
+	@Autowired
+	GetEnqListRepository getEnqListRepository;
 
 	// ----------Enquiry Header------------------
 
@@ -87,6 +92,28 @@ public class EnquiryController {
 		return enquiryHeaderWithName;
 
 	}
+
+	@RequestMapping(value = { "/getEnquiryList" }, method = RequestMethod.POST)
+	public @ResponseBody List<GetEnqList> getEnquiryList(@RequestParam("empId") int empId,@RequestParam("exhId") int exhId,
+			@RequestParam("date") String date) {
+
+		List<GetEnqList> getEnqList = new ArrayList<GetEnqList>();
+
+		try {
+
+			getEnqList = getEnqListRepository.getEnquiryList(empId,exhId,date);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return getEnqList;
+
+	}
+	
+	
+	
 
 	@RequestMapping(value = { "/getAllEnquiryBetweenDates" }, method = RequestMethod.POST)
 	public @ResponseBody List<EnquiryHeaderWithName> getAllEnquiryBetweenDates(

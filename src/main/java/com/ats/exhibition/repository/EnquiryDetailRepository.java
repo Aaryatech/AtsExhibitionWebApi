@@ -21,4 +21,7 @@ public interface EnquiryDetailRepository extends JpaRepository<EnquiryDetail, In
 
 	List<EnquiryDetail> findByEnqId(int enqId);
 
+	List<EnquiryDetail> findByEnqIdAndEmpId(int enqId, int empId);
+
+
 }

@@ -352,6 +352,34 @@ public class TestController {
 		return loginResponse;
 	}
 
+	@RequestMapping(value = { "/updateEmpExhToken" }, method = RequestMethod.POST)
+	public @ResponseBody LoginResponseExhEmp updateEmpExhToken(@RequestParam("empId") int empId,
+			@RequestParam("token") String token) {
+
+		ExhEmployee exhEmployee = exhEmployeeRepository.findByEmpId(empId);
+
+		LoginResponseExhEmp loginResponse = new LoginResponseExhEmp();
+
+		if (exhEmployee == null) {
+			exhEmployee = new ExhEmployee();
+			loginResponse.setExhEmployee(exhEmployee);
+
+			loginResponse.setError(true);
+			loginResponse.setMsg("Invalid ID ");
+
+		} else {
+
+			loginResponse.setExhEmployee(exhEmployee);
+			loginResponse.setError(false);
+			loginResponse.setMsg("Update Token Successfully");
+
+			int isUpdated = exhEmployeeRepository.updateToken(exhEmployee.getEmpId(), token);
+
+		}
+
+		return loginResponse;
+	}
+
 	@RequestMapping(value = { "/getAllEmployeeByEmpIdAndIsUsed" }, method = RequestMethod.POST)
 	public @ResponseBody ExhEmpWithExhName getAllEmployeeByEmpIdAndIsUsed(@RequestParam("empId") int empId) {
 
@@ -578,8 +606,8 @@ public class TestController {
 				loginResponseVisitor.setMsg("Add Visitor  successfully");
 
 				loginResponseVisitor.setVisitorWithOrgEventName(visitorWithOrgEventName);
-				
-				Visitor visitor=new Visitor();
+
+				Visitor visitor = new Visitor();
 				visitor.setCompanyTypeId(companyTypeId);
 				visitor.setEventId(eventId);
 				visitor.setIsActive(1);
@@ -591,12 +619,11 @@ public class TestController {
 				visitor.setVisitorMobile(visitorMobile);
 				visitor.setVisitorName(visitorName);
 				visitor.setVisitorRepresent(visitorRepresent);
-				
-				
-				Visitor visitorRes=visitorRepository.saveAndFlush(visitor);
-				
-				System.out.println("visitorRes"+visitorRes);
-				
+
+				Visitor visitorRes = visitorRepository.saveAndFlush(visitor);
+
+				System.out.println("visitorRes" + visitorRes);
+
 			}
 
 		} catch (Exception e) {

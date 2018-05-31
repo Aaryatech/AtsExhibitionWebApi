@@ -14,6 +14,8 @@ public interface EnquiryHeaderRepository extends JpaRepository<EnquiryHeader, In
 	@Modifying
 	@Query("UPDATE EnquiryHeader SET isUsed=0  WHERE enq_id=:enqId")
 	int deleteEnquiryHeader(@Param("enqId") int enqId);
+
+	EnquiryHeader findByEnqId(int enqId);
 }
 	
 

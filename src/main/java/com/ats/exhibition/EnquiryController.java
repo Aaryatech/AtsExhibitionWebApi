@@ -1,6 +1,7 @@
 package com.ats.exhibition;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import com.ats.exhibition.model.EnquiryDetail;
 import com.ats.exhibition.model.EnquiryHeader;
 import com.ats.exhibition.model.EnquiryHeaderWithName;
 import com.ats.exhibition.model.ErrorMessage;
-import com.ats.exhibition.model.EventWithOrgName;
+
 import com.ats.exhibition.model.GetEnqList;
 import com.ats.exhibition.repository.EnquiryDetailRepository;
 import com.ats.exhibition.repository.EnquiryHeaderRepository;
@@ -33,7 +34,7 @@ public class EnquiryController {
 
 	@Autowired
 	EnquiryHeaderWithNameRepo enquiryHeaderWithNameRepo;
-	
+
 	@Autowired
 	GetEnqListRepository getEnqListRepository;
 
@@ -94,14 +95,14 @@ public class EnquiryController {
 	}
 
 	@RequestMapping(value = { "/getEnquiryList" }, method = RequestMethod.POST)
-	public @ResponseBody List<GetEnqList> getEnquiryList(@RequestParam("empId") int empId,@RequestParam("exhId") int exhId,
-			@RequestParam("date") String date) {
+	public @ResponseBody List<GetEnqList> getEnquiryList(@RequestParam("empId") int empId,
+			@RequestParam("exhId") int exhId, @RequestParam("date") String date) {
 
 		List<GetEnqList> getEnqList = new ArrayList<GetEnqList>();
 
 		try {
 
-			getEnqList = getEnqListRepository.getEnquiryList(empId,exhId,date);
+			getEnqList = getEnqListRepository.getEnquiryList(empId, exhId, date);
 
 		} catch (Exception e) {
 
@@ -111,9 +112,6 @@ public class EnquiryController {
 		return getEnqList;
 
 	}
-	
-	
-	
 
 	@RequestMapping(value = { "/getAllEnquiryBetweenDates" }, method = RequestMethod.POST)
 	public @ResponseBody List<EnquiryHeaderWithName> getAllEnquiryBetweenDates(
@@ -242,8 +240,8 @@ public class EnquiryController {
 
 	}
 
-	@RequestMapping(value = { "/getEnquiryDetailEnqId" }, method = RequestMethod.GET)
-	public @ResponseBody List<EnquiryDetail> getEnquiryDetailEnqId() {
+	@RequestMapping(value = { "/getEnquiryDetailByIsUsed" }, method = RequestMethod.GET)
+	public @ResponseBody List<EnquiryDetail> getEnquiryDetailByIsUsed() {
 
 		List<EnquiryDetail> enquiryDetailList = new ArrayList<EnquiryDetail>();
 
@@ -275,6 +273,80 @@ public class EnquiryController {
 
 		}
 		return enquiryDetailList;
+
+	}
+
+	// ------------- exhibitor App --------------------------------
+
+	@RequestMapping(value = { "/saveEnqHeaderAndDetail" }, method = RequestMethod.POST)
+	public @ResponseBody EnquiryHeader saveEnqHeaderAndDetail(@RequestBody EnquiryHeader EnquiryHeader) {
+
+		EnquiryHeader enquiryHeader = new EnquiryHeader();
+		EnquiryDetail enquiryDetail = new EnquiryDetail();
+
+		try {
+
+			enquiryHeader = enquiryHeaderRepository.saveAndFlush(EnquiryHeader);
+			int enqId = enquiryHeader.getEnqId();
+			enquiryDetail.setEnqId(enqId);
+
+			for (int i = 0; i < EnquiryHeader.getEnquiryDetailList().size(); i++) {
+
+				EnquiryHeader.getEnquiryDetailList().get(i).setEnqId(enqId);
+				enquiryDetail = enquiryDetailRepository.saveAndFlush(EnquiryHeader.getEnquiryDetailList().get(i));
+
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return enquiryHeader;
+
+	}
+
+	@RequestMapping(value = { "/getAllEnquiryDetailList" }, method = RequestMethod.POST)
+	public @ResponseBody List<EnquiryDetail> getAllEnquiryDetailList(@RequestParam("enqId") int enqId,
+			@RequestParam("empId") int empId) {
+
+		List<EnquiryDetail> enquiryDetailList = new ArrayList<EnquiryDetail>();
+
+		try {
+
+			enquiryDetailList = enquiryDetailRepository.findByEnqIdAndEmpId(enqId, empId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return enquiryDetailList;
+
+	}
+
+	@RequestMapping(value = { "/addEnqFollowUp" }, method = RequestMethod.POST)
+	public @ResponseBody EnquiryDetail addEnqFollowUp(@RequestBody EnquiryDetail enquiryDetail) {
+
+		EnquiryDetail enquiryDetailRes = new EnquiryDetail();
+
+		try {
+
+			enquiryDetailRes = enquiryDetailRepository.saveAndFlush(enquiryDetail);
+
+			EnquiryHeader enquiryHeader = enquiryHeaderRepository.findByEnqId(enquiryDetail.getEnqId());
+
+			enquiryHeader.setNextMeetDate(enquiryDetailRes.getDate());
+			enquiryHeader.setStatus(enquiryDetailRes.getStatus());
+
+			enquiryHeader = enquiryHeaderRepository.saveAndFlush(enquiryHeader);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return enquiryDetail;
 
 	}
 

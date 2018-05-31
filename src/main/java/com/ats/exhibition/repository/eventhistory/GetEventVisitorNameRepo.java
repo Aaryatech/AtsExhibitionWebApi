@@ -12,7 +12,7 @@ public interface GetEventVisitorNameRepo extends JpaRepository<GetEventVisitorNa
 			+ " COUNT(t_visitor_exhibitor.like_status) AS like_count "
 			+ " FROM m_visitor, t_visitor_exhibitor WHERE " + 
 			" m_visitor.event_id=t_visitor_exhibitor.event_id AND m_visitor.visitor_id=t_visitor_exhibitor.visitor_id AND "
-			+ " t_visitor_exhibitor.event_id=:eventId GROUP BY t_visitor_exhibitor.event_id " + 
+			+ " t_visitor_exhibitor.event_id=:eventId GROUP BY t_visitor_exhibitor.visitor_id " + 
 			" ",nativeQuery=true)
 	
 	List<GetEventVisitorName> getEventVisitorNames(@Param("eventId")int eventId);
@@ -21,7 +21,7 @@ public interface GetEventVisitorNameRepo extends JpaRepository<GetEventVisitorNa
 			+ " COUNT(t_visitor_exhibitor.like_status) AS like_count "
 			+ " FROM m_visitor, t_visitor_exhibitor WHERE " + 
 			" m_visitor.event_id=t_visitor_exhibitor.event_id AND m_visitor.visitor_id=t_visitor_exhibitor.visitor_id "
-			+ "  GROUP BY t_visitor_exhibitor.event_id " + 
+			+ "  GROUP BY t_visitor_exhibitor.visitor_id " + 
 			" ",nativeQuery=true)
 	
 	List<GetEventVisitorName> getEventVisitorNamesAllEvent();

@@ -1,4 +1,4 @@
-package com.ats.exhibition.repository.eventhistory;
+	package com.ats.exhibition.repository.eventhistory;
 
 import java.util.List;
 

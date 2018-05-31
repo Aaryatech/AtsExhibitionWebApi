@@ -1,5 +1,7 @@
 package com.ats.exhibition.model.eventhistory;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,10 +24,10 @@ public class EventsWithSubStatus {
 	private String eventName;
 
 	@Column(name = "event_from_date")
-	private String eventFromDate;
+	private Date eventFromDate;
 
 	@Column(name = "event_to_date")
-	private String eventToDate;
+	private Date eventToDate;
 
 	@Column(name = "from_time")
 	private String fromTime;
@@ -110,26 +112,27 @@ public class EventsWithSubStatus {
 	public void setEventName(String eventName) {
 		this.eventName = eventName;
 	}
+	
+	public String getFromTime() {
+		return fromTime;
+	}
+	
 	@JsonFormat(locale = "hi",timezone = "Asia/Kolkata", pattern = "dd-MM-yyyy")
-	public String getEventFromDate() {
+	public Date getEventFromDate() {
 		return eventFromDate;
 	}
-
-	public void setEventFromDate(String eventFromDate) {
-		this.eventFromDate = eventFromDate;
-	}
+	
 	@JsonFormat(locale = "hi",timezone = "Asia/Kolkata", pattern = "dd-MM-yyyy")
-
-	public String getEventToDate() {
+	public Date getEventToDate() {
 		return eventToDate;
 	}
 
-	public void setEventToDate(String eventToDate) {
-		this.eventToDate = eventToDate;
+	public void setEventFromDate(Date eventFromDate) {
+		this.eventFromDate = eventFromDate;
 	}
 
-	public String getFromTime() {
-		return fromTime;
+	public void setEventToDate(Date eventToDate) {
+		this.eventToDate = eventToDate;
 	}
 
 	public void setFromTime(String fromTime) {

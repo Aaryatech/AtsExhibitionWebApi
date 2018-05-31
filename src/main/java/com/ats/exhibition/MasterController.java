@@ -112,6 +112,24 @@ public class MasterController {
 	EventPhotoRepository eventPhotoRepository;
 
 	// ------------Committee Member--------------------
+	// sac 30-05-2018
+		@RequestMapping(value = { "/getSponsorByEvent" }, method = RequestMethod.POST)
+		public @ResponseBody List<GetSponsor> getSponsorByEvent(@RequestParam("eventId") int eventId) {
+
+			List<GetSponsor> sponsorList = null;
+			
+			try {
+				
+				sponsorList = getSponsorRepository.getSponsorsByEvnId(eventId);
+				
+			} catch (Exception e) {
+				
+				System.err.println("Exce in getting sponsor by EVent Id " + e.getMessage());
+				e.printStackTrace();
+			}
+			return sponsorList;
+
+		}
 
 	@RequestMapping(value = { "/saveCommitteeMember" }, method = RequestMethod.POST)
 	public @ResponseBody CommitteeMembers saveCommitteeMember(@RequestBody CommitteeMembers committeeMembers) {

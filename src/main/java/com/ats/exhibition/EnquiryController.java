@@ -18,12 +18,13 @@ import com.ats.exhibition.model.EnquiryDetail;
 import com.ats.exhibition.model.EnquiryHeader;
 import com.ats.exhibition.model.EnquiryHeaderWithName;
 import com.ats.exhibition.model.ErrorMessage;
-
+import com.ats.exhibition.model.ExhEmpGraph;
 import com.ats.exhibition.model.GetEnqList;
 import com.ats.exhibition.model.Task;
 import com.ats.exhibition.repository.EnquiryDetailRepository;
 import com.ats.exhibition.repository.EnquiryHeaderRepository;
 import com.ats.exhibition.repository.EnquiryHeaderWithNameRepo;
+import com.ats.exhibition.repository.ExhEmpGraphRepository;
 import com.ats.exhibition.repository.GetEnqListRepository;
 import com.ats.exhibition.repository.TaskRepository;
 
@@ -33,6 +34,9 @@ public class EnquiryController {
 	@Autowired
 	EnquiryHeaderRepository enquiryHeaderRepository;
 
+	@Autowired
+	ExhEmpGraphRepository exhEmpGraphRepository;
+	
 	@Autowired
 	TaskRepository taskRepository;
 
@@ -44,6 +48,25 @@ public class EnquiryController {
 
 	@Autowired
 	GetEnqListRepository getEnqListRepository;
+	
+	
+	@RequestMapping(value = { "/getInfo" }, method = RequestMethod.POST)
+	public @ResponseBody List<ExhEmpGraph> getInfo(
+			@RequestParam("fromDate") String fromDate, @RequestParam("toDate") String toDate,@RequestParam("exhId") int exhId) {
+
+		List<ExhEmpGraph> exhEmpGraphList = new ArrayList<ExhEmpGraph>();
+
+		try {
+			exhEmpGraphList = exhEmpGraphRepository.getInfo(fromDate, toDate,exhId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return exhEmpGraphList;
+
+	}
 
 	// ----------Enquiry Header------------------
 
@@ -129,6 +152,47 @@ public class EnquiryController {
 		try {
 
 			enquiryHeaderWithNameList = enquiryHeaderWithNameRepo.getAllEnquiryBetweenDates(fromDate, toDate);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return enquiryHeaderWithNameList;
+
+	}
+
+	@RequestMapping(value = { "/getAllEnquiryBetweenDatesAndByExhId" }, method = RequestMethod.POST)
+	public @ResponseBody List<EnquiryHeaderWithName> getAllEnquiryBetweenDatesAndByExhId(
+			@RequestParam("fromDate") String fromDate, @RequestParam("toDate") String toDate,
+			@RequestParam("exhId") int exhId) {
+
+		List<EnquiryHeaderWithName> enquiryHeaderWithNameList = new ArrayList<EnquiryHeaderWithName>();
+
+		try {
+
+			enquiryHeaderWithNameList = enquiryHeaderWithNameRepo.getAllEnquiryBetweenDatesAndByExhId(fromDate, toDate,exhId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return enquiryHeaderWithNameList;
+
+	}
+
+	@RequestMapping(value = { "/getAllEnquiryBetDatesAndByEmpIdAndExhId" }, method = RequestMethod.POST)
+	public @ResponseBody List<EnquiryHeaderWithName> getAllEnquiryBetDatesAndByEmpId(
+			@RequestParam("fromDate") String fromDate, @RequestParam("toDate") String toDate,
+			@RequestParam("empId") int empId, @RequestParam("exhId") int exhId) {
+
+		List<EnquiryHeaderWithName> enquiryHeaderWithNameList = new ArrayList<EnquiryHeaderWithName>();
+
+		try {
+
+			enquiryHeaderWithNameList = enquiryHeaderWithNameRepo.getAllEnquiryBetDatesAndByEmpIdAndExhId(fromDate,
+					toDate, empId, exhId);
 
 		} catch (Exception e) {
 

@@ -9,27 +9,26 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 @Entity
-@Table(name="m_exh_schedule")
-public class ScheduleHeader implements Serializable{
-	
+@Table(name = "m_exh_schedule")
+public class ScheduleHeader implements Serializable {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int scheduleId;
-	
+
 	private int eventId;
 
 	private String date;
-	
+
 	private String dayName;
-	
+
 	private int isUsed;
 
 	@Transient
-	List<ScheduleDetail>  scheduleDetailList;
-	
-	
-	
+	List<ScheduleDetail> scheduleDetailList;
+
 	public List<ScheduleDetail> getScheduleDetailList() {
 		return scheduleDetailList;
 	}
@@ -83,8 +82,5 @@ public class ScheduleHeader implements Serializable{
 		return "ScheduleHeader [scheduleId=" + scheduleId + ", eventId=" + eventId + ", date=" + date + ", dayName="
 				+ dayName + ", isUsed=" + isUsed + "]";
 	}
-	
-	
-	
 
 }

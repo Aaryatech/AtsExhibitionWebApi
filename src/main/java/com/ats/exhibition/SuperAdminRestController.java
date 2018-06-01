@@ -1,29 +1,37 @@
 package com.ats.exhibition;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ats.exhibition.model.EnquiryHeaderWithName; 
+import com.ats.exhibition.model.EnquiryHeaderWithName;
+import com.ats.exhibition.model.ErrorMessage;
 import com.ats.exhibition.model.EventExhMappingWithExhName;
 import com.ats.exhibition.model.EventWithOrgName;
 import com.ats.exhibition.model.ExhibitorWithOrgName;
 import com.ats.exhibition.model.GetEventSheduleDetail;
 import com.ats.exhibition.model.GetEventSheduleHeader;
+import com.ats.exhibition.model.GetTrackHeader;
 import com.ats.exhibition.model.Package1;
+import com.ats.exhibition.model.PostTrackDetail;
+import com.ats.exhibition.model.PostTrackHeader;
 import com.ats.exhibition.model.SortedExhibitor;
 import com.ats.exhibition.model.SortedVisitor;
 import com.ats.exhibition.model.VisitorByExhiId;
 import com.ats.exhibition.model.VisitorWithOrgEventName;
-import com.ats.exhibition.model.feedback.FeedbackTxn;
-import com.ats.exhibition.model.feedback.GetFbQueTxn; 
+import com.ats.exhibition.model.feedback.FeedbackTxn;  
 import com.ats.exhibition.repository.Package1Repository;
+import com.ats.exhibition.repository.PostTrackDetailRepository;
+import com.ats.exhibition.repository.PostTrackHeaderRepository;
 import com.ats.exhibition.repository.SortedExhibitorRepository;
 import com.ats.exhibition.repository.SortedVisitorRepository;
 import com.ats.exhibition.repository.VisitorByExhiIdRepo;
@@ -35,6 +43,7 @@ import com.ats.exhibition.repository.EventWithOrgNameRepository;
 import com.ats.exhibition.repository.ExhibitorWithOrgNameRepo;
 import com.ats.exhibition.repository.GetEventSheduleDetailRepository;
 import com.ats.exhibition.repository.GetEventSheduleHeaderRepository;
+import com.ats.exhibition.repository.GetTrackHeaderRepository;
 
 @RestController
 public class SuperAdminRestController {
@@ -75,6 +84,15 @@ public class SuperAdminRestController {
 	
 	@Autowired
 	FeedbackTxnRepo feedbackTxnRepo;
+	
+	@Autowired
+	PostTrackHeaderRepository postTrackHeaderRepository;
+	
+	@Autowired
+	PostTrackDetailRepository postTrackDetailRepository;
+	
+	@Autowired
+	GetTrackHeaderRepository getTrackHeaderRepository;
 	
 	
 	@RequestMapping(value = { "/sortedExhibitorByLocationAndCompanyType" }, method = RequestMethod.POST)
@@ -377,5 +395,81 @@ public class SuperAdminRestController {
 		return equiryListWithStatus;
 
 	}
+	
+	@RequestMapping(value = { "/saveTrackHeader" }, method = RequestMethod.POST)
+	public @ResponseBody PostTrackHeader saveTrackHeader(@RequestBody PostTrackHeader postTrackHeader) {
+
+		PostTrackHeader save = new PostTrackHeader();
+
+		try {
+
+			save = postTrackHeaderRepository.save(postTrackHeader);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return save;
+
+	}
+	
+	
+	@RequestMapping(value = { "/saveTrackDetail" }, method = RequestMethod.POST)
+	public @ResponseBody PostTrackDetail saveTrackDetail(@RequestBody PostTrackDetail postTrackDetail) {
+
+		PostTrackDetail save = new PostTrackDetail();
+
+		try {
+
+			save = postTrackDetailRepository.save(postTrackDetail);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return save;
+
+	}
+	
+	@RequestMapping(value = { "/GetTrackHeader" }, method = RequestMethod.POST)
+	public @ResponseBody GetTrackHeader GetTrackHeader(@RequestParam("empId") int empId) {
+
+		GetTrackHeader getTrackHeader = new GetTrackHeader();
+
+		try {
+			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = new Date();
+
+			getTrackHeader = getTrackHeaderRepository.getTrackHeaderByEmpId(empId,sf.format(date));
+			
+			if(getTrackHeader!=null)
+			{
+				ErrorMessage errorMessage = new ErrorMessage ();
+				errorMessage.setError(false);
+				errorMessage.setMessage("success");
+				List<PostTrackDetail> postTrackDetailList = postTrackDetailRepository.findByTrackIdAndIsUsed(getTrackHeader.getTrackId(),1);
+				getTrackHeader.setPostTrackDetailList(postTrackDetailList);
+				getTrackHeader.setErrorMessage(errorMessage);
+			}
+			else
+			{
+				ErrorMessage errorMessage = new ErrorMessage ();
+				errorMessage.setError(true);
+				errorMessage.setMessage("not found");
+				getTrackHeader = new GetTrackHeader();
+				getTrackHeader.setErrorMessage(errorMessage);
+			}
+			 
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return getTrackHeader;
+
+	}
+	
 
 }

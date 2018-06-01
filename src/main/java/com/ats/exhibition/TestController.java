@@ -207,9 +207,19 @@ public class TestController {
 					Date date = new Date();
 					SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 					exhSubHeaderList = exhSubHeaderRepository.getAllSubHeaderBetweenDates(exhibitor.getExhId(), sf.format(date));
-
+					System.err.println("Ex Sub HEader List  " +exhSubHeaderList.toString());
+					
+					if(exhSubHeaderList.size()>0) {
+						
+						loginResponse.setSubscribed(true);
+					}
+					else {
+						
+						loginResponse.setSubscribed(false);
+						
+					}
 				} catch (Exception e) {
-
+System.err.println("Exception in /loginExhibitor @ TestController exb web api");
 					e.printStackTrace();
 
 				}

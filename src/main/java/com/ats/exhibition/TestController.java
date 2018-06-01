@@ -1,6 +1,8 @@
 package com.ats.exhibition;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,8 @@ import com.ats.exhibition.model.Package1;
 import com.ats.exhibition.model.Visitor;
 import com.ats.exhibition.model.VisitorMobileResponse;
 import com.ats.exhibition.model.VisitorWithOrgEventName;
+import com.ats.exhibition.model.eventhistory.EventsWithSubStatus;
+import com.ats.exhibition.model.eventhistory.GetAllEventForExhb;
 import com.ats.exhibition.repository.CompanyTypeRepository;
 import com.ats.exhibition.repository.EventExhMappingRepository;
 import com.ats.exhibition.repository.EventExhMappingWithExhNameRepo;
@@ -70,6 +74,7 @@ import com.ats.exhibition.repository.OrganiserRepository;
 import com.ats.exhibition.repository.Package1Repository;
 import com.ats.exhibition.repository.VisitorRepository;
 import com.ats.exhibition.repository.VisitorWithOrgEventNameRepo;
+import com.ats.exhibition.repository.eventhistory.GetAllEventForExhbRepo;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
 
@@ -148,6 +153,8 @@ public class TestController {
 	@Autowired
 	OrgSubscriptionWithNameRepo orgSubscriptionWithNameRepo;
 
+	
+	
 	// ---------------------------OrganiserLogin---------------------------------------------
 	@RequestMapping(value = { "/loginResponse" }, method = RequestMethod.POST)
 	public @ResponseBody LoginResponse loginResponse(@RequestParam("userMob") String userMob,
@@ -192,7 +199,21 @@ public class TestController {
 				loginResponse.setError(false);
 				loginResponse.setMsg("login successfully");
 				loginResponse.setExhibitor(exhibitor);
-			}
+				
+				
+				List<ExhSubHeader> exhSubHeaderList = new ArrayList<ExhSubHeader>();
+
+				try {
+					Date date = new Date();
+					SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+					exhSubHeaderList = exhSubHeaderRepository.getAllSubHeaderBetweenDates(exhibitor.getExhId(), sf.format(date));
+
+				} catch (Exception e) {
+
+					e.printStackTrace();
+
+				}
+							}
 
 		} catch (Exception e) {
 
@@ -1261,14 +1282,17 @@ public class TestController {
 	}
 
 	// sachin
+	@Autowired
+	GetAllEventForExhbRepo getAllEventForExhbRepo;
+	
 	@RequestMapping(value = { "/getEventsByExhbId" }, method = RequestMethod.POST)
-	public @ResponseBody List<EventExhMapping> getEventsByExhbId(@RequestParam("exhbId") int exhbId) {
+	public @ResponseBody List<GetAllEventForExhb> getEventsByExhbId(@RequestParam("exhbId") int exhbId) {
 
-		List<EventExhMapping> eventListByExhbId = new ArrayList<EventExhMapping>();
+		List<GetAllEventForExhb> eventListByExhbId = new ArrayList<GetAllEventForExhb>();
 
 		try {
 
-			eventListByExhbId = eventExhMappingRepository.getAllEventByExhbId(exhbId);
+			eventListByExhbId = getAllEventForExhbRepo.getAllEventsbyExhb(exhbId);
 
 		} catch (Exception e) {
 

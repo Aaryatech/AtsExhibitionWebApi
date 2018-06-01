@@ -23,11 +23,12 @@ public class EventHistoryApi {
 	
 	
 	@RequestMapping(value = { "/getEventVisitorName" }, method = RequestMethod.POST)
-	public @ResponseBody List<GetEventVisitorName> getEventVisitorName(@RequestParam("eventId") int eventId) {
+	public @ResponseBody List<GetEventVisitorName> getEventVisitorName(@RequestParam("eventId") int eventId,@RequestParam("exhbId") int exhbId) {
 
 		List<GetEventVisitorName> eventVistorNames = null;
 		
 		try {
+			
 			if(eventId!=0) {
 				
 			eventVistorNames = getEventVisitorNameRepo.getEventVisitorNames(eventId);
@@ -35,7 +36,7 @@ public class EventHistoryApi {
 			}
 			else {
 				
-				eventVistorNames = getEventVisitorNameRepo.getEventVisitorNamesAllEvent();
+				eventVistorNames = getEventVisitorNameRepo.getEventVisitorNamesAllEvent(exhbId);
 			}
 		} catch (Exception e) {
 			

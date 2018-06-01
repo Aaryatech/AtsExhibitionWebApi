@@ -178,9 +178,7 @@ public class EnquiryHeaderWithName {
 	public void setIsUsed(int isUsed) {
 		this.isUsed = isUsed;
 	}
-	
-	
-
+	 
 	public String getVisitorMobile() {
 		return visitorMobile;
 	}

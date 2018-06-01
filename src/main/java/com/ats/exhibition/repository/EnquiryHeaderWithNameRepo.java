@@ -84,4 +84,6 @@ public interface EnquiryHeaderWithNameRepo extends JpaRepository<EnquiryHeaderWi
 			"        AND eq.is_used=1 \r\n" + 
 			"        and status = :status", nativeQuery = true)
 	List<EnquiryHeaderWithName> equiryListWithStatus(@Param("exhId")int exhId,@Param("status")int status);
+	
+	
 }

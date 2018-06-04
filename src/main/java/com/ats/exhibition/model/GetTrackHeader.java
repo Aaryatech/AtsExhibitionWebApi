@@ -45,6 +45,9 @@ public class GetTrackHeader {
 	@Column(name = "is_used")
 	private int isUsed;
 	
+	@Column(name = "int1")
+	private int int1;
+	
 	@Transient
 	ErrorMessage errorMessage;
 	
@@ -141,11 +144,19 @@ public class GetTrackHeader {
 		this.postTrackDetailList = postTrackDetailList;
 	}
 
+	public int getInt1() {
+		return int1;
+	}
+
+	public void setInt1(int int1) {
+		this.int1 = int1;
+	}
+
 	@Override
 	public String toString() {
 		return "GetTrackHeader [trackId=" + trackId + ", exhiId=" + exhiId + ", empId=" + empId + ", empName=" + empName
 				+ ", date=" + date + ", locLat=" + locLat + ", locLong=" + locLong + ", totalKm=" + totalKm
-				+ ", isUsed=" + isUsed + ", errorMessage=" + errorMessage + ", postTrackDetailList="
+				+ ", isUsed=" + isUsed + ", int1=" + int1 + ", errorMessage=" + errorMessage + ", postTrackDetailList="
 				+ postTrackDetailList + "]";
 	}
 

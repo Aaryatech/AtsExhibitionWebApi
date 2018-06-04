@@ -36,7 +36,10 @@ public class PostTrackHeader {
 	private float totalKm;
 	
 	@Column(name = "is_used")
-	private float isUsed;
+	private int isUsed;
+	
+	@Column(name = "int1")
+	private int int1;
 
 	public int getTrackId() {
 		return trackId;
@@ -94,18 +97,27 @@ public class PostTrackHeader {
 		this.totalKm = totalKm;
 	}
 
-	public float getIsUsed() {
+	public int getIsUsed() {
 		return isUsed;
 	}
 
-	public void setIsUsed(float isUsed) {
+	public void setIsUsed(int isUsed) {
 		this.isUsed = isUsed;
+	}
+
+	public int getInt1() {
+		return int1;
+	}
+
+	public void setInt1(int int1) {
+		this.int1 = int1;
 	}
 
 	@Override
 	public String toString() {
 		return "PostTrackHeader [trackId=" + trackId + ", exhiId=" + exhiId + ", empId=" + empId + ", date=" + date
-				+ ", locLat=" + locLat + ", locLong=" + locLong + ", totalKm=" + totalKm + ", isUsed=" + isUsed + "]";
+				+ ", locLat=" + locLat + ", locLong=" + locLong + ", totalKm=" + totalKm + ", isUsed=" + isUsed
+				+ ", int1=" + int1 + "]";
 	}
 	
 	

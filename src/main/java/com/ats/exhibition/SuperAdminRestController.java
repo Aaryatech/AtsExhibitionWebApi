@@ -433,8 +433,8 @@ public class SuperAdminRestController {
 
 	}
 	
-	@RequestMapping(value = { "/GetTrackHeader" }, method = RequestMethod.POST)
-	public @ResponseBody GetTrackHeader GetTrackHeader(@RequestParam("empId") int empId) {
+	@RequestMapping(value = { "/getTrackHeader" }, method = RequestMethod.POST)
+	public @ResponseBody GetTrackHeader getTrackHeader(@RequestParam("empId") int empId) {
 
 		GetTrackHeader getTrackHeader = new GetTrackHeader();
 
@@ -471,5 +471,103 @@ public class SuperAdminRestController {
 
 	}
 	
+	@RequestMapping(value = { "/getTrackDetailByHeaderId" }, method = RequestMethod.POST)
+	public @ResponseBody List<PostTrackDetail> getTrackDetailByHeaderId(@RequestParam("trackId") int trackId) {
+
+		List<PostTrackDetail> getTrackDetailByHeaderId = new ArrayList<PostTrackDetail>();
+
+		try {
+
+			getTrackDetailByHeaderId = postTrackDetailRepository.findByTrackIdAndIsUsed(trackId,1);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return getTrackDetailByHeaderId;
+
+	}
+	
+	
+	@RequestMapping(value = { "/getTotalKmOfEmpByExhiId" }, method = RequestMethod.POST)
+	public @ResponseBody List<GetTrackHeader> getTotalKmOfEmpByExhiId(@RequestParam("exhiId") int exhiId,
+			@RequestParam("fromDate") String fromDate,@RequestParam("toDate") String toDate) {
+
+		List<GetTrackHeader> getTotalKmOfEmpByExhiId   = new ArrayList<GetTrackHeader>();
+
+		try {
+			 
+			getTotalKmOfEmpByExhiId = getTrackHeaderRepository.getTotalKmOfEmpByExhiId(exhiId,fromDate,toDate);
+			 
+			 
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return getTotalKmOfEmpByExhiId;
+
+	}
+	
+	
+	@RequestMapping(value = { "/trakingHistoryBetweenDate" }, method = RequestMethod.POST)
+	public @ResponseBody List<GetTrackHeader> trakingHistoryBetweenDate(@RequestParam("exhiId") int exhiId,@RequestParam("empId") int empId,
+			@RequestParam("fromDate") String fromDate,@RequestParam("toDate") String toDate) {
+
+		List<GetTrackHeader> trakingHistoryBetweenDate   = new ArrayList<GetTrackHeader>();
+
+		try {
+			 
+			if(empId==0)
+				trakingHistoryBetweenDate = getTrackHeaderRepository.trakingHistoryBetweenDate(exhiId,fromDate,toDate);
+			else
+				trakingHistoryBetweenDate = getTrackHeaderRepository.trakingHistoryBetweenDate(empId,exhiId,fromDate,toDate);
+			 
+			 
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return trakingHistoryBetweenDate;
+
+	}
+	
+	@RequestMapping(value = { "/getTrackHeaderAndDetailById" }, method = RequestMethod.POST)
+	public @ResponseBody GetTrackHeader getTrackHeaderAndDetailById(@RequestParam("trackId") int trackId) {
+
+		GetTrackHeader getTrackHeaderAndDetailById = new GetTrackHeader();
+
+		try {
+		 
+			getTrackHeaderAndDetailById = getTrackHeaderRepository.getTrackHeaderAndDetailById(trackId);
+			
+			if(getTrackHeaderAndDetailById!=null)
+			{
+				ErrorMessage errorMessage = new ErrorMessage ();
+				errorMessage.setError(false);
+				errorMessage.setMessage("success");
+				List<PostTrackDetail> postTrackDetailList = postTrackDetailRepository.findByTrackIdAndIsUsed(trackId,1);
+				getTrackHeaderAndDetailById.setPostTrackDetailList(postTrackDetailList);
+				getTrackHeaderAndDetailById.setErrorMessage(errorMessage);
+			}
+			else
+			{
+				ErrorMessage errorMessage = new ErrorMessage ();
+				errorMessage.setError(true);
+				errorMessage.setMessage("not found");
+				getTrackHeaderAndDetailById = new GetTrackHeader();
+				getTrackHeaderAndDetailById.setErrorMessage(errorMessage);
+			}
+			 
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return getTrackHeaderAndDetailById;
+
+	}
 
 }

@@ -20,13 +20,16 @@ import com.ats.exhibition.model.EnquiryHeaderWithName;
 import com.ats.exhibition.model.ErrorMessage;
 import com.ats.exhibition.model.ExhEmpGraph;
 import com.ats.exhibition.model.GetEnqList;
+import com.ats.exhibition.model.Sponsor;
 import com.ats.exhibition.model.Task;
+import com.ats.exhibition.model.TaskWithName;
 import com.ats.exhibition.repository.EnquiryDetailRepository;
 import com.ats.exhibition.repository.EnquiryHeaderRepository;
 import com.ats.exhibition.repository.EnquiryHeaderWithNameRepo;
 import com.ats.exhibition.repository.ExhEmpGraphRepository;
 import com.ats.exhibition.repository.GetEnqListRepository;
 import com.ats.exhibition.repository.TaskRepository;
+import com.ats.exhibition.repository.TaskWithNameRepository;
 
 @RestController
 public class EnquiryController {
@@ -36,7 +39,7 @@ public class EnquiryController {
 
 	@Autowired
 	ExhEmpGraphRepository exhEmpGraphRepository;
-	
+
 	@Autowired
 	TaskRepository taskRepository;
 
@@ -48,16 +51,18 @@ public class EnquiryController {
 
 	@Autowired
 	GetEnqListRepository getEnqListRepository;
-	
-	
+
+	@Autowired
+	TaskWithNameRepository taskWithNameRepository;
+
 	@RequestMapping(value = { "/getInfo" }, method = RequestMethod.POST)
-	public @ResponseBody List<ExhEmpGraph> getInfo(
-			@RequestParam("fromDate") String fromDate, @RequestParam("toDate") String toDate,@RequestParam("exhId") int exhId) {
+	public @ResponseBody List<ExhEmpGraph> getInfo(@RequestParam("fromDate") String fromDate,
+			@RequestParam("toDate") String toDate, @RequestParam("exhId") int exhId) {
 
 		List<ExhEmpGraph> exhEmpGraphList = new ArrayList<ExhEmpGraph>();
 
 		try {
-			exhEmpGraphList = exhEmpGraphRepository.getInfo(fromDate, toDate,exhId);
+			exhEmpGraphList = exhEmpGraphRepository.getInfo(fromDate, toDate, exhId);
 
 		} catch (Exception e) {
 
@@ -171,7 +176,8 @@ public class EnquiryController {
 
 		try {
 
-			enquiryHeaderWithNameList = enquiryHeaderWithNameRepo.getAllEnquiryBetweenDatesAndByExhId(fromDate, toDate,exhId);
+			enquiryHeaderWithNameList = enquiryHeaderWithNameRepo.getAllEnquiryBetweenDatesAndByExhId(fromDate, toDate,
+					exhId);
 
 		} catch (Exception e) {
 
@@ -421,6 +427,67 @@ public class EnquiryController {
 
 	}
 
+	// ------------------Task----------------------------------
+
+	@RequestMapping(value = { "/saveTask" }, method = RequestMethod.POST)
+	public @ResponseBody Task saveTask(@RequestBody Task Task) {
+
+		Task task = new Task();
+
+		try {
+
+			task = taskRepository.saveAndFlush(Task);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return task;
+
+	}
+
+	@RequestMapping(value = { "/getTaskByTaskId" }, method = RequestMethod.POST)
+	public @ResponseBody Task getTaskByTaskId(@RequestParam("taskId") int taskId) {
+
+		Task task = new Task();
+		try {
+			task = taskRepository.findBytaskId(taskId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return task;
+
+	}
+
+	@RequestMapping(value = { "/deleteTask" }, method = RequestMethod.POST)
+	public @ResponseBody ErrorMessage deleteTask(@RequestParam("taskId") int taskId) {
+		ErrorMessage errorMessage = new ErrorMessage();
+
+		try {
+			int delete = taskRepository.deleteTask(taskId);
+
+			if (delete == 1) {
+				errorMessage.setError(false);
+				errorMessage.setMessage("task Deleted Successfully");
+			} else {
+				errorMessage.setError(true);
+				errorMessage.setMessage("Deletion Failed");
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			errorMessage.setError(true);
+			errorMessage.setMessage("Deletion Failed :EXC");
+
+		}
+		return errorMessage;
+	}
+
 	@RequestMapping(value = { "/getTaskListById" }, method = RequestMethod.POST)
 	public @ResponseBody List<Task> getTaskListById(@RequestParam("empId") int empId, @RequestParam("exhId") int exhId,
 			@RequestParam("date") String date) {
@@ -437,6 +504,84 @@ public class EnquiryController {
 
 		}
 		return taskList;
+
+	}
+
+	@RequestMapping(value = { "/getAllTaskListByExhId" }, method = RequestMethod.POST)
+	public @ResponseBody List<TaskWithName> getAllTaskListByExhId(@RequestParam("exhId") int exhId) {
+
+		List<TaskWithName> taskList = new ArrayList<TaskWithName>();
+
+		try {
+
+			taskList = taskWithNameRepository.findByExhId(exhId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return taskList;
+
+	}
+
+	@RequestMapping(value = { "/getTaskByTaskIdAndIsUsed" }, method = RequestMethod.POST)
+	public @ResponseBody TaskWithName getTaskByTaskIdAndIsUsed(@RequestParam("taskId") int taskId) {
+
+		TaskWithName task = new TaskWithName();
+
+		try {
+
+			task = taskWithNameRepository.findByTaskIdAndIsUsed(taskId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return task;
+
+	}
+
+	@RequestMapping(value = { "/getAllTaskListByIsUsed" }, method = RequestMethod.GET)
+	public @ResponseBody List<TaskWithName> getAllTaskListByIsUsed() {
+
+		List<TaskWithName> taskList = new ArrayList<TaskWithName>();
+
+		try {
+
+			taskList = taskWithNameRepository.findByIsUsed();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return taskList;
+
+	}
+
+	@RequestMapping(value = { "/getTaskByEmpIdAndIsUsed" }, method = RequestMethod.POST)
+	public @ResponseBody List<TaskWithName> getTaskByEmpIdAndIsUsed(@RequestParam("empId") int empId,
+			@RequestParam("exhId") int exhId) {
+
+		List<TaskWithName> task = new ArrayList<TaskWithName>();
+
+		try {
+
+			if (empId == 0) {
+				task = taskWithNameRepository.findAllEmpByIsUsed(exhId);
+
+			} else {
+				task = taskWithNameRepository.findByEmpIdAndIsUsed(empId, exhId);
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return task;
 
 	}
 

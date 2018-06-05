@@ -5,11 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "t_task")
-public class Task {
+public class TaskWithName {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,8 +17,12 @@ public class Task {
 	@Column(name = "exh_id")
 	private int exhId;
 
+	private String exhName;
+
 	@Column(name = "emp_id")
 	private int empId;
+
+	private String empName;
 
 	@Column(name = "date")
 	private String date;
@@ -56,12 +58,28 @@ public class Task {
 		this.exhId = exhId;
 	}
 
+	public String getExhName() {
+		return exhName;
+	}
+
+	public void setExhName(String exhName) {
+		this.exhName = exhName;
+	}
+
 	public int getEmpId() {
 		return empId;
 	}
 
 	public void setEmpId(int empId) {
 		this.empId = empId;
+	}
+
+	public String getEmpName() {
+		return empName;
+	}
+
+	public void setEmpName(String empName) {
+		this.empName = empName;
 	}
 
 	public String getDate() {
@@ -114,9 +132,9 @@ public class Task {
 
 	@Override
 	public String toString() {
-		return "Task [taskId=" + taskId + ", exhId=" + exhId + ", empId=" + empId + ", date=" + date + ", taskDesc="
-				+ taskDesc + ", remark=" + remark + ", status=" + status + ", isUsed=" + isUsed + ", taskCompletedDate="
-				+ taskCompletedDate + "]";
+		return "TaskWithName [taskId=" + taskId + ", exhId=" + exhId + ", exhName=" + exhName + ", empId=" + empId
+				+ ", empName=" + empName + ", date=" + date + ", taskDesc=" + taskDesc + ", remark=" + remark
+				+ ", status=" + status + ", isUsed=" + isUsed + ", taskCompletedDate=" + taskCompletedDate + "]";
 	}
 
 }

@@ -153,8 +153,6 @@ public class TestController {
 	@Autowired
 	OrgSubscriptionWithNameRepo orgSubscriptionWithNameRepo;
 
-	
-	
 	// ---------------------------OrganiserLogin---------------------------------------------
 	@RequestMapping(value = { "/loginResponse" }, method = RequestMethod.POST)
 	public @ResponseBody LoginResponse loginResponse(@RequestParam("userMob") String userMob,
@@ -199,31 +197,36 @@ public class TestController {
 				loginResponse.setError(false);
 				loginResponse.setMsg("login successfully");
 				loginResponse.setExhibitor(exhibitor);
-				
-				
+
 				List<ExhSubHeader> exhSubHeaderList = new ArrayList<ExhSubHeader>();
 
 				try {
 					Date date = new Date();
 					SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-					exhSubHeaderList = exhSubHeaderRepository.getAllSubHeaderBetweenDates(exhibitor.getExhId(), sf.format(date));
-					System.err.println("Ex Sub HEader List  " +exhSubHeaderList.toString());
+					exhSubHeaderList = exhSubHeaderRepository.getAllSubHeaderBetweenDates(exhibitor.getExhId(),
+							sf.format(date));
+					System.err.println("Ex Sub HEader List  " + exhSubHeaderList.toString());
+
+					if (exhSubHeaderList.size() > 0) {
+
+						loginResponse.setIsSubscribed(1);
+
+					} else {
+
+						loginResponse.setIsSubscribed(0);
+
+					}
+
+					System.out.println("Login Exhb Web Service " + loginResponse.toString());
+				}
+
+				catch (Exception e) {
 					
-					if(exhSubHeaderList.size()>0) {
-						
-						loginResponse.setSubscribed(true);
-					}
-					else {
-						
-						loginResponse.setSubscribed(false);
-						
-					}
-				} catch (Exception e) {
-System.err.println("Exception in /loginExhibitor @ TestController exb web api");
+					System.err.println("Exception in /loginExhibitor @ TestController exb web api");
 					e.printStackTrace();
 
 				}
-							}
+			}
 
 		} catch (Exception e) {
 
@@ -1294,7 +1297,7 @@ System.err.println("Exception in /loginExhibitor @ TestController exb web api");
 	// sachin
 	@Autowired
 	GetAllEventForExhbRepo getAllEventForExhbRepo;
-	
+
 	@RequestMapping(value = { "/getEventsByExhbId" }, method = RequestMethod.POST)
 	public @ResponseBody List<GetAllEventForExhb> getEventsByExhbId(@RequestParam("exhbId") int exhbId) {
 

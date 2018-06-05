@@ -5,7 +5,7 @@ public class LoginResponseExh {
 	private boolean error;
 	private String msg;
 	private Exhibitor exhibitor;
-	private boolean isSubscribed;
+	private int isSubscribed;
 	public boolean isError() {
 		return error;
 	}
@@ -24,10 +24,14 @@ public class LoginResponseExh {
 	public void setExhibitor(Exhibitor exhibitor) {
 		this.exhibitor = exhibitor;
 	}
-	public boolean isSubscribed() {
+	
+	
+	
+	
+	public int getIsSubscribed() {
 		return isSubscribed;
 	}
-	public void setSubscribed(boolean isSubscribed) {
+	public void setIsSubscribed(int isSubscribed) {
 		this.isSubscribed = isSubscribed;
 	}
 	@Override

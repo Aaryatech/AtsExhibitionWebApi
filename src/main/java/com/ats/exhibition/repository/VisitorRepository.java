@@ -1,5 +1,7 @@
 package com.ats.exhibition.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -23,6 +25,8 @@ public interface VisitorRepository extends JpaRepository<Visitor, Integer> {
 	@Modifying
 	@Query("UPDATE Visitor SET token=:token  WHERE visitor_id=:visitorId")
 	int updateToken(@Param("visitorId") int visitorId, @Param("token") String token);
+
+	List<Visitor> findByEventIdAndIsUsed(int eventId, int isUsed);
 
 
 

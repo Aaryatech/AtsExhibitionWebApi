@@ -275,6 +275,24 @@ public class TestController {
 		return eventMappingListByEventId;
 
 	}
+	
+	@RequestMapping(value = { "/eventMappingListByExhibitorId" }, method = RequestMethod.POST)
+	public @ResponseBody List<EventExhMapping> eventMappingListByExhibitorId(@RequestParam("exhiId") int exhiId) {
+
+		List<EventExhMapping> eventMappingListByEventId = new ArrayList<EventExhMapping>();
+
+		try {
+
+			eventMappingListByEventId = eventExhMappingRepository.eventMappingListByExhibitorId(exhiId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return eventMappingListByEventId;
+
+	}
 
 	@RequestMapping(value = { "/getAllExhMappingByMapIdAndIsUsed" }, method = RequestMethod.POST)
 	public @ResponseBody EventExhMappingWithExhName getAllExhMappingByMapIdAndIsUsed(@RequestParam("mapId") int mapId) {
@@ -590,6 +608,24 @@ public class TestController {
 		try {
 
 			visitor = visitorRepository.saveAndFlush(Visitor);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return visitor;
+
+	}
+	
+	@RequestMapping(value = { "/getEmpByEventId" }, method = RequestMethod.POST)
+	public @ResponseBody List<Visitor> getEmpByEventId(@RequestParam("eventId") int eventId) {
+
+		List<Visitor> visitor = new ArrayList<Visitor>();
+
+		try {
+
+			visitor = visitorRepository.findByEventIdAndIsUsed(eventId,1);
 
 		} catch (Exception e) {
 

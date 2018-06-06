@@ -38,5 +38,5 @@ public interface EventExhMappingRepository  extends JpaRepository <EventExhMappi
 			+ "m_events e where em.exh_id=:exhbId  and em.is_used=1 and em.event_id=e.event_id", nativeQuery = true)
 	List<EventExhMapping> eventMappingListByExhibitorId(@Param("exhbId") int exhiId);
 
-
+	EventExhMapping findByEventIdAndExhIdAndIsUsed(int eventId, int exhId, int i);
 }

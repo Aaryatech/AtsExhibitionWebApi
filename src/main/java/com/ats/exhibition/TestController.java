@@ -241,14 +241,20 @@ public class TestController {
 	// ------------ -----------------Event Exh Mapping---------
 
 	@RequestMapping(value = { "/saveEventExhMapping" }, method = RequestMethod.POST)
-	public @ResponseBody List<EventExhMapping> saveEventExhMapping(@RequestBody List<EventExhMapping> EventExhMapping) {
+	public @ResponseBody List<EventExhMapping> saveEventExhMapping(@RequestBody List<EventExhMapping> eventExhMappingList) {
 
 		List<EventExhMapping> eventExhMapping = new ArrayList<EventExhMapping>();
 
 		try {
-
-			eventExhMapping = eventExhMappingRepository.saveAll(EventExhMapping);
-
+			for(int i=0;i<eventExhMappingList.size();i++)
+			{
+				EventExhMapping eventExhMappingRes=eventExhMappingRepository.findByEventIdAndExhIdAndIsUsed(eventExhMappingList.get(i).getEventId(),eventExhMappingList.get(i).getExhId(),1);
+				if(eventExhMappingRes==null) {
+			    	EventExhMapping	eventExhMappingBean = eventExhMappingRepository.saveAndFlush(eventExhMappingList.get(i));
+				    eventExhMapping.add(eventExhMappingBean);
+				}
+			}
+			
 		} catch (Exception e) {
 
 			e.printStackTrace();

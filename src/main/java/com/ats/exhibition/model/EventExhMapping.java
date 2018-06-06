@@ -27,6 +27,19 @@ public class EventExhMapping {
 
 	@Column(name = "is_used")
 	private int isUsed;
+	
+	@Column(name="stall_no")
+	private String stallNo;
+	
+	
+
+	public String getStallNo() {
+		return stallNo;
+	}
+
+	public void setStallNo(String stallNo) {
+		this.stallNo = stallNo;
+	}
 
 	public int getMapId() {
 		return mapId;
@@ -71,7 +84,8 @@ public class EventExhMapping {
 	@Override
 	public String toString() {
 		return "EventExhMapping [mapId=" + mapId + ", exhId=" + exhId + ", eventId=" + eventId + ", eventName="
-				+ eventName + ", isUsed=" + isUsed + "]";
+				+ eventName + ", isUsed=" + isUsed + ", stallNo=" + stallNo + "]";
 	}
 
+    
 }

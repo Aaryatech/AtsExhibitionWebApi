@@ -15,11 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ats.exhibition.model.EnquiryHeaderWithName;
 import com.ats.exhibition.model.ErrorMessage;
+import com.ats.exhibition.model.EventExhMapping;
 import com.ats.exhibition.model.EventExhMappingWithExhName;
 import com.ats.exhibition.model.EventWithOrgName;
+import com.ats.exhibition.model.ExhEventSubscription;
 import com.ats.exhibition.model.ExhibitorWithOrgName;
 import com.ats.exhibition.model.GetEventSheduleDetail;
 import com.ats.exhibition.model.GetEventSheduleHeader;
+import com.ats.exhibition.model.GetExhEventSubscription;
 import com.ats.exhibition.model.GetTrackHeader;
 import com.ats.exhibition.model.Package1;
 import com.ats.exhibition.model.PostTrackDetail;
@@ -38,11 +41,14 @@ import com.ats.exhibition.repository.VisitorByExhiIdRepo;
 import com.ats.exhibition.repository.VisitorWithOrgEventNameRepo;
 import com.ats.exhibition.repository.feedback.FeedbackTxnRepo; 
 import com.ats.exhibition.repository.EnquiryHeaderWithNameRepo;
+import com.ats.exhibition.repository.EventExhMappingRepository;
 import com.ats.exhibition.repository.EventExhMappingWithExhNameRepo;
 import com.ats.exhibition.repository.EventWithOrgNameRepository;
+import com.ats.exhibition.repository.ExhEventSubscriptionRepository;
 import com.ats.exhibition.repository.ExhibitorWithOrgNameRepo;
 import com.ats.exhibition.repository.GetEventSheduleDetailRepository;
 import com.ats.exhibition.repository.GetEventSheduleHeaderRepository;
+import com.ats.exhibition.repository.GetExhEventSubRepository;
 import com.ats.exhibition.repository.GetTrackHeaderRepository;
 
 @RestController
@@ -94,6 +100,8 @@ public class SuperAdminRestController {
 	@Autowired
 	GetTrackHeaderRepository getTrackHeaderRepository;
 	
+	@Autowired
+	GetExhEventSubRepository getExhEventSubRepository;
 	
 	@RequestMapping(value = { "/sortedExhibitorByLocationAndCompanyType" }, method = RequestMethod.POST)
 	public @ResponseBody List<SortedExhibitor> sortedExhibitorByLocationAndCompanyType(@RequestParam("eventId") List<Integer> eventId
@@ -567,6 +575,83 @@ public class SuperAdminRestController {
 
 		}
 		return getTrackHeaderAndDetailById;
+
+	}
+	@RequestMapping(value = { "/getExhEventSubscriptionList" }, method = RequestMethod.POST)
+	public @ResponseBody List<GetExhEventSubscription> getExhEventSubscriptionList(@RequestParam("orgId") int orgId) {
+
+		List<GetExhEventSubscription> equiryListWithStatus = new ArrayList<GetExhEventSubscription>();
+
+		try {
+
+			equiryListWithStatus = getExhEventSubRepository.getExhEventSubscriptionList(orgId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return equiryListWithStatus;
+
+	}
+	@Autowired
+	ExhEventSubscriptionRepository exhEventSubscriptionRepository;
+	
+	@Autowired
+	EventExhMappingRepository eventExhMappingRepository;
+	
+	@RequestMapping(value = { "/approveSubscription" }, method = RequestMethod.POST)
+	public @ResponseBody ErrorMessage approveSubscription(@RequestParam("exhEsubId") int exhEsubId) {
+
+		ErrorMessage errorMessage=null;
+		try {
+
+			GetExhEventSubscription sub = getExhEventSubRepository.getExhEventSub(exhEsubId);
+			ExhEventSubscription eventSub=new ExhEventSubscription();
+			eventSub.setEventId(sub.getEventId());
+			eventSub.setExhEsubId(exhEsubId);
+			eventSub.setExhId(sub.getExhId());
+			eventSub.setIsUsed(1);
+			eventSub.setOrgId(sub.getOrgId());
+			eventSub.setPaidAmt(sub.getPaidAmt());
+			eventSub.setRemAmt(sub.getRemAmt());
+			eventSub.setStallNo(sub.getStallNo());
+			eventSub.setSubscriptionAmt(sub.getSubscriptionAmt());
+			eventSub.setIsApproved(1);
+			exhEventSubscriptionRepository.saveAndFlush(eventSub);
+			
+			EventExhMapping eventExhMapping=new EventExhMapping();
+			eventExhMapping.setEventId(sub.getEventId());
+			eventExhMapping.setEventName(sub.getEventName());
+			eventExhMapping.setExhId(sub.getExhId());
+			eventExhMapping.setStallNo(sub.getStallNo());
+			eventExhMapping.setIsUsed(1);
+			eventExhMapping.setMapId(0);
+			
+			EventExhMapping eEventExhMappingRes=eventExhMappingRepository.saveAndFlush(eventExhMapping);
+			if(eEventExhMappingRes!=null)
+			{
+				errorMessage=new ErrorMessage();
+				errorMessage.setError(false);
+				errorMessage.setMessage("Approved Successfully");
+			}
+			else {
+				errorMessage=new ErrorMessage();
+				errorMessage.setError(true);
+				errorMessage.setMessage(" Failed to Approve");
+			
+			}
+			
+
+		} catch (Exception e) {
+			errorMessage=new ErrorMessage();
+			errorMessage.setError(true);
+			errorMessage.setMessage(" Failed to Approve:Exc");
+		
+			e.printStackTrace();
+
+		}
+		return errorMessage;
 
 	}
 

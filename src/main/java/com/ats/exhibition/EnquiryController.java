@@ -209,6 +209,8 @@ public class EnquiryController {
 		return enquiryHeaderWithNameList;
 
 	}
+	
+
 
 	@RequestMapping(value = { "/getAllEnquiryByIsUsed" }, method = RequestMethod.GET)
 	public @ResponseBody List<EnquiryHeaderWithName> getAllEnquiryByIsUsed() {

@@ -1,5 +1,7 @@
 package com.ats.exhibition.repository;
 
+import java.util.Date;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +18,14 @@ public interface EnquiryHeaderRepository extends JpaRepository<EnquiryHeader, In
 	int deleteEnquiryHeader(@Param("enqId") int enqId);
 
 	EnquiryHeader findByEnqId(int enqId);
+	
+	
+	@Transactional
+	@Modifying
+	@Query("UPDATE EnquiryHeader SET empId=:empId, nextMeetDate=:meetDate ,status=:status WHERE enq_id=:enqId")
+	int editEnqHeader(@Param("empId") int empId,@Param("enqId") int enqId,@Param("meetDate") Date meetDate,
+			@Param("status") int status);
+
 }
 	
 

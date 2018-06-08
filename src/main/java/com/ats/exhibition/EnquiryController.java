@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ats.exhibition.common.Common;
 import com.ats.exhibition.model.EnquiryDetail;
 import com.ats.exhibition.model.EnquiryHeader;
 import com.ats.exhibition.model.EnquiryHeaderWithName;
@@ -248,6 +249,36 @@ public class EnquiryController {
 			e.printStackTrace();
 			errorMessage.setError(true);
 			errorMessage.setMessage("Enquiry Deletion Failed :EXC");
+
+		}
+		return errorMessage;
+	}
+	
+//Sachin web service 
+	@RequestMapping(value = { "/editEnquiryHeader" }, method = RequestMethod.POST)
+	public @ResponseBody ErrorMessage editEnquiryHeader(@RequestParam("enqId") int enqId,@RequestParam("empId") int empId,
+			@RequestParam("meetDate") String meetDate,@RequestParam("status") int status) {
+
+		ErrorMessage errorMessage = new ErrorMessage();
+
+		try {
+			
+			Date meetDateUtil=Common.convertToSqlDate(meetDate);
+			int edit = enquiryHeaderRepository.editEnqHeader(empId, enqId, meetDateUtil,status);
+
+			if (edit == 1) {
+				errorMessage.setError(false);
+				errorMessage.setMessage("Enquiry edited Successfully");
+			} else {
+				errorMessage.setError(true);
+				errorMessage.setMessage("Enquiry edit Failed");
+			}
+
+		} catch (Exception e) {
+			System.err.println("Exception in /editEnquiryHeader @ ENqCont" );
+			e.printStackTrace();
+			errorMessage.setError(true);
+			errorMessage.setMessage("Enquiry Edit Failed :EXC");
 
 		}
 		return errorMessage;

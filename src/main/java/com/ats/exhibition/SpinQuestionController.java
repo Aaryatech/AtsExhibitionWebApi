@@ -1,7 +1,9 @@
 
 package com.ats.exhibition;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -161,6 +163,36 @@ public class SpinQuestionController {
 		try {
 
 			spinQueHeader = spinQueHeaderRepo.saveAndFlush(SpinQueHeader);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return spinQueHeader;
+
+	}
+
+	@RequestMapping(value = { "/saveSpinQueResult" }, method = RequestMethod.POST)
+	public @ResponseBody SpinQueHeader saveSpinQueResult(@RequestBody SpinQueHeader spinQueHeader) {
+
+		SpinQueHeader spinQueHeaderRes = new SpinQueHeader();
+
+		try {
+
+			Date now = new Date();
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String strDateTime = simpleDateFormat.format(simpleDateFormat);
+			spinQueHeader.setDate(now);
+			spinQueHeader.setDateTime(strDateTime);
+			spinQueHeaderRes = spinQueHeaderRepo.saveAndFlush(spinQueHeader);
+
+			for (int i = 0; i < spinQueHeaderRes.getSpinQueDetailList().size(); i++)
+				spinQueHeaderRes.getSpinQueDetailList().get(i).settQueId(spinQueHeaderRes.gettQueId());
+
+			List<SpinQueDetail> spinQueDetailList = spinQueDetailRepository
+					.saveAll(spinQueHeaderRes.getSpinQueDetailList());
+			System.out.println("spinQueDetailList" + spinQueDetailList.toString());
 
 		} catch (Exception e) {
 

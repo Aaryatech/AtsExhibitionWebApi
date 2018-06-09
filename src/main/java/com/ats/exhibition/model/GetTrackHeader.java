@@ -14,8 +14,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 public class GetTrackHeader {
-	
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "track_id")
@@ -26,7 +25,7 @@ public class GetTrackHeader {
 
 	@Column(name = "emp_id")
 	private int empId;
-	
+
 	@Column(name = "emp_name")
 	private String empName;
 
@@ -35,22 +34,22 @@ public class GetTrackHeader {
 
 	@Column(name = "loc_lat")
 	private float locLat;
-	
+
 	@Column(name = "loc_long")
 	private float locLong;
-	
+
 	@Column(name = "total_km")
 	private float totalKm;
-	
+
 	@Column(name = "is_used")
 	private int isUsed;
-	
+
 	@Column(name = "int1")
 	private int int1;
-	
+
 	@Transient
 	ErrorMessage errorMessage;
-	
+
 	@Transient
 	List<PostTrackDetail> postTrackDetailList;
 
@@ -85,6 +84,7 @@ public class GetTrackHeader {
 	public void setEmpName(String empName) {
 		this.empName = empName;
 	}
+
 	@JsonFormat(locale = "hi", timezone = "Asia/Kolkata", pattern = "dd-MM-yyyy")
 	public Date getDate() {
 		return date;
@@ -134,8 +134,6 @@ public class GetTrackHeader {
 		this.errorMessage = errorMessage;
 	}
 
-	 
-
 	public List<PostTrackDetail> getPostTrackDetailList() {
 		return postTrackDetailList;
 	}
@@ -159,9 +157,4 @@ public class GetTrackHeader {
 				+ ", isUsed=" + isUsed + ", int1=" + int1 + ", errorMessage=" + errorMessage + ", postTrackDetailList="
 				+ postTrackDetailList + "]";
 	}
-
-	 
-	
-	
-
 }

@@ -113,23 +113,23 @@ public class MasterController {
 
 	// ------------Committee Member--------------------
 	// sac 30-05-2018
-		@RequestMapping(value = { "/getSponsorByEvent" }, method = RequestMethod.POST)
-		public @ResponseBody List<GetSponsor> getSponsorByEvent(@RequestParam("eventId") int eventId) {
+	@RequestMapping(value = { "/getSponsorByEvent" }, method = RequestMethod.POST)
+	public @ResponseBody List<GetSponsor> getSponsorByEvent(@RequestParam("eventId") int eventId) {
 
-			List<GetSponsor> sponsorList = null;
-			
-			try {
-				
-				sponsorList = getSponsorRepository.getSponsorsByEvnId(eventId);
-				
-			} catch (Exception e) {
-				
-				System.err.println("Exce in getting sponsor by EVent Id " + e.getMessage());
-				e.printStackTrace();
-			}
-			return sponsorList;
+		List<GetSponsor> sponsorList = null;
 
+		try {
+
+			sponsorList = getSponsorRepository.getSponsorsByEvnId(eventId);
+
+		} catch (Exception e) {
+
+			System.err.println("Exce in getting sponsor by EVent Id " + e.getMessage());
+			e.printStackTrace();
 		}
+		return sponsorList;
+
+	}
 
 	@RequestMapping(value = { "/saveCommitteeMember" }, method = RequestMethod.POST)
 	public @ResponseBody CommitteeMembers saveCommitteeMember(@RequestBody CommitteeMembers committeeMembers) {
@@ -178,8 +178,7 @@ public class MasterController {
 		return flourMapRes;
 
 	}
-	
-	
+
 	@RequestMapping(value = { "/getFloarMapByEventId" }, method = RequestMethod.POST)
 	public @ResponseBody List<GetFloarMap> getFloarMapByEventId(@RequestParam("eventId") int eventId) {
 
@@ -527,6 +526,28 @@ public class MasterController {
 		try {
 
 			org = organiserRepository.saveAndFlush(Organiser);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return org;
+
+	}
+
+	@RequestMapping(value = { "/organiserMobileNoAndIsUSed" }, method = RequestMethod.POST)
+	public @ResponseBody Organiser organiserMobileNoAndIsUSed(@RequestParam("userMob") String userMob) {
+
+		Organiser org = new Organiser();
+
+		try {
+
+			org = organiserRepository.findByUserMobAndIsUsed(userMob, 1);
+
+			if (org == null) {
+				org = new Organiser();
+			}
 
 		} catch (Exception e) {
 
@@ -965,6 +986,28 @@ public class MasterController {
 
 	}
 
+	@RequestMapping(value = { "/exhibitorMobileNoAndIsUSed" }, method = RequestMethod.POST)
+	public @ResponseBody Exhibitor exhibitorMobileNoAndIsUSed(@RequestParam("userMob") String userMob) {
+
+		Exhibitor exhibitor = new Exhibitor();
+
+		try {
+
+			exhibitor = exhibitorRepository.findByUserMobAndIsUsed(userMob, 1);
+
+			if (exhibitor == null) {
+				exhibitor = new Exhibitor();
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return exhibitor;
+
+	}
+
 	@RequestMapping(value = { "/getExhibitorByExhId" }, method = RequestMethod.POST)
 	public @ResponseBody ExhibitorWithOrgName getExhibitorByExhId(@RequestParam("exhId") int exhId) {
 
@@ -1167,7 +1210,6 @@ public class MasterController {
 
 		try {
 
-			
 			productList = productWithExhNameRepository.findByExhId(exhId);
 
 		} catch (Exception e) {

@@ -105,25 +105,50 @@ public class SuperAdminRestController {
 	@RequestMapping(value = { "/sortedExhibitorByLocationAndCompanyType" }, method = RequestMethod.POST)
 	public @ResponseBody List<SortedExhibitor> sortedExhibitorByLocationAndCompanyType(
 			@RequestParam("eventId") List<Integer> eventId, @RequestParam("locationId") List<Integer> locationId,
-			@RequestParam("companyType") List<Integer> companyType) {
+			@RequestParam("companyType") List<Integer> companyType, @RequestParam("orgId") int orgId) {
 
 		List<SortedExhibitor> sortedExhibitorByLocationAndCompanyType = new ArrayList<SortedExhibitor>();
 
 		try {
-
-			if (locationId.get(0) == 0 && companyType.get(0) == 0) {
-				sortedExhibitorByLocationAndCompanyType = sortedExhibitorRepository
-						.sortedExhibitorByLocationAndCompanyType(eventId);
-			} else if (locationId.get(0) == 0 && companyType.get(0) != 0) {
-				sortedExhibitorByLocationAndCompanyType = sortedExhibitorRepository
-						.sortedExhibitorByAllLocation(eventId, companyType);
-			} else if (locationId.get(0) != 0 && companyType.get(0) == 0) {
-				sortedExhibitorByLocationAndCompanyType = sortedExhibitorRepository
-						.sortedExhibitorByAllCompanyType(eventId, locationId);
-			} else {
-				sortedExhibitorByLocationAndCompanyType = sortedExhibitorRepository.sortedExhibitorBy(eventId,
-						locationId, companyType);
+			
+			if(eventId.get(0)==0) 
+			{
+				
+				if (locationId.get(0) == 0 && companyType.get(0) == 0) {
+					sortedExhibitorByLocationAndCompanyType = sortedExhibitorRepository
+							.sortedExhibitorByLocationAndCompanyType(orgId);
+				} else if (locationId.get(0) == 0 && companyType.get(0) != 0) {
+					sortedExhibitorByLocationAndCompanyType = sortedExhibitorRepository
+							.sortedExhibitorByAllLocation(companyType,orgId);
+				} else if (locationId.get(0) != 0 && companyType.get(0) == 0) {
+					sortedExhibitorByLocationAndCompanyType = sortedExhibitorRepository
+							.sortedExhibitorByAllCompanyType(locationId,orgId);
+				} else {
+					sortedExhibitorByLocationAndCompanyType = sortedExhibitorRepository.sortedExhibitorBy(
+							locationId, companyType,orgId);
+				}
+				
 			}
+			else
+			{
+				
+				if (locationId.get(0) == 0 && companyType.get(0) == 0) {
+					sortedExhibitorByLocationAndCompanyType = sortedExhibitorRepository
+							.sortedExhibitorByLocationAndCompanyType(eventId);
+				} else if (locationId.get(0) == 0 && companyType.get(0) != 0) {
+					sortedExhibitorByLocationAndCompanyType = sortedExhibitorRepository
+							.sortedExhibitorByAllLocation(eventId, companyType);
+				} else if (locationId.get(0) != 0 && companyType.get(0) == 0) {
+					sortedExhibitorByLocationAndCompanyType = sortedExhibitorRepository
+							.sortedExhibitorByAllCompanyType(eventId, locationId);
+				} else {
+					sortedExhibitorByLocationAndCompanyType = sortedExhibitorRepository.sortedExhibitorBy(eventId,
+							locationId, companyType);
+				}
+				
+			}
+
+			
 
 		} catch (Exception e) {
 

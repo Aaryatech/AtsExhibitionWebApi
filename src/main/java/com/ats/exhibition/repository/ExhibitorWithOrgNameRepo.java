@@ -38,7 +38,7 @@ public interface ExhibitorWithOrgNameRepo extends JpaRepository<ExhibitorWithOrg
 			"WHERE  \r\n" + 
 			"    o.org_id=x.org_id \r\n" + 
 			"    and l.location_id=x.location_id \r\n" + 
-			"    and c.company_type_id = x.company_type_id \r\n" + 
+			"    and c.company_type_id = x.company_type_id and x.is_used=1 \r\n" + 
 			"order by \r\n" + 
 			"    x.exh_name", nativeQuery = true)
 	List<ExhibitorWithOrgName> sortedExhibitorListByLocationAndCompType();
@@ -51,7 +51,7 @@ public interface ExhibitorWithOrgNameRepo extends JpaRepository<ExhibitorWithOrg
 			"    o.org_id=x.org_id\r\n" + 
 			"    and x.company_type_id in (:companyType)\r\n" + 
 			"    and l.location_id=x.location_id \r\n" + 
-			"    and c.company_type_id = x.company_type_id \r\n" + 
+			"    and c.company_type_id = x.company_type_id and x.is_used=1\r\n" + 
 			"order by \r\n" + 
 			"    x.exh_name", nativeQuery = true)
 	List<ExhibitorWithOrgName> sortedExhibitorByAllLocation(@Param("companyType")List<Integer> companyType);
@@ -64,7 +64,7 @@ public interface ExhibitorWithOrgNameRepo extends JpaRepository<ExhibitorWithOrg
 			"    o.org_id=x.org_id\r\n" + 
 			"    and x.location_id in (:locationId)\r\n" + 
 			"    and l.location_id=x.location_id \r\n" + 
-			"    and c.company_type_id = x.company_type_id \r\n" + 
+			"    and c.company_type_id = x.company_type_id and x.is_used=1\r\n" + 
 			"order by \r\n" + 
 			"    x.exh_name", nativeQuery = true)
 	List<ExhibitorWithOrgName> sortedExhibitorByAllCompanyType(@Param("locationId")List<Integer> locationId);
@@ -77,5 +77,20 @@ public interface ExhibitorWithOrgNameRepo extends JpaRepository<ExhibitorWithOrg
 
 	@Query(value = "SELECT x.*, o.org_name,l.location_name,c.company_type_name FROM m_exhibitor x,m_organiser o,m_location l,m_company c WHERE x.exh_name=:exhName AND o.org_id=x.org_id and l.location_id=x.location_id and c.company_type_id = x.company_type_id", nativeQuery = true)
 	List<ExhibitorWithOrgName> getExhibitorsByParam3(@Param("exhName")String parameter);
+
+	@Query(value = "SELECT\r\n" + 
+			"    x.*, o.org_name,l.location_name,c.company_type_name \r\n" + 
+			"FROM \r\n" + 
+			"    m_exhibitor x,m_organiser o,m_location l,m_company c \r\n" + 
+			"WHERE  \r\n" + 
+			"    o.org_id=x.org_id\r\n" + 
+			"    and x.location_id in (:locationId)"
+			+ "and x.company_type_id in (:companyType) \r\n" + 
+			"    and l.location_id=x.location_id \r\n" + 
+			"    and c.company_type_id = x.company_type_id and x.is_used=1\r\n" + 
+			"order by \r\n" + 
+			"    x.exh_name", nativeQuery = true)
+	List<ExhibitorWithOrgName> sortedExhibitorBySpecificCompanyTypeAndLocation(@Param("locationId") List<Integer> locationId,
+			@Param("companyType") List<Integer> companyType);
 
 }

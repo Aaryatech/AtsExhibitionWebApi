@@ -178,6 +178,10 @@ public class SuperAdminRestController {
 				sortedExhibitorListByLocationAndCompType = ExhibitorWithOrgNameRepo
 						.sortedExhibitorByAllCompanyType(locationId);
 			}
+			else {
+				sortedExhibitorListByLocationAndCompType = ExhibitorWithOrgNameRepo
+						.sortedExhibitorBySpecificCompanyTypeAndLocation(locationId,companyType);
+			}
 
 		} catch (Exception e) {
 

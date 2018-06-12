@@ -7,4 +7,8 @@ import com.ats.exhibition.model.ExhEventSubscription;
 @Repository
 public interface ExhEventSubscriptionRepository extends JpaRepository<ExhEventSubscription, Integer>{
 
+	
+	ExhEventSubscription save(ExhEventSubscription exhEventSubscription);
+	
+	
 }

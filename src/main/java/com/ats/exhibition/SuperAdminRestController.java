@@ -101,6 +101,36 @@ public class SuperAdminRestController {
 
 	@Autowired
 	GetExhEventSubRepository getExhEventSubRepository;
+	
+	
+	
+	@Autowired
+	ExhEventSubscriptionRepository exhEventSubscriptionRepository;//
+
+	@Autowired
+	EventExhMappingRepository eventExhMappingRepository;
+	
+	
+	@RequestMapping(value = { "/saveExhEventSubscription" }, method = RequestMethod.POST)
+	public @ResponseBody ExhEventSubscription saveExhEventSubscription(@RequestBody ExhEventSubscription exhEventSubscription) {
+
+		ExhEventSubscription resExhEventSubscription = new ExhEventSubscription();
+
+		try {
+
+			resExhEventSubscription = exhEventSubscriptionRepository.save(exhEventSubscription);
+
+		} catch (Exception e) {
+
+			System.err.println("Exception in /saveExhEventSubscription @ superadRestContr "+e.getMessage());
+			e.printStackTrace();
+
+		}
+		
+		return resExhEventSubscription;
+
+	}
+	
 
 	@RequestMapping(value = { "/sortedExhibitorByLocationAndCompanyType" }, method = RequestMethod.POST)
 	public @ResponseBody List<SortedExhibitor> sortedExhibitorByLocationAndCompanyType(
@@ -642,12 +672,7 @@ public class SuperAdminRestController {
 
 	}
 
-	@Autowired
-	ExhEventSubscriptionRepository exhEventSubscriptionRepository;
-
-	@Autowired
-	EventExhMappingRepository eventExhMappingRepository;
-
+	
 	@RequestMapping(value = { "/approveSubscription" }, method = RequestMethod.POST)
 	public @ResponseBody ErrorMessage approveSubscription(@RequestParam("exhEsubId") int exhEsubId) {
 

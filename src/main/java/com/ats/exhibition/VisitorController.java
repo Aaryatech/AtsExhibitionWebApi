@@ -376,9 +376,12 @@ public class VisitorController {
 
 				getEventsList = getEventsListRepository.getEventList(visitorId);
 			} else if (isLocation == 0 && isCompany == 1) {
-				getEventsList = getEventsListRepository.getEventListWithAllCompanyList(locationIdList, visitorId);
-			} else if (isLocation == 1 && isCompany == 0) {
+				
 				getEventsList = getEventsListRepository.getEventListWithAllLocationList(companyTypeIdList, visitorId);
+
+			} else if (isLocation == 1 && isCompany == 0) {
+				getEventsList = getEventsListRepository.getEventListWithAllCompanyList(locationIdList, visitorId);
+
 			}
 
 			else {

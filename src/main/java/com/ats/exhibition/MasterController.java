@@ -17,6 +17,7 @@ import com.ats.exhibition.model.CommitteeMembers;
 import com.ats.exhibition.model.ErrorMessage;
 import com.ats.exhibition.model.EventWithOrgName;
 import com.ats.exhibition.model.Events;
+import com.ats.exhibition.model.ExhListLikeStatus;
 import com.ats.exhibition.model.Exhibitor;
 import com.ats.exhibition.model.ExhibitorWithOrgName;
 import com.ats.exhibition.model.FloarMap;
@@ -36,6 +37,7 @@ import com.ats.exhibition.repository.CommitteeMemRepository;
 import com.ats.exhibition.repository.EventPhotoRepository;
 import com.ats.exhibition.repository.EventWithOrgNameRepository;
 import com.ats.exhibition.repository.EventsRepository;
+import com.ats.exhibition.repository.ExhListLikeStatusRepository;
 import com.ats.exhibition.repository.ExhibitorRepository;
 import com.ats.exhibition.repository.ExhibitorWithOrgNameRepo;
 import com.ats.exhibition.repository.FloarMapRepository;
@@ -59,6 +61,9 @@ public class MasterController {
 
 	@Autowired
 	ComMemWithOrgNameRepo comMemWithOrgNameRepo;
+
+	@Autowired
+	ExhListLikeStatusRepository exhListLikeStatusRepository;
 
 	@Autowired
 	EventsRepository eventsRepository;
@@ -1016,6 +1021,25 @@ public class MasterController {
 		try {
 
 			exhibitorList = exhibitorWithOrgNameRepo.getAllExhibitorsByExhId(exhId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return exhibitorList;
+
+	}
+
+	@RequestMapping(value = { "/getAllExhByIdAndLikeStatus" }, method = RequestMethod.POST)
+	public @ResponseBody ExhListLikeStatus getAllExhByIdAndLikeStatus(@RequestParam("exhId") int exhId,
+			@RequestParam("eventId") int eventId, @RequestParam("visitorId") int visitorId) {
+
+		ExhListLikeStatus exhibitorList = new ExhListLikeStatus();
+
+		try {
+
+			exhibitorList = exhListLikeStatusRepository.getAllExhByIdAndLikeStatus(exhId, eventId, visitorId);
 
 		} catch (Exception e) {
 

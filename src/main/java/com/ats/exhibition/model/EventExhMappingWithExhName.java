@@ -8,7 +8,7 @@ import javax.persistence.Id;
 
 @Entity
 public class EventExhMappingWithExhName {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "map_id")
@@ -16,7 +16,7 @@ public class EventExhMappingWithExhName {
 
 	@Column(name = "exh_id")
 	private int exhId;
-	
+
 	@Column(name = "exh_name")
 	private String exhName;
 
@@ -28,6 +28,9 @@ public class EventExhMappingWithExhName {
 
 	@Column(name = "is_used")
 	private int isUsed;
+
+	@Column(name = "stall_no")
+	private String stallNo;
 
 	public int getMapId() {
 		return mapId;
@@ -77,12 +80,18 @@ public class EventExhMappingWithExhName {
 		this.isUsed = isUsed;
 	}
 
+	public String getStallNo() {
+		return stallNo;
+	}
+
+	public void setStallNo(String stallNo) {
+		this.stallNo = stallNo;
+	}
+
 	@Override
 	public String toString() {
 		return "EventExhMappingWithExhName [mapId=" + mapId + ", exhId=" + exhId + ", exhName=" + exhName + ", eventId="
-				+ eventId + ", eventName=" + eventName + ", isUsed=" + isUsed + "]";
+				+ eventId + ", eventName=" + eventName + ", isUsed=" + isUsed + ", stallNo=" + stallNo + "]";
 	}
-	
-	
 
 }

@@ -31,7 +31,7 @@ public class EventHistoryApi {
 			
 			if(eventId!=0) {
 				
-			eventVistorNames = getEventVisitorNameRepo.getEventVisitorNames(eventId);
+			eventVistorNames = getEventVisitorNameRepo.getEventVisitorNames(eventId,exhbId);
 			
 			}
 			else {

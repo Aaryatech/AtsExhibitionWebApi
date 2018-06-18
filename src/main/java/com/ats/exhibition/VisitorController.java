@@ -116,8 +116,7 @@ public class VisitorController {
 
 	@Autowired
 	ProductsListWithLikeStatusRepo productsListWithLikeStatusRepo;
-	
-	
+
 	@Autowired
 	EventsWithSubStatusRepo getEventsWithSubStatusRepo;
 	// ---------------------Visitor Login----------------------
@@ -376,7 +375,7 @@ public class VisitorController {
 
 				getEventsList = getEventsListRepository.getEventList(visitorId);
 			} else if (isLocation == 0 && isCompany == 1) {
-				
+
 				getEventsList = getEventsListRepository.getEventListWithAllLocationList(companyTypeIdList, visitorId);
 
 			} else if (isLocation == 1 && isCompany == 0) {
@@ -387,6 +386,44 @@ public class VisitorController {
 			else {
 				getEventsList = getEventsListRepository.getEventListithAllLocationListAndCompanyList(companyTypeIdList,
 						locationIdList, visitorId);
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return getEventsList;
+
+	}
+
+	@RequestMapping(value = { "/getEventsListWithSub" }, method = RequestMethod.POST)
+	public @ResponseBody List<GetEventsList> getEventsListWithSub(
+			@RequestParam("companyTypeIdList") List<Integer> companyTypeIdList,
+			@RequestParam("locationIdList") List<Integer> locationIdList, @RequestParam("exhibitorId") int exhibitorId,
+			@RequestParam("isCompany") int isCompany, @RequestParam("isLocation") int isLocation) {
+
+		List<GetEventsList> getEventsList = new ArrayList<GetEventsList>();
+
+		try {
+
+			if (isLocation == 0 && isCompany == 0) {
+
+				getEventsList = getEventsListRepository.getEventListWithSub(exhibitorId);
+			} else if (isLocation == 0 && isCompany == 1) {
+
+				getEventsList = getEventsListRepository.getEventListWithAllLocationListWithSub(companyTypeIdList,
+						exhibitorId);
+
+			} else if (isLocation == 1 && isCompany == 0) {
+				getEventsList = getEventsListRepository.getEventListWithAllCompanyListWithSub(locationIdList,
+						exhibitorId);
+
+			}
+
+			else {
+				getEventsList = getEventsListRepository.getEventListithAllLocationListAndCompanyListWithSub(
+						companyTypeIdList, locationIdList, exhibitorId);
 			}
 
 		} catch (Exception e) {
@@ -642,8 +679,6 @@ public class VisitorController {
 
 		} catch (Exception e) {
 
-			
-			
 			System.err.println("Exception in getAllEventsWithExhId @Visitor controller" + e.getMessage());
 			e.printStackTrace();
 
@@ -670,10 +705,9 @@ public class VisitorController {
 		return productList;
 
 	}
-	
+
 	@RequestMapping(value = { "/getAllEventsWithVisitorId" }, method = RequestMethod.POST)
-	public @ResponseBody List<Events> getAllEventsWithVisitorId(
-		 @RequestParam("visitorId") int visitorId) {
+	public @ResponseBody List<Events> getAllEventsWithVisitorId(@RequestParam("visitorId") int visitorId) {
 
 		List<Events> eventList = new ArrayList<Events>();
 

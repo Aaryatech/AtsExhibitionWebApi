@@ -46,7 +46,7 @@ public class GetEventsList {
 	private String companyTypeName;
 	private String locationName;
 	
-	@Column(name = "subscribe_status")
+	
 	private int subscribeStatus;
 
 	public int getEventId() {

@@ -117,8 +117,19 @@ public class SuperAdminRestController {
 		ExhEventSubscription resExhEventSubscription = new ExhEventSubscription();
 
 		try {
+			
+			ExhEventSubscription isExist=exhEventSubscriptionRepository.findByExhIdAndEventId(exhEventSubscription.getExhId(), exhEventSubscription.getEventId());
 
+			if(isExist==null) {
+				
+				System.err.println("Call Save /saveExhEventSubscription  @SuperAdminRestController"); 
+				
 			resExhEventSubscription = exhEventSubscriptionRepository.save(exhEventSubscription);
+			}
+			else {
+				System.err.println("Call Save /saveExhEventSubscription  @SuperAdminRestController failed:: Already subscribed "); 
+
+			}
 
 		} catch (Exception e) {
 

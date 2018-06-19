@@ -10,5 +10,5 @@ public interface ExhEventSubscriptionRepository extends JpaRepository<ExhEventSu
 	
 	ExhEventSubscription save(ExhEventSubscription exhEventSubscription);
 	
-	
+	ExhEventSubscription findByExhIdAndEventId(int exhbId,int eventId);
 }

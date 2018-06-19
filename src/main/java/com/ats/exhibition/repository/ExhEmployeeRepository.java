@@ -23,5 +23,7 @@ public interface ExhEmployeeRepository extends JpaRepository<ExhEmployee, Intege
 	@Modifying
 	@Query("UPDATE ExhEmployee SET token=:token  WHERE emp_id=:empId")
 	int updateToken( @Param("empId") int empId,@Param("token") String token);
+	
+	ExhEmployee findByEmpMobile(String empMobile);
 
 }

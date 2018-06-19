@@ -221,7 +221,7 @@ public class TestController {
 				}
 
 				catch (Exception e) {
-					
+
 					System.err.println("Exception in /loginExhibitor @ TestController exb web api");
 					e.printStackTrace();
 
@@ -241,20 +241,22 @@ public class TestController {
 	// ------------ -----------------Event Exh Mapping---------
 
 	@RequestMapping(value = { "/saveEventExhMapping" }, method = RequestMethod.POST)
-	public @ResponseBody List<EventExhMapping> saveEventExhMapping(@RequestBody List<EventExhMapping> eventExhMappingList) {
+	public @ResponseBody List<EventExhMapping> saveEventExhMapping(
+			@RequestBody List<EventExhMapping> eventExhMappingList) {
 
 		List<EventExhMapping> eventExhMapping = new ArrayList<EventExhMapping>();
 
 		try {
-			for(int i=0;i<eventExhMappingList.size();i++)
-			{
-				EventExhMapping eventExhMappingRes=eventExhMappingRepository.findByEventIdAndExhIdAndIsUsed(eventExhMappingList.get(i).getEventId(),eventExhMappingList.get(i).getExhId(),1);
-				if(eventExhMappingRes==null) {
-			    	EventExhMapping	eventExhMappingBean = eventExhMappingRepository.saveAndFlush(eventExhMappingList.get(i));
-				    eventExhMapping.add(eventExhMappingBean);
+			for (int i = 0; i < eventExhMappingList.size(); i++) {
+				EventExhMapping eventExhMappingRes = eventExhMappingRepository.findByEventIdAndExhIdAndIsUsed(
+						eventExhMappingList.get(i).getEventId(), eventExhMappingList.get(i).getExhId(), 1);
+				if (eventExhMappingRes == null) {
+					EventExhMapping eventExhMappingBean = eventExhMappingRepository
+							.saveAndFlush(eventExhMappingList.get(i));
+					eventExhMapping.add(eventExhMappingBean);
 				}
 			}
-			
+
 		} catch (Exception e) {
 
 			e.printStackTrace();
@@ -281,7 +283,7 @@ public class TestController {
 		return eventMappingListByEventId;
 
 	}
-	
+
 	@RequestMapping(value = { "/eventMappingListByExhibitorId" }, method = RequestMethod.POST)
 	public @ResponseBody List<EventExhMapping> eventMappingListByExhibitorId(@RequestParam("exhiId") int exhiId) {
 
@@ -370,7 +372,6 @@ public class TestController {
 		ExhEmployee exhEmployeeMapping = new ExhEmployee();
 
 		try {
-
 			exhEmployeeMapping = exhEmployeeRepository.saveAndFlush(ExhEmployee);
 
 		} catch (Exception e) {
@@ -379,6 +380,70 @@ public class TestController {
 
 		}
 		return exhEmployeeMapping;
+
+	}
+
+	@RequestMapping(value = { "/isMobileNoExist" }, method = RequestMethod.POST)
+	public @ResponseBody Integer isMobileNoExist(@RequestParam("mobileNo") String mobileNo,
+			@RequestParam("callService") int callService) {
+		Integer response = 0;
+		try {
+
+			if (callService == 1) {
+
+				// Employee Mob No checking Service
+
+				ExhEmployee aexhEmployeeMapping = new ExhEmployee();
+
+				aexhEmployeeMapping = exhEmployeeRepository.findByEmpMobile(mobileNo);
+				if (aexhEmployeeMapping == null) {
+					System.err.println(" ExhEmployee Null Records So it is New Mobile u can Register");
+					response = 1;
+				} else {
+					System.err.println(" ExhEmployee Records For this Mobile found  u can not  Register");
+				}
+
+			}
+
+			if (callService == 2) {
+
+				// Visitor Mob No checking Service
+				Visitor vis = visitorRepository.findByVisitorMobile(mobileNo);
+
+				if (vis == null) {
+					System.err.println(" Visitor Null Records So it is New Mobile u can Register");
+					response = 1;
+				} else {
+					System.err.println(" Visitor Records For this Mobile found  u can not  Register");
+				}
+
+			}
+
+			if (callService == 3) {
+
+				// Exhibitor Mob No checking Service
+				// exhibitorRepository
+
+				Exhibitor exhi = exhibitorRepository.findByUserMob(mobileNo);
+				if (exhi == null) {
+					System.err.println("Exhibitor Null Records So it is New Mobile u can Register");
+					response = 1;
+				} else {
+					System.err.println("Exhibitor Records For this Mobile found  u can not  Register");
+				}
+
+			}
+
+		} catch (Exception e) {
+
+			System.err.println("Exception in /isMobileNoExist @TestController  " + e.getMessage());
+
+			e.printStackTrace();
+
+		}
+		System.err.println("/isMobileNoExist web Service called.");
+
+		return response;
 
 	}
 
@@ -623,7 +688,7 @@ public class TestController {
 		return visitor;
 
 	}
-	
+
 	@RequestMapping(value = { "/getEmpByEventId" }, method = RequestMethod.POST)
 	public @ResponseBody List<Visitor> getEmpByEventId(@RequestParam("eventId") int eventId) {
 
@@ -631,7 +696,7 @@ public class TestController {
 
 		try {
 
-			visitor = visitorRepository.findByEventIdAndIsUsed(eventId,1);
+			visitor = visitorRepository.findByEventIdAndIsUsed(eventId, 1);
 
 		} catch (Exception e) {
 

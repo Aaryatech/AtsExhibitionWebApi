@@ -29,5 +29,4 @@ public interface VisitorRepository extends JpaRepository<Visitor, Integer> {
 	List<Visitor> findByEventIdAndIsUsed(int eventId, int isUsed);
 
 
-
 }

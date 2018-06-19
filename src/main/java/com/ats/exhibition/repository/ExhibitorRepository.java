@@ -22,5 +22,7 @@ public interface ExhibitorRepository extends JpaRepository<Exhibitor, Integer> {
 	Exhibitor findByUserMobAndPasswordAndIsUsed(String userMob, String password, int i);
 
 	Exhibitor findByUserMobAndIsUsed(String userMob, int i);
+	
+	Exhibitor findByUserMob(String mobNo);
 
 }

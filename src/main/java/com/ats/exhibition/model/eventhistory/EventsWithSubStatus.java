@@ -79,7 +79,7 @@ public class EventsWithSubStatus {
 	
 	int subStatus;
 	
-	
+	int appliedStatus;
 	
 	public int getSubStatus() {
 		return subStatus;
@@ -261,7 +261,14 @@ public class EventsWithSubStatus {
 		this.companyTypeId = companyTypeId;
 	}
 
-	
+	public int getAppliedStatus() {
+		return appliedStatus;
+	}
+
+	public void setAppliedStatus(int appliedStatus) {
+		this.appliedStatus = appliedStatus;
+	}
+
 	@Override
 	public String toString() {
 		return "EventsWithSubStatus [eventId=" + eventId + ", orgId=" + orgId + ", eventName=" + eventName
@@ -271,7 +278,10 @@ public class EventsWithSubStatus {
 				+ ", contactPersonName1=" + contactPersonName1 + ", contactPersonName2=" + contactPersonName2
 				+ ", person1Mob=" + person1Mob + ", person2Mob=" + person2Mob + ", person1EmailId=" + person1EmailId
 				+ ", person2EmailId=" + person2EmailId + ", isUsed=" + isUsed + ", locationId=" + locationId
-				+ ", companyTypeId=" + companyTypeId + ", subStatus=" + subStatus + "]";
+				+ ", companyTypeId=" + companyTypeId + ", subStatus=" + subStatus + ", appliedStatus=" + appliedStatus
+				+ "]";
 	}
+
+	
 	
 }

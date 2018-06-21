@@ -114,7 +114,7 @@ public class SuperAdminRestController {
 	@RequestMapping(value = { "/saveExhEventSubscription" }, method = RequestMethod.POST)
 	public @ResponseBody ExhEventSubscription saveExhEventSubscription(@RequestBody ExhEventSubscription exhEventSubscription) {
 
-		ExhEventSubscription resExhEventSubscription = new ExhEventSubscription();
+		ExhEventSubscription resExhEventSubscription = null;
 
 		try {
 			

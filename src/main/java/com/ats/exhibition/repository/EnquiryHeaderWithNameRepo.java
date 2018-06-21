@@ -30,9 +30,9 @@ public interface EnquiryHeaderWithNameRepo extends JpaRepository<EnquiryHeaderWi
 			+ "q.visitor_id=v.visitor_id AND x.exh_id=q.exh_id AND p.emp_id=q.emp_id AND q.is_used=1", nativeQuery = true)
 	List<EnquiryHeaderWithName> getAllEnquiryByIsUsed();
 
-	@Query(value = "SELECT q.*, e.event_name,v.visitor_name,v.visitor_mobile,x.exh_name,p.emp_name FROM m_enquiry_header q ,m_events e ,m_visitor v,m_exhibitor x,m_exh_employee p WHERE  q.event_id=e.event_id AND  q.visitor_id=v.visitor_id AND x.exh_id=q.exh_id AND p.emp_id=q.emp_id AND q.is_used=1 AND date  BETWEEN :fromDate  AND :toDate ", nativeQuery = true)
+	@Query(value = "SELECT q.*, e.event_name,v.visitor_name,v.visitor_mobile,x.exh_name,p.emp_name FROM m_enquiry_header q ,m_events e ,m_visitor v,m_exhibitor x,m_exh_employee p WHERE  q.event_id=e.event_id AND  q.visitor_id=v.visitor_id AND x.exh_id=q.exh_id AND p.emp_id=q.emp_id AND q.is_used=1 AND q.date  BETWEEN :fromDate  AND  :toDate and q.exh_id=:exhId", nativeQuery = true)
 	List<EnquiryHeaderWithName> getAllEnquiryBetweenDates(@Param("fromDate") String fromDate,
-			@Param("toDate") String toDate);
+			@Param("toDate") String toDate, @Param("exhId") int exhId);
 
 	@Query(value = "SELECT q.*, e.event_name,v.visitor_name,v.visitor_mobile,x.exh_name,p.emp_name FROM m_enquiry_header q ,m_events e ,m_visitor v,m_exhibitor x,m_exh_employee p WHERE  q.event_id=e.event_id AND  q.visitor_id=v.visitor_id AND x.exh_id=q.exh_id AND p.emp_id=q.emp_id AND q.is_used=1 AND enq_id=:enqId", nativeQuery = true)
 	EnquiryHeaderWithName getEnquiryByEnqId(@Param("enqId") int enqId);
@@ -67,5 +67,6 @@ public interface EnquiryHeaderWithNameRepo extends JpaRepository<EnquiryHeaderWi
 			+ "        AND p.emp_id=eq.emp_id \r\n" + "        AND eq.is_used=1 \r\n"
 			+ "        and status = :status", nativeQuery = true)
 	List<EnquiryHeaderWithName> equiryListWithStatus(@Param("exhId") int exhId, @Param("status") int status);
+
 
 }

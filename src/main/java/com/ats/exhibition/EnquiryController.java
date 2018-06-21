@@ -151,13 +151,13 @@ public class EnquiryController {
 
 	@RequestMapping(value = { "/getAllEnquiryBetweenDates" }, method = RequestMethod.POST)
 	public @ResponseBody List<EnquiryHeaderWithName> getAllEnquiryBetweenDates(
-			@RequestParam("fromDate") String fromDate, @RequestParam("toDate") String toDate) {
+			@RequestParam("fromDate") String fromDate, @RequestParam("toDate") String toDate, @RequestParam("exhId") int exhId) {
 
 		List<EnquiryHeaderWithName> enquiryHeaderWithNameList = new ArrayList<EnquiryHeaderWithName>();
 
 		try {
 
-			enquiryHeaderWithNameList = enquiryHeaderWithNameRepo.getAllEnquiryBetweenDates(fromDate, toDate);
+			enquiryHeaderWithNameList = enquiryHeaderWithNameRepo.getAllEnquiryBetweenDates(fromDate, toDate,exhId);
 
 		} catch (Exception e) {
 

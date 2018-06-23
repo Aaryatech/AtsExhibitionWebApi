@@ -18,9 +18,10 @@ public interface ExhSubHeaderRepository extends JpaRepository<ExhSubHeader,Integ
 	@Query("UPDATE ExhSubHeader SET isUsed=0  WHERE sub_id=:subId")
 	int deleteExhSubHeader(@Param("subId") int subId);
 	
-	@Query(value = "SELECT * FROM t_exh_sub_header  WHERE t_exh_sub_header.exh_id=:exhId AND  from_date <:toDay  and to_date>:toDay  AND t_exh_sub_header.status=0 ", nativeQuery = true)
+	@Query(value = "SELECT * FROM t_exh_sub_header  WHERE t_exh_sub_header.exh_id=:exhId AND  from_date <:toDay  and to_date>:toDay  AND t_exh_sub_header.is_used=1 ORDER BY from_date ", nativeQuery = true)
 	List<ExhSubHeader> getAllSubHeaderBetweenDates(@Param("exhId") int exhId,@Param("toDay") String toDay);
 
-
+	
+	ExhSubHeader findByExhId(int exhId);
 
 }

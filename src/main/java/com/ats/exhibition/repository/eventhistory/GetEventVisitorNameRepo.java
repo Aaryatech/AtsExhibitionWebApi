@@ -11,7 +11,7 @@ public interface GetEventVisitorNameRepo extends JpaRepository<GetEventVisitorNa
 	@Query(value=" SELECT m_visitor.visitor_name,m_visitor.visitor_email,m_visitor.visitor_mobile ,t_visitor_exhibitor.visitor_id, "
 			+ " COUNT(t_visitor_exhibitor.like_status) AS like_count "
 			+ " FROM m_visitor, t_visitor_exhibitor WHERE " + 
-			" m_visitor.event_id=t_visitor_exhibitor.event_id AND m_visitor.visitor_id=t_visitor_exhibitor.visitor_id AND "
+			"   m_visitor.visitor_id=t_visitor_exhibitor.visitor_id AND "
 			+ " t_visitor_exhibitor.event_id=:eventId AND  t_visitor_exhibitor.exhibitor_id=:exhbId GROUP BY t_visitor_exhibitor.visitor_id " + 
 			" ",nativeQuery=true)
 	
@@ -20,7 +20,7 @@ public interface GetEventVisitorNameRepo extends JpaRepository<GetEventVisitorNa
 	@Query(value=" SELECT m_visitor.visitor_name,m_visitor.visitor_email,m_visitor.visitor_mobile ,t_visitor_exhibitor.visitor_id, "
 			+ " COUNT(t_visitor_exhibitor.like_status) AS like_count "
 			+ " FROM m_visitor, t_visitor_exhibitor WHERE " + 
-			" m_visitor.event_id=t_visitor_exhibitor.event_id AND m_visitor.visitor_id=t_visitor_exhibitor.visitor_id "
+			"  m_visitor.visitor_id=t_visitor_exhibitor.visitor_id "
 			+ " AND t_visitor_exhibitor.exhibitor_id=:exhbId "
 			+ "  GROUP BY t_visitor_exhibitor.visitor_id " + 
 			" ",nativeQuery=true)

@@ -368,24 +368,27 @@ public class VisitorController {
 			@RequestParam("isCompany") int isCompany, @RequestParam("isLocation") int isLocation) {
 
 		List<GetEventsList> getEventsList = new ArrayList<GetEventsList>();
+		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
 
 		try {
+			String curDate=sf.format(date);
 
 			if (isLocation == 0 && isCompany == 0) {
 
-				getEventsList = getEventsListRepository.getEventList(visitorId);
+				getEventsList = getEventsListRepository.getEventList(visitorId,curDate);
 			} else if (isLocation == 0 && isCompany == 1) {
 
-				getEventsList = getEventsListRepository.getEventListWithAllLocationList(companyTypeIdList, visitorId);
+				getEventsList = getEventsListRepository.getEventListWithAllLocationList(companyTypeIdList, visitorId,curDate);
 
 			} else if (isLocation == 1 && isCompany == 0) {
-				getEventsList = getEventsListRepository.getEventListWithAllCompanyList(locationIdList, visitorId);
+				getEventsList = getEventsListRepository.getEventListWithAllCompanyList(locationIdList, visitorId,curDate);
 
 			}
 
 			else {
 				getEventsList = getEventsListRepository.getEventListithAllLocationListAndCompanyList(companyTypeIdList,
-						locationIdList, visitorId);
+						locationIdList, visitorId,curDate);
 			}
 
 		} catch (Exception e) {

@@ -2,13 +2,18 @@ package com.ats.exhibition;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.ats.exhibition.model.eventhistory.EventSup;
 import com.ats.exhibition.model.eventhistory.GetEventHistory;
 import com.ats.exhibition.model.eventhistory.GetEventVisitorName;
+import com.ats.exhibition.model.feedback.FeedbackTxn;
+import com.ats.exhibition.repository.eventhistory.EventSupRepo;
 import com.ats.exhibition.repository.eventhistory.GetEventHistoryRepo;
 import com.ats.exhibition.repository.eventhistory.GetEventVisitorNameRepo;
  
@@ -21,7 +26,28 @@ public class EventHistoryApi {
 	@Autowired
 	GetEventVisitorNameRepo getEventVisitorNameRepo;
 	
+	@Autowired
+	EventSupRepo eventSupRepo;
 	
+	@RequestMapping(value = { "/saveEventSup" }, method = RequestMethod.POST)
+	public @ResponseBody EventSup saveFeedbackTxn(@RequestBody EventSup fbTxn) {
+
+		EventSup eventSupRes = new EventSup();
+
+		try {
+
+			eventSupRes = eventSupRepo.saveAndFlush(fbTxn);
+
+		} catch (Exception e) {
+
+			System.err.println("Exception in saving saveEventSup @ /EventHistoryApi");
+			e.printStackTrace();
+
+		}
+		return eventSupRes;
+
+	}
+
 	@RequestMapping(value = { "/getEventVisitorName" }, method = RequestMethod.POST)
 	public @ResponseBody List<GetEventVisitorName> getEventVisitorName(@RequestParam("eventId") int eventId,@RequestParam("exhbId") int exhbId) {
 

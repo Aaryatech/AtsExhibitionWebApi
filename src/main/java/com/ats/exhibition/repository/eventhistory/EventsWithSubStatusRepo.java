@@ -44,7 +44,6 @@ public interface EventsWithSubStatusRepo extends JpaRepository<EventsWithSubStat
 			"        m_events\n" + 
 			"    where\n" + 
 			"        m_events.is_used=1 \n" + 
-			"        and :toDay >=  m_events.event_from_date \n" + 
 			"        AND   :toDay <= m_events.event_to_date\n" + 
 			"", nativeQuery = true)
 	List<EventsWithSubStatus> getAllEventsWithExhId(@Param("exhId") int exhId, @Param("toDay") String toDay);

@@ -669,7 +669,7 @@ public class VisitorController {
 		return exhSubHeaderList;
 
 	}
-
+//Front End Home Page Event List web Service
 	@RequestMapping(value = { "/getAllEventsWithExhId" }, method = RequestMethod.POST)
 	public @ResponseBody List<EventsWithSubStatus> getAllEventsWithExhId(@RequestParam("exhId") int exhId) {
 

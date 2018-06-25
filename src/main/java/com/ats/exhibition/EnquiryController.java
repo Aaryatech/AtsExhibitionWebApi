@@ -167,6 +167,28 @@ public class EnquiryController {
 		return enquiryHeaderWithNameList;
 
 	}
+	
+	
+	//Sachin
+	@RequestMapping(value = { "/getAllEnquiryByEvent" }, method = RequestMethod.POST)
+	public @ResponseBody List<EnquiryHeaderWithName> getAllEnquiryByEvent(
+			@RequestParam("eventId") int eventId, @RequestParam("exhId") int exhId) {
+
+		List<EnquiryHeaderWithName> enquiryHeaderWithNameList = new ArrayList<EnquiryHeaderWithName>();
+
+		try {
+
+			enquiryHeaderWithNameList = enquiryHeaderWithNameRepo.getAllEnquiryByEvent(eventId, exhId);
+
+		} catch (Exception e) {
+			System.err.println("Exce in /getAllEnquiryByEvent @ EnQ Controller "+ e.getMessage());
+
+			e.printStackTrace();
+
+		}
+		return enquiryHeaderWithNameList;
+
+	}
 
 	@RequestMapping(value = { "/getAllEnquiryBetweenDatesAndByExhId" }, method = RequestMethod.POST)
 	public @ResponseBody List<EnquiryHeaderWithName> getAllEnquiryBetweenDatesAndByExhId(

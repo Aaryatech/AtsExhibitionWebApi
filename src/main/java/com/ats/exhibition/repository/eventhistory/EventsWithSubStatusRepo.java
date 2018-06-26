@@ -13,7 +13,7 @@ public interface EventsWithSubStatusRepo extends JpaRepository<EventsWithSubStat
 	
 	@Query(value = 
 			"SELECT " + 
-			"        m_events.* ," + 
+			"        m_events.* ,m_event_sup.stall_size,m_event_sup.price_for_exh,m_event_sup.disc_per,m_event_sup.discounted_price," + 
 			"        coalesce((SELECT\n" + 
 			"            1 \n" + 
 			"        FROM\n" + 
@@ -41,9 +41,9 @@ public interface EventsWithSubStatusRepo extends JpaRepository<EventsWithSubStat
 			"                and exh_id=:exhId \n" + 
 			"                and e.event_id=m_events.event_id and s.is_used=1 and s.is_approved=0 )),0) as applied_status \n" + 
 			"    from\n" + 
-			"        m_events\n" + 
+			"        m_events, m_event_sup\n" + 
 			"    where\n" + 
-			"        m_events.is_used=1 \n" + 
+			"        m_events.is_used=1 and m_event_sup.event_id=m_events.event_id \n" + 
 			"        AND   :toDay <= m_events.event_to_date\n" + 
 			"", nativeQuery = true)
 	List<EventsWithSubStatus> getAllEventsWithExhId(@Param("exhId") int exhId, @Param("toDay") String toDay);

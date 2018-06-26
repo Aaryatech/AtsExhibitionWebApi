@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ats.exhibition.model.eventhistory.EventSup;
 import com.ats.exhibition.model.eventhistory.GetEventHistory;
 import com.ats.exhibition.model.eventhistory.GetEventVisitorName;
+import com.ats.exhibition.model.eventhistory.ProductLikeByEvent;
 import com.ats.exhibition.model.feedback.FeedbackTxn;
 import com.ats.exhibition.repository.eventhistory.EventSupRepo;
 import com.ats.exhibition.repository.eventhistory.GetEventHistoryRepo;
 import com.ats.exhibition.repository.eventhistory.GetEventVisitorNameRepo;
+import com.ats.exhibition.repository.eventhistory.ProductLikeByEventRepo;
  
 @RestController
 public class EventHistoryApi {
@@ -29,6 +31,10 @@ public class EventHistoryApi {
 	@Autowired
 	EventSupRepo eventSupRepo;
 	
+	@Autowired
+	ProductLikeByEventRepo productLikeByEventRepo;
+	
+	
 	@RequestMapping(value = { "/saveEventSup" }, method = RequestMethod.POST)
 	public @ResponseBody EventSup saveFeedbackTxn(@RequestBody EventSup fbTxn) {
 
@@ -41,6 +47,27 @@ public class EventHistoryApi {
 		} catch (Exception e) {
 
 			System.err.println("Exception in saving saveEventSup @ /EventHistoryApi");
+			e.printStackTrace();
+
+		}
+		return eventSupRes;
+
+	}
+	
+	@RequestMapping(value = { "/getEventSupByEventId" }, method = RequestMethod.POST)
+	public @ResponseBody EventSup getEventSup(@RequestParam("eventId") int eventId) {
+
+		EventSup eventSupRes = new EventSup();
+
+		try {
+
+			eventSupRes = eventSupRepo.findOneByEventIdAndIsUsed(eventId,1);
+			
+			System.err.println("eventSupRes" +eventSupRes.toString());
+
+		} catch (Exception e) {
+
+			System.err.println("Exception in getting on event Sup For Edit getEventSup @ /EventHistoryApi");
 			e.printStackTrace();
 
 		}
@@ -73,6 +100,35 @@ public class EventHistoryApi {
 		}
 		
 		return eventVistorNames;
+
+	}
+	
+	//sachin 25/06
+	@RequestMapping(value = { "/getProdVisitorName" }, method = RequestMethod.POST)
+	public @ResponseBody List<ProductLikeByEvent> getProdLikeName(@RequestParam("eventId") int eventId,@RequestParam("exhbId") int exhbId) {
+
+		List<ProductLikeByEvent> prodVisitorNames = null;
+		
+		try {
+			
+			if(eventId!=0) {
+				
+			prodVisitorNames = productLikeByEventRepo.getProductLikeByEvent(eventId, exhbId);
+			
+			}
+			/*else {
+				
+				eventVistorNames = getEventVisitorNameRepo.getEventVisitorNamesAllEvent(exhbId);
+			}*/
+		} catch (Exception e) {
+			
+			System.err.println("Exception in getting getProdVisitorName @ /EventHistoryApi" +e.getMessage());
+
+			e.printStackTrace();
+
+		}
+		
+		return prodVisitorNames;
 
 	}
 	

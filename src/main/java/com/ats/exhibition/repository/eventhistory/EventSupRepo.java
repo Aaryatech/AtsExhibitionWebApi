@@ -12,7 +12,7 @@ public interface EventSupRepo extends JpaRepository<EventSup, Integer>{
 	
 	List<EventSup> findAllByIsUsed(int isUsed);
 	
-	EventSup findByEventId(int eventId);
+	EventSup findOneByEventIdAndIsUsed(int eventId,int isUsed);
 	
 
 }

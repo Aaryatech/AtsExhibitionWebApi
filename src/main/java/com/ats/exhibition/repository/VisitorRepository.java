@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ats.exhibition.model.Visitor;
 
 public interface VisitorRepository extends JpaRepository<Visitor, Integer> {
-	
+
 	@Transactional
 	@Modifying
 	@Query("UPDATE Visitor SET isUsed=0  WHERE visitor_id=:visitorId")
@@ -27,6 +27,5 @@ public interface VisitorRepository extends JpaRepository<Visitor, Integer> {
 	int updateToken(@Param("visitorId") int visitorId, @Param("token") String token);
 
 	List<Visitor> findByEventIdAndIsUsed(int eventId, int isUsed);
-
 
 }

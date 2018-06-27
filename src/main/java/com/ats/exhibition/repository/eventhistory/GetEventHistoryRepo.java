@@ -12,10 +12,10 @@ public interface GetEventHistoryRepo extends JpaRepository<GetEventHistory, Inte
 			@Query(value=" 	SELECT m_events.event_id, m_events.event_name,m_events.event_location,m_events.event_from_date,m_events.event_to_date,"
 					+ " m_exhibitor.exh_name,COALESCE((SELECT COUNT(t_visitor_exhibitor.like_status)"
 					+ " FROM t_visitor_exhibitor WHERE m_events.event_id=t_visitor_exhibitor.event_id AND "
-					+ " t_visitor_exhibitor.exhibitor_id=m_exhibitor.exh_id AND t_visitor_exhibitor.exhibitor_id=:exhbId "
-					+ " GROUP BY t_visitor_exhibitor.event_id ),0)as like_count FROM m_exhibitor,m_events,t_event_exh_mapping "
+					+ " t_visitor_exhibitor.exhibitor_id=m_exhibitor.exh_id AND t_visitor_exhibitor.exhibitor_id=:exhbId AND t_visitor_exhibitor.like_status=1"
+					+ " GROUP BY t_visitor_exhibitor.event_id  ),0)as like_count FROM m_exhibitor,m_events,t_event_exh_mapping "
 					+ " WHERE m_exhibitor.exh_id=t_event_exh_mapping.exh_id AND m_events.event_id=t_event_exh_mapping.event_id "
-					+ " AND t_event_exh_mapping.exh_id=:exhbId  AND m_events.is_used=1 GROUP BY m_events.event_id " + 
+					+ " AND t_event_exh_mapping.exh_id=:exhbId  AND m_events.is_used=1  " + 
 					" ",nativeQuery=true)
 			
 			List<GetEventHistory> getEventHistory(@Param("exhbId")int exhbId);

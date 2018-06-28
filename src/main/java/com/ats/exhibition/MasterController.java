@@ -1,16 +1,20 @@
 package com.ats.exhibition;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.ats.exhibition.model.ComMemWithOrgName;
 import com.ats.exhibition.model.CommitteeMembers;
@@ -1299,6 +1303,47 @@ public class MasterController {
 		}
 		return exhibitorList;
 
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public Map registerNewUser(@RequestParam String userMob, @RequestParam String userOtp) {
+
+		Map<String, Object> myMap = new HashMap<String, Object>();
+
+		Exhibitor exhibitor = exhibitorRepository.findByUserMob(userMob);
+
+		if (exhibitor == null) {
+			exhibitor = new Exhibitor();
+			myMap.put("error", true);
+			myMap.put("message", "no records found");
+			myMap.put("exhibitor", exhibitor);
+
+		} else {
+			myMap.put("error", false);
+			myMap.put("message", "success");
+			myMap.put("exhibitor", exhibitor);
+
+			final String uri = "http://control.bestsms.co.in/api/sendhttp.php";
+
+			RestTemplate restTemplate = new RestTemplate();
+
+			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+
+			map.add("authkey", "205288AM46YxkjGuf5ab3ac31");
+			map.add("mobiles", userMob);
+			map.add("message", "Your OTP for Wizzo login is " + userOtp
+					+ " . Please don't share your OTP with anyone.\n-Team Wizzo");
+			map.add("sender", "TWIZZO");
+			map.add("route", "4");
+
+			String result = restTemplate.postForObject(uri, map, String.class);
+			if (!result.isEmpty()) {
+				System.out.println(result);
+			}
+
+		}
+
+		return myMap;
 	}
 
 }

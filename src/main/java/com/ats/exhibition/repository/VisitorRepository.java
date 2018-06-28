@@ -17,8 +17,6 @@ public interface VisitorRepository extends JpaRepository<Visitor, Integer> {
 	@Query("UPDATE Visitor SET isUsed=0  WHERE visitor_id=:visitorId")
 	int deleteVisitor(@Param("visitorId") int visitorId);
 
-	Visitor findByVisitorMobile(String visitorMobile);
-
 	Visitor findByVisitorId(int visitorId);
 
 	@Transactional
@@ -27,5 +25,7 @@ public interface VisitorRepository extends JpaRepository<Visitor, Integer> {
 	int updateToken(@Param("visitorId") int visitorId, @Param("token") String token);
 
 	List<Visitor> findByEventIdAndIsUsed(int eventId, int isUsed);
+
+	Visitor findAllByVisitorMobile(String visitorMobile);
 
 }

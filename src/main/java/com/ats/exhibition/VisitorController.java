@@ -124,7 +124,7 @@ public class VisitorController {
 	@RequestMapping(value = { "/visitorLogin" }, method = RequestMethod.POST)
 	public @ResponseBody LoginResponseVisitor findByVisitorMobile(@RequestParam("visitorMobile") String visitorMobile) {
 
-		Visitor visitor = visitorRepository.findByVisitorMobile(visitorMobile);
+		Visitor visitor = visitorRepository.findAllByVisitorMobile(visitorMobile);
 
 		LoginResponseVisitor loginResponse = new LoginResponseVisitor();
 
@@ -372,23 +372,25 @@ public class VisitorController {
 		Date date = new Date();
 
 		try {
-			String curDate=sf.format(date);
+			String curDate = sf.format(date);
 
 			if (isLocation == 0 && isCompany == 0) {
 
-				getEventsList = getEventsListRepository.getEventList(visitorId,curDate);
+				getEventsList = getEventsListRepository.getEventList(visitorId, curDate);
 			} else if (isLocation == 0 && isCompany == 1) {
 
-				getEventsList = getEventsListRepository.getEventListWithAllLocationList(companyTypeIdList, visitorId,curDate);
+				getEventsList = getEventsListRepository.getEventListWithAllLocationList(companyTypeIdList, visitorId,
+						curDate);
 
 			} else if (isLocation == 1 && isCompany == 0) {
-				getEventsList = getEventsListRepository.getEventListWithAllCompanyList(locationIdList, visitorId,curDate);
+				getEventsList = getEventsListRepository.getEventListWithAllCompanyList(locationIdList, visitorId,
+						curDate);
 
 			}
 
 			else {
 				getEventsList = getEventsListRepository.getEventListithAllLocationListAndCompanyList(companyTypeIdList,
-						locationIdList, visitorId,curDate);
+						locationIdList, visitorId, curDate);
 			}
 
 		} catch (Exception e) {
@@ -669,7 +671,8 @@ public class VisitorController {
 		return exhSubHeaderList;
 
 	}
-//Front End Home Page Event List web Service
+
+	// Front End Home Page Event List web Service
 	@RequestMapping(value = { "/getAllEventsWithExhId" }, method = RequestMethod.POST)
 	public @ResponseBody List<EventsWithSubStatus> getAllEventsWithExhId(@RequestParam("exhId") int exhId) {
 
@@ -724,6 +727,30 @@ public class VisitorController {
 
 		}
 		return eventList;
+
+	}
+
+	@RequestMapping(value = { "/isVisitorExist" }, method = RequestMethod.POST)
+	public @ResponseBody Visitor isVisitorExist(@RequestParam("visitorMobile") String visitorMobile) {
+
+		Visitor visitor = new Visitor();
+
+		try {
+
+			visitor = visitorRepository.findAllByVisitorMobile(visitorMobile);
+
+			if (visitor == null)
+
+			{
+				visitor = new Visitor();
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return visitor;
 
 	}
 

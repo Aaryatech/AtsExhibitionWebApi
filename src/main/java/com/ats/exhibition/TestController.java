@@ -1,4 +1,4 @@
- package com.ats.exhibition;
+package com.ats.exhibition;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -210,8 +210,8 @@ public class TestController {
 					if (exhSubHeaderList.size() > 0) {
 
 						loginResponse.setIsSubscribed(1);
-						
-						int empCount=exhSubHeaderList.get(0).getStatus();
+
+						int empCount = exhSubHeaderList.get(0).getStatus();
 						loginResponse.setNoOfEmpCanAdd(empCount);
 						loginResponse.setExhSubHeader(exhSubHeaderList.get(0));
 
@@ -377,27 +377,29 @@ public class TestController {
 		ExhEmployee exhEmployeeMapping = new ExhEmployee();
 
 		try {
-			
-		//ExhSubHeader header=exhSubHeaderRepository.findByExhId(ExhEmployee.getExhId());
-		
-	//	List<ExhEmployee> empList=exhEmployeeRepository.findByExhIdAndIsUsed(ExhEmployee.getExhId(),1);
-		
-		//if(header.getStatus()<empList.size()) {
-			
+
+			// ExhSubHeader
+			// header=exhSubHeaderRepository.findByExhId(ExhEmployee.getExhId());
+
+			// List<ExhEmployee>
+			// empList=exhEmployeeRepository.findByExhIdAndIsUsed(ExhEmployee.getExhId(),1);
+
+			// if(header.getStatus()<empList.size()) {
+
 			exhEmployeeMapping = exhEmployeeRepository.saveAndFlush(ExhEmployee);
-		//}
-		//else {
-			
-		//	System.err.println("Can not save Employee Your Limit Exceed");
-			
-		//}
+			// }
+			// else {
+
+			// System.err.println("Can not save Employee Your Limit Exceed");
+
+			// }
 
 		} catch (Exception e) {
 
 			e.printStackTrace();
 
 		}
-		
+
 		return exhEmployeeMapping;
 
 	}

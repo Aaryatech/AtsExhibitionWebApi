@@ -28,4 +28,6 @@ public interface VisitorRepository extends JpaRepository<Visitor, Integer> {
 
 	Visitor findAllByVisitorMobile(String visitorMobile);
 
+	Visitor findByVisitorMobile(String mobileNo);
+
 }

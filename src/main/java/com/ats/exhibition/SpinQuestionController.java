@@ -162,7 +162,7 @@ public class SpinQuestionController {
 
 		try {
 
-			spinQueHeader = spinQueHeaderRepo.saveAndFlush(SpinQueHeader);
+//			spinQueHeader = spinQueHeaderRepo.saveAndFlush(SpinQueHeader);
 
 		} catch (Exception e) {
 

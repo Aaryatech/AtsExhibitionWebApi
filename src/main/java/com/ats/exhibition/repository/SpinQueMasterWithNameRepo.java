@@ -19,4 +19,6 @@ public interface SpinQueMasterWithNameRepo extends JpaRepository<SpinQueMasterWi
 	@Query(value = "SELECT s.*,x.exh_name FROM m_spin_que s,m_exhibitor x WHERE s.exh_id=x.exh_id AND s.is_used=1 AND  s.que_id=:queId", nativeQuery = true)
 	SpinQueMasterWithName findByQueId(@Param("queId") int queId);
 
+	
+
 }

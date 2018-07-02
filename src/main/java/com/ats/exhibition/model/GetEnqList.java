@@ -1,5 +1,6 @@
 package com.ats.exhibition.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -7,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 public class GetEnqList {
@@ -125,35 +128,14 @@ public class GetEnqList {
 	public void setEmpName(String empName) {
 		this.empName = empName;
 	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	public Date getNextMeetDate() {
-		return nextMeetDate;
-	}
-
-	public void setNextMeetDate(Date nextMeetDate) {
-		this.nextMeetDate = nextMeetDate;
-	}
-
-	public String getApproximateTime() {
-		return approximateTime;
-	}
-
-	public void setApproximateTime(String approximateTime) {
-		this.approximateTime = approximateTime;
-	}
-
+	//@JsonFormat(locale = "hi",timezone = "Asia/Kolkata", pattern = "dd-MM-yyyy HH:mm:ss")
+	
 	public String getRemark() {
 		return remark;
 	}
-
+   
+	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
+	
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
@@ -173,6 +155,32 @@ public class GetEnqList {
 	public void setIsUsed(int isUsed) {
 		this.isUsed = isUsed;
 	}
+	
+	
+	@JsonFormat(locale = "hi",timezone = "Asia/Kolkata", pattern = "dd-MM-yyyy")
+	public Date getDate() {
+		return date;
+	}
+	@JsonFormat(locale = "hi",timezone = "Asia/Kolkata", pattern = "dd-MM-yyyy")
+	public Date getNextMeetDate() {
+		return nextMeetDate;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public void setNextMeetDate(Date nextMeetDate) {
+		this.nextMeetDate = nextMeetDate;
+	}
+	
+	public String getApproximateTime() {
+		return approximateTime;
+	}
+
+	public void setApproximateTime(String approximateTime) {
+		this.approximateTime = approximateTime;
+	}
 
 	@Override
 	public String toString() {
@@ -182,5 +190,6 @@ public class GetEnqList {
 				+ ", approximateTime=" + approximateTime + ", remark=" + remark + ", status=" + status + ", isUsed="
 				+ isUsed + "]";
 	}
-
+	
+	
 }

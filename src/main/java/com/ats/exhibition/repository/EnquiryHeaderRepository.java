@@ -26,6 +26,12 @@ public interface EnquiryHeaderRepository extends JpaRepository<EnquiryHeader, In
 	int editEnqHeader(@Param("empId") int empId,@Param("enqId") int enqId,@Param("meetDate") Date meetDate,
 			@Param("status") int status);
 
+	
+	@Transactional
+	@Modifying
+	@Query("UPDATE EnquiryHeader SET  nextMeetDate=:meetDate ,status=:status WHERE enq_id=:enqId")
+	int updateEnqHeaderForFollowup(@Param("enqId") int enqId,@Param("meetDate") Date meetDate,
+			@Param("status") int status);
 }
 	
 

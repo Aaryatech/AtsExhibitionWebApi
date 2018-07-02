@@ -318,8 +318,21 @@ public class EnquiryController {
 		try {
 
 			enquiryDetail = enquiryDetailRepository.saveAndFlush(EnquiryDetail);
+			
+			
+			int headerUpdate=enquiryHeaderRepository.updateEnqHeaderForFollowup(EnquiryDetail.getEnqId(), EnquiryDetail.getDate(), enquiryDetail.getStatus());
+			
+			
+			if(headerUpdate>0) {
+				System.err.println("Enq Header updated Successfully");
+			}else {
+				System.err.println("Enq Header not updated Failed:");
+			}
 
 		} catch (Exception e) {
+			
+			
+			System.err.println("Exce in /saveEnqDetail @ EnqController" +e.getMessage());
 
 			e.printStackTrace();
 
@@ -327,6 +340,10 @@ public class EnquiryController {
 		return enquiryDetail;
 
 	}
+	
+	
+	
+
 
 	@RequestMapping(value = { "/deleteEnquiryDetail" }, method = RequestMethod.POST)
 	public @ResponseBody ErrorMessage deleteEnquiryDetail(@RequestParam("enqDetailId") int enqDetailId) {

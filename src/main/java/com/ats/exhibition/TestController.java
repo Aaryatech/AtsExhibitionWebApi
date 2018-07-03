@@ -44,6 +44,8 @@ import com.ats.exhibition.model.OrgSubscriptionWithName;
 import com.ats.exhibition.model.Organiser;
 import com.ats.exhibition.model.Package1;
 import com.ats.exhibition.model.Visitor;
+import com.ats.exhibition.model.VisitorExcelResponse;
+import com.ats.exhibition.model.VisitorExhibitorMapping;
 import com.ats.exhibition.model.VisitorMobileResponse;
 import com.ats.exhibition.model.VisitorWithOrgEventName;
 import com.ats.exhibition.model.eventhistory.EventsWithSubStatus;
@@ -72,6 +74,7 @@ import com.ats.exhibition.repository.OrgSubscriptionRepository;
 import com.ats.exhibition.repository.OrgSubscriptionWithNameRepo;
 import com.ats.exhibition.repository.OrganiserRepository;
 import com.ats.exhibition.repository.Package1Repository;
+import com.ats.exhibition.repository.VisitorExhibitorMappingRepository;
 import com.ats.exhibition.repository.VisitorRepository;
 import com.ats.exhibition.repository.VisitorWithOrgEventNameRepo;
 import com.ats.exhibition.repository.eventhistory.GetAllEventForExhbRepo;
@@ -709,6 +712,63 @@ public class TestController {
 		return visitor;
 
 	}
+	@Autowired
+	VisitorExhibitorMappingRepository visitorExhibitorMappingRepository;
+
+	
+	@RequestMapping(value = { "/saveVisitorList" }, method = RequestMethod.POST)
+	public @ResponseBody VisitorExcelResponse saveVisitorList(@RequestBody List<Visitor> visList) {
+		
+		ErrorMessage erMsg=new ErrorMessage();
+		VisitorExcelResponse visExcelRes=new VisitorExcelResponse();
+		
+		Visitor visitor = new Visitor();
+		
+		List<Visitor> addedVis=new ArrayList<Visitor>();
+		
+		List<Visitor> dupMobNoVis=new ArrayList<Visitor>();;
+		try {
+
+			for(int i=0;i<visList.size();i++) {
+
+				Visitor vis = visitorRepository.findByVisitorMobile(visList.get(i).getVisitorMobile());
+
+				if (vis == null) {
+					
+					System.err.println(" Visitor Null Records So it is New Mobile u can Register");
+					visitor = visitorRepository.saveAndFlush(visList.get(i));
+					addedVis.add(visitor);
+					
+					
+				} else {
+					
+					System.err.println(" Visitor Records For this Mobile found  u can not  Register");
+					
+					dupMobNoVis.add(visList.get(i));
+					
+				}
+				
+				System.err.println("Visitor/ saveVisitorList Response " +visitor.toString());
+			}
+
+			visExcelRes.setAddedVis(addedVis);
+			visExcelRes.setDupMobNoVis(dupMobNoVis);
+			
+			System.err.println("Visitor Excel Response " +visExcelRes.toString());
+			
+		} catch (Exception e) {
+			
+			System.err.println("Exception in /saveVisitorList @TestCont web api");
+
+			e.printStackTrace();
+
+		}
+		return visExcelRes;
+
+	}
+	
+	
+	
 
 	@RequestMapping(value = { "/getEmpByEventId" }, method = RequestMethod.POST)
 	public @ResponseBody List<Visitor> getEmpByEventId(@RequestParam("eventId") int eventId) {

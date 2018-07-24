@@ -678,5 +678,24 @@ public class EnquiryController {
 		}
 		return errorMessage;
 	}
+	
+	@RequestMapping(value = { "/enquiryListByEventIdAndEmpId" }, method = RequestMethod.POST)
+	public @ResponseBody List<EnquiryHeaderWithName> enquiryListByEventIdAndEmpId(@RequestParam("eventId") int eventId,
+			@RequestParam("empId") int empId) {
+
+		List<EnquiryHeaderWithName> enquiryListByEventIdAndEmpId = new ArrayList<EnquiryHeaderWithName>();
+
+		try {
+
+			enquiryListByEventIdAndEmpId = enquiryHeaderWithNameRepo.enquiryListByEventIdAndEmpId(eventId,empId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return enquiryListByEventIdAndEmpId;
+
+	}
 
 }

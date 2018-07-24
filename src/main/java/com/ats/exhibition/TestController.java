@@ -43,6 +43,7 @@ import com.ats.exhibition.model.OrgSubscriptionDetail;
 import com.ats.exhibition.model.OrgSubscriptionWithName;
 import com.ats.exhibition.model.Organiser;
 import com.ats.exhibition.model.Package1;
+import com.ats.exhibition.model.ProductListWithCount;
 import com.ats.exhibition.model.Visitor;
 import com.ats.exhibition.model.VisitorExcelResponse;
 import com.ats.exhibition.model.VisitorExhibitorMapping;
@@ -50,6 +51,7 @@ import com.ats.exhibition.model.VisitorMobileResponse;
 import com.ats.exhibition.model.VisitorWithOrgEventName;
 import com.ats.exhibition.model.eventhistory.EventsWithSubStatus;
 import com.ats.exhibition.model.eventhistory.GetAllEventForExhb;
+import com.ats.exhibition.model.eventhistory.ProductLikeByEvent;
 import com.ats.exhibition.repository.CompanyTypeRepository;
 import com.ats.exhibition.repository.EventExhMappingRepository;
 import com.ats.exhibition.repository.EventExhMappingWithExhNameRepo;
@@ -74,10 +76,12 @@ import com.ats.exhibition.repository.OrgSubscriptionRepository;
 import com.ats.exhibition.repository.OrgSubscriptionWithNameRepo;
 import com.ats.exhibition.repository.OrganiserRepository;
 import com.ats.exhibition.repository.Package1Repository;
+import com.ats.exhibition.repository.ProductListWithCountRepo;
 import com.ats.exhibition.repository.VisitorExhibitorMappingRepository;
 import com.ats.exhibition.repository.VisitorRepository;
 import com.ats.exhibition.repository.VisitorWithOrgEventNameRepo;
 import com.ats.exhibition.repository.eventhistory.GetAllEventForExhbRepo;
+import com.ats.exhibition.repository.eventhistory.ProductLikeByEventRepo;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
 
@@ -155,6 +159,12 @@ public class TestController {
 
 	@Autowired
 	OrgSubscriptionWithNameRepo orgSubscriptionWithNameRepo;
+	
+	@Autowired
+	ProductListWithCountRepo productListWithCountRepo;
+	
+	@Autowired
+	ProductLikeByEventRepo productLikeByEventRepo;
 
 	// ---------------------------OrganiserLogin---------------------------------------------
 	@RequestMapping(value = { "/loginResponse" }, method = RequestMethod.POST)
@@ -1522,6 +1532,44 @@ public class TestController {
 
 		}
 		return exhSubDetailWithDateList;
+
+	}
+	
+	@RequestMapping(value = { "/productListByExhibitorId" }, method = RequestMethod.POST)
+	public @ResponseBody List<ProductListWithCount> productListByExhibitorId(@RequestParam("exhiId") int exhiId, @RequestParam("eventId") int eventId) {
+
+		List<ProductListWithCount> productListByExhibitorId = new ArrayList<ProductListWithCount>();
+
+		try {
+
+			productListByExhibitorId = productListWithCountRepo.productListByExhibitorId(exhiId, eventId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return productListByExhibitorId;
+
+	}
+	
+	@RequestMapping(value = { "/visitorLikesListByProductId" }, method = RequestMethod.POST)
+	public @ResponseBody List<ProductLikeByEvent> visitorLikesListByProductId(@RequestParam("eventId") int eventId,@RequestParam("prodId") int prodId) {
+
+		List<ProductLikeByEvent> prodVisitorNames = new ArrayList<>();
+		
+		try {
+			
+			 
+			prodVisitorNames = productLikeByEventRepo.visitorLikesListByProductId(eventId, prodId);
+			 
+		} catch (Exception e) {
+			 
+			e.printStackTrace();
+
+		}
+		
+		return prodVisitorNames;
 
 	}
 

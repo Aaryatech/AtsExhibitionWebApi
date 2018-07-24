@@ -16,6 +16,11 @@ public interface EnquiryHeaderWithNameRepo extends JpaRepository<EnquiryHeaderWi
 	List<EnquiryHeaderWithName> getAllEnquiryByEventId(@Param("eventId") int eventId);
 
 	List<EnquiryHeaderWithName> getAllEnquiryByIsUsed(int i);
+	
+	@Query(value = "SELECT q.*, e.event_name,v.visitor_name,v.visitor_mobile,x.exh_name,p.emp_name FROM m_enquiry_header q ,m_events e ,"
+			+ "m_visitor v,m_exhibitor x,m_exh_employee p WHERE q.event_id=:eventId and q.emp_id=:empId AND q.event_id=e.event_id AND  "
+			+ "q.visitor_id=v.visitor_id AND x.exh_id=q.exh_id AND p.emp_id=q.emp_id AND q.is_used=1", nativeQuery = true)
+	List<EnquiryHeaderWithName> enquiryListByEventIdAndEmpId(@Param("eventId")int eventId,@Param("empId") int empId);
 
 	@Query(value = "SELECT q.*, e.event_name,v.visitor_name,v.visitor_mobile,x.exh_name,p.emp_name FROM m_enquiry_header q ,m_events e ,m_visitor v,m_exhibitor x,m_exh_employee p WHERE  q.event_id=e.event_id AND  q.visitor_id=v.visitor_id AND x.exh_id=q.exh_id AND p.emp_id=q.emp_id AND q.is_used=1 AND date  BETWEEN :fromDate  AND :toDate AND q.emp_id=:empId AND q.exh_id=:exhId ", nativeQuery = true)
 	List<EnquiryHeaderWithName> getAllEnquiryBetDatesAndByEmpIdAndExhId(@Param("fromDate") String fromDate,
@@ -75,5 +80,7 @@ public interface EnquiryHeaderWithNameRepo extends JpaRepository<EnquiryHeaderWi
 @Query(value = "SELECT q.*, e.event_name,v.visitor_name,v.visitor_mobile,x.exh_name,p.emp_name FROM m_enquiry_header q ,m_events e ,m_visitor v,m_exhibitor x,m_exh_employee p WHERE  q.event_id=e.event_id AND  q.visitor_id=v.visitor_id AND x.exh_id=q.exh_id AND p.emp_id=q.emp_id AND q.is_used=1 AND q.event_id=:eventId and q.exh_id=:exhId", nativeQuery = true)
 
 	List<EnquiryHeaderWithName> getAllEnquiryByEvent(@Param("eventId") int eventId, @Param("exhId") int exhId);
+
+
 
 }

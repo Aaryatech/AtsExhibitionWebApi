@@ -1,5 +1,6 @@
 package com.ats.exhibition;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.ats.exhibition.model.ErrorMessage;
 import com.ats.exhibition.model.feedback.FeedbackQue;
 import com.ats.exhibition.model.feedback.FeedbackTxn;
 import com.ats.exhibition.model.feedback.GetFbQueTxn;
@@ -117,7 +120,36 @@ public class FeedbackController {
 
 	}
 	
+	@RequestMapping(value = { "/saveFeedbackTxnList" }, method = RequestMethod.POST)								
+	public @ResponseBody ErrorMessage saveFeedbackTxn(@RequestBody ArrayList<FeedbackTxn> fbTxn) {							
+								
+		ErrorMessage errorMsg = new ErrorMessage();						
+								
+		try {						
+			for (int i = 0; i < fbTxn.size(); i++) {					
+				FeedbackTxn fbTxnResponse = feedbackTxnRepo.saveAndFlush(fbTxn.get(i));				
+				if (fbTxnResponse != null) {				
+					errorMsg.setError(false);			
+					errorMsg.setMessage("success");			
+				} else {				
+					errorMsg.setError(true);			
+					errorMsg.setMessage("error");			
+				}				
+			}					
+								
+		} catch (Exception e) {						
+								
+			System.err.println("Exception in saving saveFeedbackTxnList @ /FeedbackController");					
+			e.printStackTrace();					
+			errorMsg.setError(true);					
+			errorMsg.setMessage("error");					
+								
+		}						
+		return errorMsg;						
+								
+	}							
 	
+	 
 
 	@RequestMapping(value = { "/saveFeedbackQue" }, method = RequestMethod.POST)
 	public @ResponseBody FeedbackQue saveFeedbackQue(@RequestBody FeedbackQue feedbackQue) {

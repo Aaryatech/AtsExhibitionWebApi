@@ -695,7 +695,6 @@ public class EnquiryController {
 
 		}
 		return enquiryListByEventIdAndEmpId;
-
 	}
 
 }

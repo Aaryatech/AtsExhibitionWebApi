@@ -29,7 +29,7 @@ public interface GetEventsListRepository extends JpaRepository<GetEventsList, In
 			+ " from m_events e,m_event_sup sup,t_visitor_event ,m_location l,m_organiser o,m_company c where e.is_used=1 AND e.event_to_date>=:curDate "
 			+ " and "
 			+ "l.location_id=e.location_id and c.company_type_id=e.company_type_id and o.org_id=e.org_id and e.company_type_id"
-			+ " In(:companyTypeIdList) AND  AND e.event_id=sup.event_id  group by e.event_id", nativeQuery = true)
+			+ " In(:companyTypeIdList) AND e.event_id=sup.event_id  group by e.event_id", nativeQuery = true)
 	List<GetEventsList> getEventListWithAllLocationList(@Param("companyTypeIdList") List<Integer> companyTypeIdList,
 			@Param("visitorId") int visitorId,@Param("curDate") String curDate);
 
@@ -40,7 +40,7 @@ public interface GetEventsListRepository extends JpaRepository<GetEventsList, In
 			+ "from t_visitor_event where t_visitor_event.visitor_id=:visitorId and e.event_id=t_visitor_event.event_id),0)as subscribe_status"
 			+ " from m_events e,m_event_sup sup,t_visitor_event ,m_location l,m_organiser o,m_company c where e.is_used=1 AND e.event_to_date>=:curDate and "
 			+ "l.location_id=e.location_id and c.company_type_id=e.company_type_id and o.org_id=e.org_id and e.location_id IN(:locationIdList)"
-			+ "AND  AND e.event_id=sup.event_id group by e.event_id", nativeQuery = true)
+			+ " AND e.event_id=sup.event_id group by e.event_id", nativeQuery = true)
 	List<GetEventsList> getEventListWithAllCompanyList(@Param("locationIdList") List<Integer> locationIdList,
 			@Param("visitorId") int visitorId,@Param("curDate") String curDate);
 
@@ -51,7 +51,7 @@ public interface GetEventsListRepository extends JpaRepository<GetEventsList, In
 			+ "from t_visitor_event where t_visitor_event.visitor_id=:visitorId and e.event_id=t_visitor_event.event_id),0)as subscribe_status "
 			+ " from m_events e,m_event_sup sup,t_visitor_event ,m_location l,m_organiser o,m_company c where e.is_used=1 AND e.event_to_date>=:curDate and "
 			+ "l.location_id=e.location_id and c.company_type_id=e.company_type_id and o.org_id=e.org_id and e.company_type_id"
-			+ " In(:companyTypeIdList) and e.location_id IN(:locationIdList) AND  AND e.event_id=sup.event_id group by e.event_id", nativeQuery = true)
+			+ " In(:companyTypeIdList) and e.location_id IN(:locationIdList) AND e.event_id=sup.event_id group by e.event_id", nativeQuery = true)
 	List<GetEventsList> getEventListithAllLocationListAndCompanyList(
 			@Param("companyTypeIdList") List<Integer> companyTypeIdList,
 			@Param("locationIdList") List<Integer> locationIdList, @Param("visitorId") int visitorId,@Param("curDate") String curDate);

@@ -162,7 +162,7 @@ public class SpinQuestionController {
 
 		try {
 
-//			spinQueHeader = spinQueHeaderRepo.saveAndFlush(SpinQueHeader);
+			// spinQueHeader = spinQueHeaderRepo.saveAndFlush(SpinQueHeader);
 
 		} catch (Exception e) {
 
@@ -182,13 +182,15 @@ public class SpinQuestionController {
 
 			Date now = new Date();
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			String strDateTime = simpleDateFormat.format(simpleDateFormat);
+			String strDateTime = simpleDateFormat.format(now);
 			spinQueHeader.setDate(now);
 			spinQueHeader.setDateTime(strDateTime);
 			spinQueHeaderRes = spinQueHeaderRepo.saveAndFlush(spinQueHeader);
 
-			for (int i = 0; i < spinQueHeaderRes.getSpinQueDetailList().size(); i++)
+			for (int i = 0; i < spinQueHeaderRes.getSpinQueDetailList().size(); i++) {
 				spinQueHeaderRes.getSpinQueDetailList().get(i).settQueId(spinQueHeaderRes.gettQueId());
+				spinQueHeaderRes.getSpinQueDetailList().get(i).setDate(now);
+			}
 
 			List<SpinQueDetail> spinQueDetailList = spinQueDetailRepository
 					.saveAll(spinQueHeaderRes.getSpinQueDetailList());

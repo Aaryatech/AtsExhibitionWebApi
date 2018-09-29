@@ -25,7 +25,7 @@ public class FeedbackTxn {
 	private int fbId;
 
 	@Column(name = "rating")
-	private int rating;
+	private float rating;
 	
 	@Column(name = "que_type")
 	private int queType;
@@ -89,11 +89,11 @@ public class FeedbackTxn {
 		this.fbId = fbId;
 	}
 
-	public int getRating() {
+	public float getRating() {
 		return rating;
 	}
 
-	public void setRating(int rating) {
+	public void setRating(float rating) {
 		this.rating = rating;
 	}
 

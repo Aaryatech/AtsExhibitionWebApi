@@ -35,6 +35,7 @@ import com.ats.exhibition.model.SponsorWithEventName;
 import com.ats.exhibition.model.Visitor;
 import com.ats.exhibition.model.VisitorExhibitorMapping;
 import com.ats.exhibition.model.VisitorProductMapping;
+import com.ats.exhibition.model.VisitorWithOrgEventName;
 import com.ats.exhibition.model.eventhistory.EventsWithSubStatus;
 import com.ats.exhibition.repository.CompanyTypeRepository;
 import com.ats.exhibition.repository.EventExhMappingRepository;
@@ -55,6 +56,7 @@ import com.ats.exhibition.repository.SponsorWithEventNameRepo;
 import com.ats.exhibition.repository.VisitorExhibitorMappingRepository;
 import com.ats.exhibition.repository.VisitorProductMappingRepo;
 import com.ats.exhibition.repository.VisitorRepository;
+import com.ats.exhibition.repository.VisitorWithOrgEventNameRepo;
 import com.ats.exhibition.repository.eventhistory.EventsWithSubStatusRepo;
 
 @RestController
@@ -119,6 +121,9 @@ public class VisitorController {
 
 	@Autowired
 	EventsWithSubStatusRepo getEventsWithSubStatusRepo;
+	
+	@Autowired
+	VisitorWithOrgEventNameRepo visitorWithOrgEventNameRepo;
 	// ---------------------Visitor Login----------------------
 
 	@RequestMapping(value = { "/visitorLogin" }, method = RequestMethod.POST)
@@ -751,6 +756,24 @@ public class VisitorController {
 
 		}
 		return visitor;
+
+	}
+	
+	@RequestMapping(value = { "/getVsisitorListByVisitorName" }, method = RequestMethod.POST)
+	public @ResponseBody List<VisitorWithOrgEventName> getVsisitorListByVisitorName(@RequestParam("visitorName") String visitorName) {
+
+		List<VisitorWithOrgEventName> visitorList = new ArrayList<VisitorWithOrgEventName>();
+
+		try {
+
+			visitorList = visitorWithOrgEventNameRepo.getVsisitorListByVisitorName(visitorName);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return visitorList;
 
 	}
 

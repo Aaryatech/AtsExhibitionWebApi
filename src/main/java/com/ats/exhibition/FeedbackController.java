@@ -98,6 +98,26 @@ public class FeedbackController {
 
 	}
 	
+	@RequestMapping(value = { "/getFbQueTxnByFbIdAndEventId" }, method = RequestMethod.POST)
+	public @ResponseBody List<GetFbQueTxn> getFbQueTxnByFbIdAndEventId(@RequestParam("fbId") int fbId,@RequestParam("eventId") int eventId) {
+
+		List<GetFbQueTxn> getFbQueTxnRes = null;
+		try {
+			
+			getFbQueTxnRes = getFbQueTxnRepo.findFbQueTxnByFbIdAndEventId(fbId,eventId);
+			
+		} catch (Exception e) {
+			
+			System.err.println("Exception in getting getFbQueTxnByEventId @ /FeedbackController");
+
+			e.printStackTrace();
+
+		}
+		
+		return getFbQueTxnRes;
+
+	}
+	
 	
 	
 	

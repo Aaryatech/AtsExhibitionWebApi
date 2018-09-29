@@ -8,15 +8,15 @@ import javax.persistence.Id;
 public class GetFbQueTxn {
 	
 	@Id
+	private int fbTxId;
+	
 	private int fbId;
 
 	private int exhbId;
+	 
+	private float rating;
 	
-	
-	private int fbTxId;
-
-
-	private int rating;
+	private float ratingAvg;
 	
 	private int queType;
 	
@@ -29,6 +29,8 @@ public class GetFbQueTxn {
 	private int userId;
 	
 	private int isUsed;
+	
+	private int eventId;
 
 	private String question;
 
@@ -65,12 +67,12 @@ public class GetFbQueTxn {
 
 
 
-	public int getRating() {
+	public float getRating() {
 		return rating;
 	}
 
 
-	public void setRating(int rating) {
+	public void setRating(float rating) {
 		this.rating = rating;
 	}
 
@@ -147,11 +149,32 @@ public class GetFbQueTxn {
 		this.question = question;
 	}
 
+	public float getRatingAvg() {
+		return ratingAvg;
+	}
+
+
+	public void setRatingAvg(float ratingAvg) {
+		this.ratingAvg = ratingAvg;
+	}
+
+
+	public int getEventId() {
+		return eventId;
+	}
+
+
+	public void setEventId(int eventId) {
+		this.eventId = eventId;
+	}
+
+
 	@Override
 	public String toString() {
-		return "GetFbQueTxn [fbTxId=" + fbTxId + ", exhbId=" + exhbId + ", fbId=" + fbId + ", rating=" + rating
-				+ ", queType=" + queType + ", options=" + options + ", remark=" + remark + ", outOfRating="
-				+ outOfRating + ", userId=" + userId + ", isUsed=" + isUsed + ", question=" + question + "]";
+		return "GetFbQueTxn [fbId=" + fbId + ", exhbId=" + exhbId + ", fbTxId=" + fbTxId + ", rating=" + rating
+				+ ", ratingAvg=" + ratingAvg + ", queType=" + queType + ", options=" + options + ", remark=" + remark
+				+ ", outOfRating=" + outOfRating + ", userId=" + userId + ", isUsed=" + isUsed + ", eventId=" + eventId
+				+ ", question=" + question + "]";
 	}
 
 }

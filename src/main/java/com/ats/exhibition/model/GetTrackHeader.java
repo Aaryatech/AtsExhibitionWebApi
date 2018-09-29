@@ -44,7 +44,7 @@ public class GetTrackHeader {
 	@Column(name = "is_used")
 	private int isUsed;
 
-	@Column(name = "int1")
+	@Column(name = "intf")
 	private int int1;
 
 	@Transient

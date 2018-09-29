@@ -479,6 +479,29 @@ public class SuperAdminRestController {
 		return save;
 
 	}
+	
+	@RequestMapping(value = { "/saveTrackHeaderFromApp" }, method = RequestMethod.POST)
+	public @ResponseBody PostTrackHeader saveTrackHeaderFromApp(@RequestBody PostTrackHeader postTrackHeader) {
+
+		PostTrackHeader save = new PostTrackHeader();
+
+		try {
+			
+			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = new Date();
+
+			postTrackHeader.setDate(sf.format(date));
+			
+			save = postTrackHeaderRepository.save(postTrackHeader);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return save;
+
+	}
 
 	@RequestMapping(value = { "/saveTrackDetail" }, method = RequestMethod.POST)
 	public @ResponseBody PostTrackDetail saveTrackDetail(@RequestBody PostTrackDetail postTrackDetail) {
